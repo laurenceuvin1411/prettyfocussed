@@ -410,6 +410,15 @@ html:not(.js) .entry,html:not(.js) .plane{opacity:1; filter:none}
 .sticky.show{opacity:1; transform:translate(-50%,0) scale(1); pointer-events:auto}
 .sticky:active{transform:translate(-50%,0) scale(.97)}
 
+/* ---- touch: real targets, and no zoom-on-focus ---- */
+@media (max-width:760px){
+  /* iOS Safari zooms the page when a focused input is under 16px */
+  .input{font-size:16px}
+  /* 44px minimum hit area, without moving the bar */
+  .nav{padding:14px 0}
+  .nav .quiet,.mark{display:inline-flex; align-items:center; padding-block:12px}
+}
+
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
