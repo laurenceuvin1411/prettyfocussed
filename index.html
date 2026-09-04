@@ -16,6 +16,8 @@
    PRETTY FOCUSSED — home
    Tokens are design-system/design-tokens.md, verbatim.
    Components read semantic vars only.
+   Light Bone only: the page commits to one world and does not
+   follow the OS dark setting.
    ============================================================ */
 :root{
   color-scheme:light;
@@ -89,8 +91,6 @@
   --room:0;
   --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
 }
-
-/* the night version of the same field — tokens only, never components */
 
 /* ============================================================
    Base
