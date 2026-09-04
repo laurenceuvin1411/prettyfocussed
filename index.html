@@ -18,6 +18,7 @@
    Components read semantic vars only.
    ============================================================ */
 :root{
+  color-scheme:light;
   --pf-bone:#F4F2EE; --pf-paper:#EAE7E1; --pf-stone:#D6D1C7; --pf-ash:#9A968E;
   --pf-slate-400:#6B675F; --pf-slate-600:#55534E; --pf-ink:#14150F;
   --pf-sage-100:#E2E7DA; --pf-sage-200:#C6D0B8; --pf-sage-400:#98A886;
@@ -90,56 +91,6 @@
 }
 
 /* the night version of the same field — tokens only, never components */
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --ground-s0:#14150F; --ground-s1:#131720;
-    --color-surface-default:color-mix(in srgb, var(--color-background-primary) 90%, var(--pf-bone) 10%);
-    --color-surface-elevated:color-mix(in srgb, var(--color-background-primary) 82%, var(--pf-bone) 18%);
-    --color-surface-glass:rgb(40 43 34 / .68);
-    --color-border-glass:rgb(255 255 255 / .12);
-    --color-text-primary:var(--pf-bone);
-    --color-text-secondary:var(--pf-stone);
-    --color-text-muted:var(--pf-ash);
-    --color-text-disabled:#5A574F;
-    --color-text-brand:var(--pf-sage-200);
-    --color-action-primary:var(--pf-bone);
-    --color-action-primary-text:var(--pf-ink);
-    --color-border-default:#2F332A;
-    --color-border-focus:rgb(244 242 238 / .40);
-    --plate-cool:rgb(166 193 216 / .16);
-    --plate-warm:rgb(239 227 216 / .12);
-    --plate-lastlight:linear-gradient(155deg,#1A1E22 0%,#211D19 48%,#23201A 88%,#1B1A16 100%);
-    --plate-field:linear-gradient(155deg,#1B1F17 0%,#2B3324 55%,#14150F 100%);
-    --field-opacity:.85;
-    --shadow-sm:0 1px 2px rgb(0 0 0 / .25); --shadow-md:0 4px 16px rgb(0 0 0 / .30);
-    --shadow-lg:0 8px 32px rgb(0 0 0 / .36); --shadow-xl:0 16px 56px rgb(0 0 0 / .42);
-    --shadow-glass:inset 0 1px 0 rgb(255 255 255 / .12), 0 8px 32px rgb(0 0 0 / .36);
-  }
-}
-:root[data-theme="dark"]{
-  --ground-s0:#14150F; --ground-s1:#131720;
-  --color-surface-default:color-mix(in srgb, var(--color-background-primary) 90%, var(--pf-bone) 10%);
-  --color-surface-elevated:color-mix(in srgb, var(--color-background-primary) 82%, var(--pf-bone) 18%);
-  --color-surface-glass:rgb(40 43 34 / .68);
-  --color-border-glass:rgb(255 255 255 / .12);
-  --color-text-primary:var(--pf-bone);
-  --color-text-secondary:var(--pf-stone);
-  --color-text-muted:var(--pf-ash);
-  --color-text-disabled:#5A574F;
-  --color-text-brand:var(--pf-sage-200);
-  --color-action-primary:var(--pf-bone);
-  --color-action-primary-text:var(--pf-ink);
-  --color-border-default:#2F332A;
-  --color-border-focus:rgb(244 242 238 / .40);
-  --plate-cool:rgb(166 193 216 / .16);
-  --plate-warm:rgb(239 227 216 / .12);
-  --plate-lastlight:linear-gradient(155deg,#1A1E22 0%,#211D19 48%,#23201A 88%,#1B1A16 100%);
-  --plate-field:linear-gradient(155deg,#1B1F17 0%,#2B3324 55%,#14150F 100%);
-  --field-opacity:.85;
-  --shadow-sm:0 1px 2px rgb(0 0 0 / .25); --shadow-md:0 4px 16px rgb(0 0 0 / .30);
-  --shadow-lg:0 8px 32px rgb(0 0 0 / .36); --shadow-xl:0 16px 56px rgb(0 0 0 / .42);
-  --shadow-glass:inset 0 1px 0 rgb(255 255 255 / .12), 0 8px 32px rgb(0 0 0 / .36);
-}
 
 /* ============================================================
    Base
@@ -158,8 +109,6 @@ body::before{
   content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
   background-image:var(--noise); opacity:.03; mix-blend-mode:multiply;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) body::before{opacity:.05; mix-blend-mode:screen}}
-:root[data-theme="dark"] body::before{opacity:.05; mix-blend-mode:screen}
 img,svg{display:block; max-width:100%}
 ::selection{background:var(--pf-sage-200); color:var(--pf-ink)}
 :focus-visible{outline:2px solid var(--color-border-focus); outline-offset:3px; border-radius:var(--radius-input)}
@@ -199,8 +148,6 @@ section{position:relative}
   transform:translate3d(calc(var(--px,0) * -12px), calc(var(--py,0) * -12px), 0);
   transition:transform 1100ms var(--ease-out);
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .fieldA{background:linear-gradient(155deg,#1E252C 0%,#1B2026 42%,#221D19 78%,#14150F 100%)}}
-:root[data-theme="dark"] .fieldA{background:linear-gradient(155deg,#1E252C 0%,#1B2026 42%,#221D19 78%,#14150F 100%)}
 
 /* ============================================================
    Nav — no filled button here. There is one on the page, in the hero.
@@ -337,10 +284,6 @@ section{position:relative}
 /* the needle sits outboard of the track, so it never crosses the readout */
 .d-needle{stroke:var(--color-text-brand); stroke-width:1.25; stroke-linecap:round; opacity:.75;
   transform-origin:180px 180px; transition:transform 520ms var(--ease-out)}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]) .d-seg,:root:not([data-theme="light"]) .ap-val{stroke:url(#depthD)}
-}
-:root[data-theme="dark"] .d-seg,:root[data-theme="dark"] .ap-val{stroke:url(#depthD)}
 
 .dial-face{position:absolute; inset:0; display:grid; place-content:center; text-align:center; gap:10px}
 .dial-face .num{font-size:var(--type-numeric-xl); line-height:.9}
@@ -445,18 +388,6 @@ html:not(.js) .entry,html:not(.js) .plane{opacity:1; filter:none}
 .close .input{background:rgb(255 255 255 / .78); color:var(--pf-ink)}
 .close .btn{background:var(--pf-ink); color:var(--pf-bone)}
 .close .msg{color:var(--pf-ink)}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .close .display{color:var(--pf-bone)}
-  :root:not([data-theme="light"]) .close .lede{color:var(--pf-stone)}
-  :root:not([data-theme="light"]) .close .caption,:root:not([data-theme="light"]) .close .overline{color:var(--pf-ash)}
-  :root:not([data-theme="light"]) .close .input{background:rgb(40 43 34 / .72); color:var(--pf-bone)}
-  :root:not([data-theme="light"]) .close .btn{background:var(--pf-bone); color:var(--pf-ink)}
-  :root:not([data-theme="light"]) .close .msg{color:var(--pf-bone)}}
-:root[data-theme="dark"] .close .display{color:var(--pf-bone)}
-:root[data-theme="dark"] .close .lede{color:var(--pf-stone)}
-:root[data-theme="dark"] .close .caption,:root[data-theme="dark"] .close .overline{color:var(--pf-ash)}
-:root[data-theme="dark"] .close .input{background:rgb(40 43 34 / .72); color:var(--pf-bone)}
-:root[data-theme="dark"] .close .btn{background:var(--pf-bone); color:var(--pf-ink)}
-:root[data-theme="dark"] .close .msg{color:var(--pf-bone)}
 
 /* ============================================================
    Footer
@@ -498,9 +429,6 @@ html:not(.js) .entry,html:not(.js) .plane{opacity:1; filter:none}
     </linearGradient>
     <linearGradient id="depth2" x1="0" y1="0" x2=".62" y2="1">
       <stop offset="0%" stop-color="#C6D0B8"/><stop offset="55%" stop-color="#98A886"/><stop offset="100%" stop-color="#3E4936"/>
-    </linearGradient>
-    <linearGradient id="depthD" x1="0" y1="0" x2=".62" y2="1">
-      <stop offset="0%" stop-color="#6E7F5E"/><stop offset="55%" stop-color="#98A886"/><stop offset="100%" stop-color="#C6D0B8"/>
     </linearGradient>
   </defs>
 </svg>
