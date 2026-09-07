@@ -500,6 +500,9 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
                      placeholder="you@studio.com" aria-label="Your email address" required>
               <button class="btn" type="submit"><span class="btn-label">On the waiting list</span></button>
             </div>
+            <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+              <input name="hp_note" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+            </div>
             <p class="msg" data-msg role="alert"></p>
             <p class="caption">One email when it opens, at the founding price. Nothing else.</p>
           </form>
@@ -690,9 +693,15 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
             <form class="form" id="form-offer" novalidate>
               <p class="overline" style="margin:0 0 var(--space-related)">Join the waiting list</p>
               <div class="form-row">
+                <input class="input" id="runs-offer" name="what_you_run" type="text" style="flex:1 1 100%"
+                       maxlength="160" placeholder="What you run" aria-label="What you run"
+                       data-required data-message="Tell me what you run. One line is enough." required>
                 <input class="input" type="email" name="email" inputmode="email" autocomplete="email"
                        placeholder="you@studio.com" aria-label="Your email address" required>
                 <button class="btn" type="submit"><span class="btn-label">On the waiting list</span></button>
+              </div>
+              <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+                <input name="hp_note" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
               </div>
               <p class="msg" data-msg role="alert"></p>
               <p class="caption">No card now. You'll be asked when it opens, at the founding price.</p>
@@ -756,20 +765,27 @@ if(window.Lenis && !matchMedia('(prefers-reduced-motion: reduce)').matches){
       listId  → Klaviyo → Lists & Segments → your list → Settings → List ID
    ============================================================ */
 const KLAVIYO = {
-  companyId: 'XJhFyV',   // Laurence Uvin — public API key / site ID
-  listId:    '',   // e.g. 'XyZ123'
-  revision:  '2024-10-15',
-  // extra properties written onto every profile
-  properties: { 'Source': 'Pretty Focussed waiting list', 'Founding Member': true }
+  companyId: 'XJhFyV',      // public API key / site ID. Safe in the browser.
+  listId:    'XNCgAA',      // Marketing · Email
+  revision:  '2025-01-15',
+  wording:   'v1.0'         // version of the consent text she agreed to
 };
-const CONFIGURED = Boolean(KLAVIYO.companyId && KLAVIYO.listId);
 
-async function subscribe(email){
-  if(!CONFIGURED){
-    // Preview mode: nothing is sent anywhere. Fill KLAVIYO in above to go live.
-    await new Promise(r => setTimeout(r, 650));
-    return { ok:true, preview:true };
+/* Property names below are the audience-system schema. Renaming one here
+   without renaming it in tools/klaviyo_audience.json quietly empties a segment. */
+async function subscribe(email, source, extra){
+  if(!KLAVIYO.companyId || !KLAVIYO.listId){
+    // Never fake a success. A signup that goes nowhere is worse than an error.
+    throw new Error('klaviyo not configured');
   }
+  const properties = Object.assign({
+    signup_source:   source,
+    signup_page:     location.origin + location.pathname,
+    consent_at:      new Date().toISOString(),
+    consent_wording: KLAVIYO.wording,
+    language:        (navigator.language || 'en').toLowerCase().indexOf('nl') === 0 ? 'NL' : 'EN'
+  }, extra || {});
+
   const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + encodeURIComponent(KLAVIYO.companyId), {
     method:'POST',
     headers:{ 'Content-Type':'application/json', 'revision':KLAVIYO.revision },
@@ -777,15 +793,15 @@ async function subscribe(email){
       data:{
         type:'subscription',
         attributes:{
-          custom_source:'Pretty Focussed waiting list',
-          profile:{ data:{ type:'profile', attributes:{ email, properties:KLAVIYO.properties } } }
+          custom_source: source,
+          profile:{ data:{ type:'profile', attributes:{ email, properties } } }
         },
         relationships:{ list:{ data:{ type:'list', id:KLAVIYO.listId } } }
       }
     })
   });
   if(!res.ok) throw new Error('klaviyo ' + res.status);
-  return { ok:true, preview:false };
+  return { ok:true };
 }
 
 /* ============================================================
@@ -800,14 +816,17 @@ const arrive = () => {
   setTimeout(() => document.body.classList.remove('is-quiet'), 1500);
 };
 
-function wire(formId, swapId){
+function wire(formId, swapId, source, extra){
   const form = document.getElementById(formId);
   const swap = document.getElementById(swapId);
   if(!form) return;
-  const input = form.querySelector('.input');
+  // Explicit: the offer form has a second .input above the email one.
+  const input = form.querySelector('input[type="email"]');
   const btn   = form.querySelector('.btn');
   const label = form.querySelector('.btn-label');
   const msg   = form.querySelector('[data-msg]');
+  const trap  = form.querySelector('input[name="hp_note"]');
+  const asked = form.querySelector('input[data-required]');
   const say   = t => {
     if(!t){ msg.dataset.show = 'false'; msg.textContent = ''; return; }
     msg.textContent = t; msg.style.display = 'block';
@@ -815,15 +834,30 @@ function wire(formId, swapId){
   };
 
   input.addEventListener('input', () => { input.removeAttribute('aria-invalid'); say(''); });
+  if(asked) asked.addEventListener('input', () => { asked.removeAttribute('aria-invalid'); say(''); });
 
   form.addEventListener('submit', async e => {
     e.preventDefault();
     const email = input.value.trim();
 
+    if(asked && !asked.value.trim()){
+      asked.setAttribute('aria-invalid','true');
+      say(asked.getAttribute('data-message'));
+      asked.focus();
+      return;
+    }
+
     if(!EMAIL.test(email)){
       input.setAttribute('aria-invalid','true');
       say('That address is missing something. Have another look.');
       input.focus();
+      return;
+    }
+
+    // A filled honeypot is a bot. Resolve the form and send nothing.
+    if(trap && trap.value){
+      document.querySelectorAll('.swap').forEach(sw => sw.dataset.done = 'true');
+      arrive();
       return;
     }
 
@@ -833,7 +867,7 @@ function wire(formId, swapId){
     setTimeout(() => { label.textContent = 'Holding your place'; }, 160);
 
     try{
-      await subscribe(email);
+      await subscribe(email, source, typeof extra === 'function' ? extra() : extra);
 
       // fill both confirmations, so the other form is already resolved
       document.querySelectorAll('[data-echo]').forEach(n => n.textContent = email);
@@ -851,8 +885,16 @@ function wire(formId, swapId){
     }
   });
 }
-wire('form-hero','swap-hero');
-wire('form-offer','swap-offer');
+wire('form-hero','swap-hero','Site hero', { lifecycle_stage:'Waitlist' });
+wire('form-offer','swap-offer','Site founding', () => {
+  const runs = document.getElementById('runs-offer');
+  return {
+    lifecycle_stage:   'Applicant',
+    founding_decision: 'Applied',
+    applied_at:        new Date().toISOString(),
+    what_she_runs:     runs ? runs.value.trim().slice(0, 160) : ''
+  };
+});
 
 /* ============================================================
    3. The Room — the ground travels as she moves down the page
