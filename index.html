@@ -764,6 +764,13 @@ if(window.Lenis && !matchMedia('(prefers-reduced-motion: reduce)').matches){
       Klaviyo → Settings → API keys → Public API key / Site ID
       listId  → Klaviyo → Lists & Segments → your list → Settings → List ID
    ============================================================ */
+/* Holding state. Klaviyo accepts the subscription but cannot send the double
+   opt-in confirmation on this account, so a signup is silently lost. Rather than
+   show a confirmation that isn't true, the forms are closed.
+   Set this to true the moment a test signup lands on the list. That is the only
+   change needed — nothing else is disabled. */
+const LIST_OPEN = false;
+
 const KLAVIYO = {
   companyId: 'XJhFyV',      // public API key / site ID. Safe in the browser.
   listId:    'XNCgAA',      // Marketing · Email
@@ -885,6 +892,24 @@ function wire(formId, swapId, source, extra){
     }
   });
 }
+function hold(formId, line){
+  const form = document.getElementById(formId);
+  if(!form) return;
+  const row = form.querySelector('.form-row');
+  if(row) row.hidden = true;
+  const note = document.createElement('p');
+  note.className = 'caption';
+  note.textContent = line;
+  note.style.cssText = 'color:var(--color-text-primary)';
+  row ? row.insertAdjacentElement('afterend', note) : form.prepend(note);
+}
+
+if(!LIST_OPEN){
+  hold('form-hero',  'The list opens shortly.');
+  hold('form-offer', 'Founding places open shortly.');
+  const sticky = document.getElementById('sticky');
+  if(sticky) sticky.remove();
+}else{
 wire('form-hero','swap-hero','Site hero', { lifecycle_stage:'Waitlist' });
 wire('form-offer','swap-offer','Site founding', () => {
   const runs = document.getElementById('runs-offer');
@@ -895,6 +920,7 @@ wire('form-offer','swap-offer','Site founding', () => {
     what_she_runs:     runs ? runs.value.trim().slice(0, 160) : ''
   };
 });
+}
 
 /* ============================================================
    3. The Room — the ground travels as she moves down the page
