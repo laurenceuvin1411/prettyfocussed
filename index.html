@@ -691,20 +691,20 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
         <div class="swap" id="swap-offer">
           <div data-state="idle">
             <form class="form" id="form-offer" novalidate>
-              <p class="overline" style="margin:0 0 var(--space-related)">Join the waiting list</p>
+              <p class="overline" style="margin:0 0 var(--space-related)">Ask for a founding place</p>
               <div class="form-row">
                 <input class="input" id="runs-offer" name="what_you_run" type="text" style="flex:1 1 100%"
                        maxlength="160" placeholder="What you run" aria-label="What you run"
                        data-required data-message="Tell me what you run. One line is enough." required>
                 <input class="input" type="email" name="email" inputmode="email" autocomplete="email"
                        placeholder="you@studio.com" aria-label="Your email address" required>
-                <button class="btn" type="submit"><span class="btn-label">On the waiting list</span></button>
+                <button class="btn" type="submit"><span class="btn-label">Ask for a place</span></button>
               </div>
               <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
                 <input name="hp_note" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
               </div>
               <p class="msg" data-msg role="alert"></p>
-              <p class="caption">No card now. You'll be asked when it opens, at the founding price.</p>
+              <p class="caption">I read every one myself. No card now.</p>
             </form>
           </div>
           <div data-state="done" aria-live="polite">
