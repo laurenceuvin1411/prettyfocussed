@@ -120,9 +120,10 @@ section{position:relative}
    ============================================================ */
 .nav{position:absolute; top:0; left:0; right:0; z-index:20; padding:26px 0}
 .nav-in{display:flex; align-items:center; justify-content:space-between; gap:24px}
-.mark{display:flex; align-items:center; gap:11px; text-decoration:none; color:inherit}
+.mark{display:flex; align-items:center; gap:11px; text-decoration:none; color:inherit; padding:11px 0}
 .mark span{font-size:14px; letter-spacing:-.012em; font-weight:500}
-.nav a.quiet{font-size:13px; color:var(--color-text-secondary); text-decoration:none; letter-spacing:-.005em}
+.nav a.quiet{font-size:13px; color:var(--color-text-secondary); text-decoration:none; letter-spacing:-.005em;
+  display:inline-block; padding:12px 0}
 @media (hover:hover) and (pointer:fine){.nav a.quiet:hover{color:var(--color-text-primary)}}
 .nav a.quiet{transition:color var(--duration-fast) ease}
 
@@ -266,7 +267,7 @@ body.is-joined{transition:background-color 800ms var(--ease-out)}
 .input{
   flex:1 1 15rem; min-width:0; appearance:none; border:0; outline:0;
   border-radius:var(--radius-pill); padding:17px 24px;
-  font:400 15px/1.2 var(--font-body); color:var(--color-text-primary);
+  font:400 16px/1.2 var(--font-body); color:var(--color-text-primary);
   background:var(--color-surface-glass);
   -webkit-backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
   backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
@@ -438,7 +439,8 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
 /* ---- footer ---- */
 .foot{padding:var(--space-separated) 0 var(--space-grouped)}
 .foot-in{display:flex; align-items:center; justify-content:space-between; gap:24px; flex-wrap:wrap}
-.foot a{color:var(--color-text-secondary); text-decoration:none; transition:color var(--duration-fast) ease}
+.foot a{color:var(--color-text-secondary); text-decoration:none; transition:color var(--duration-fast) ease;
+  display:inline-block; padding:15px 0}
 @media (hover:hover) and (pointer:fine){.foot a:hover{color:var(--color-text-primary)}}
 
 @media (max-width:900px){
