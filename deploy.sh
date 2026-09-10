@@ -3,15 +3,12 @@
 set -euo pipefail
 cd "$(dirname "$0")"
 cp ../site/index.html index.html
-# The Read — HELD BACK, 10 Sep. Its LIST_OPEN is false, so the subscribe call is
-# skipped, but the form still asks for an address and the caption under it still
-# says the plan "lands in your inbox as well. One note on day 30." Nothing is
-# sent and nothing is stored, so that sentence is a promise the page cannot keep.
-# Fix the copy for the closed state (or stop asking for the address while it is
-# closed), then uncomment these four lines.
-# cp ../site/read.html read.html
-# mkdir -p read
-# cp ../site/read.html read/index.html
+# The Read, served at both /read and /read.html. While LIST_OPEN is false it
+# does not ask for an address and does not promise an inbox; flipping the flag
+# restores both. See the block under the #email listener in read.html.
+cp ../site/read.html read.html
+mkdir -p read
+cp ../site/read.html read/index.html
 # The plan, served at both /plan and /plan.html
 cp ../site/plan.html plan.html
 mkdir -p plan

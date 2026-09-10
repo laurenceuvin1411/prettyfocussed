@@ -1,0 +1,1120 @@
+<!doctype html>
+<html lang="en" data-ground="plaster">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Read · Pretty Focussed</title>
+<meta name="description" content="Seven questions, ninety seconds. A 30-day focal plane for the business and the life: what stays sharp, what is held soft, and the three things that actually move.">
+<meta property="og:title" content="The Read">
+<meta property="og:description" content="Seven questions. One 30-day focal plane. What stays sharp, what is held soft.">
+<meta property="og:type" content="website">
+<meta name="robots" content="index,follow">
+<script>document.documentElement.classList.add("js")</script>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="theme-color" content="#F4F2EE">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>/* ============================================================
+   PRETTY FOCUSSED — The Read
+   Tokens verbatim from site/index.html. Components read semantic vars only.
+   ============================================================ */
+:root{
+  --pf-bone:#F4F2EE; --pf-paper:#EAE7E1; --pf-stone:#D6D1C7; --pf-ash:#9A968E;
+  --pf-slate-400:#6B675F; --pf-slate-600:#55534E; --pf-ink:#14150F;
+  --pf-sage-100:#E2E7DA; --pf-sage-200:#C6D0B8; --pf-sage-400:#98A886;
+  --pf-sage-600:#6E7F5E; --pf-sage-800:#3E4936;
+  --pf-sky:#A6C1D8; --pf-mist:#CBD9E4; --pf-sand:#D8CDBD;
+  --pf-shell:#EFE3D8; --pf-flush:#E0B8A4;
+
+  --ground-s0:#F4F2EE; --ground-s1:#E4EBF3;
+  --color-background-primary:var(--ground-s0);
+  --color-surface-default:color-mix(in srgb, var(--color-background-primary) 86%, var(--pf-stone) 14%);
+  --color-surface-glass:rgb(255 255 255 / .72);
+  --color-border-glass:rgb(255 255 255 / .45);
+
+  --color-text-primary:var(--pf-ink);
+  --color-text-secondary:var(--pf-slate-600);
+  --color-text-muted:var(--pf-slate-400);
+  --color-text-brand:var(--pf-sage-800);
+  --color-action-primary:var(--pf-ink);
+  --color-action-primary-text:var(--pf-bone);
+
+  --font-display:'Aeonik','Instrument Sans',system-ui,sans-serif;
+  --font-body:'Aeonik','Instrument Sans',system-ui,sans-serif;
+  --font-mono:'Aeonik Mono','JetBrains Mono',ui-monospace,monospace;
+
+  --type-display:clamp(2.75rem,1.2rem + 6.4vw,6rem);
+  --type-h1:clamp(2.125rem,1.1rem + 4.3vw,4rem);
+  --type-h2:clamp(1.6875rem,1.1rem + 2.5vw,2.75rem);
+  --type-h3:clamp(1.375rem,1.05rem + 1vw,1.875rem);
+  --type-body-lg:clamp(1.0625rem,1rem + .3vw,1.1875rem);
+  --type-caption:.6875rem; --type-overline:.625rem;
+  --type-numeric-xl:clamp(3rem,1.6rem + 4vw,4.5rem);
+
+  --track-display:-.035em; --track-h2:-.025em; --track-h3:-.02em;
+  --track-caption:.06em; --track-overline:.14em;
+
+  --space-bound:8px; --space-related:16px; --space-grouped:28px;
+  --space-separated:72px; --space-chaptered:160px;
+
+  --radius-pill:999px; --radius-input:14px; --radius-card:20px;
+  --radius-panel:24px; --radius-sheet:32px;
+
+  --shadow-sm:0 1px 2px rgb(62 73 54 / .04);
+  --shadow-md:0 4px 16px rgb(62 73 54 / .06);
+  --shadow-lg:0 8px 32px rgb(62 73 54 / .08);
+  --shadow-xl:0 16px 56px rgb(62 73 54 / .10);
+  --shadow-glass:inset 0 1px 0 rgb(255 255 255 / .45), 0 8px 32px rgb(62 73 54 / .08);
+
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-in-out:cubic-bezier(.77,0,.175,1);
+  --duration-press:120ms; --duration-fast:160ms; --duration-base:200ms; --duration-slow:260ms;
+
+  --blur-peripheral:3px; --blur-glass:32px; --opacity-peripheral:.55;
+
+  /* the Room: 0 at the first question, 1 at the reading */
+  --room:0;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0; font:400 16px/1.625 var(--font-body);
+  color:var(--color-text-primary);
+  background-color:var(--ground-s0);
+  background-color:color-mix(in oklab, var(--ground-s0) calc((1 - var(--room)) * 100%), var(--ground-s1));
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  overflow-x:clip; min-height:100svh;
+}
+body::before{
+  content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+  background-image:var(--noise); opacity:.03; mix-blend-mode:multiply;
+}
+/* the soft field — occupied atmosphere, never a flat void */
+body::after{
+  content:''; position:fixed; z-index:0; pointer-events:none;
+  left:50%; top:-18vh; width:min(120vw,1400px); aspect-ratio:1;
+  transform:translateX(-50%);
+  background:radial-gradient(circle at 50% 40%,
+    color-mix(in oklab, var(--pf-sage-100) calc(62% - var(--room) * 24%), transparent) 0%,
+    transparent 62%);
+  filter:blur(40px); opacity:.9;
+}
+img,svg{display:block; max-width:100%}
+::selection{background:var(--pf-sage-200); color:var(--pf-ink)}
+
+.overline{font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; color:var(--color-text-muted); font-weight:500; line-height:1.4; margin:0}
+.caption{font-size:var(--type-caption); letter-spacing:var(--track-caption); color:var(--color-text-muted); line-height:1.55}
+.display{font-family:var(--font-display); font-size:var(--type-display); line-height:.94; letter-spacing:var(--track-display); font-weight:400; margin:0}
+.h1{font-family:var(--font-display); font-size:var(--type-h1); line-height:1.02; letter-spacing:-.03em; font-weight:400; margin:0}
+.h2{font-family:var(--font-display); font-size:var(--type-h2); line-height:1.09; letter-spacing:var(--track-h2); font-weight:400; margin:0}
+.h3{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); font-weight:400; margin:0}
+.lede{font-size:var(--type-body-lg); line-height:1.6; color:var(--color-text-secondary); margin:0; max-width:46ch; text-wrap:pretty}
+.num{font-variant-numeric:tabular-nums; letter-spacing:-.04em; font-weight:500}
+.unit{font-family:var(--font-mono); font-size:.35em; color:var(--color-text-muted); margin-left:.4em; letter-spacing:.02em}
+a{color:inherit}
+
+.wrap{width:min(980px, calc(100% - 48px)); margin-inline:auto; position:relative; z-index:1}
+@media (max-width:640px){ .wrap{width:calc(100% - 40px)} }
+
+/* ============================================================
+   The instrument bar — mark, aperture arc, count
+   ============================================================ */
+.bar{
+  position:fixed; top:0; left:0; right:0; z-index:20;
+  display:flex; align-items:center; justify-content:space-between;
+  padding:18px max(24px,4vw); gap:16px;
+}
+.mark{display:flex; align-items:center; gap:9px; font-size:12px; letter-spacing:-.01em; color:var(--color-text-primary); text-decoration:none}
+.mark svg{flex:none}
+.gauge{display:flex; align-items:center; gap:11px; opacity:0;
+  transition:opacity var(--duration-slow) var(--ease-out)}
+.gauge svg{width:34px; height:34px; transform:rotate(-90deg)}
+.gauge-track{fill:none; stroke:var(--pf-stone); stroke-width:1.5; stroke-dasharray:1.5 4; stroke-linecap:round}
+.gauge-arc{fill:none; stroke:url(#depth); stroke-width:2.6; stroke-linecap:round;
+  stroke-dasharray:var(--circ); stroke-dashoffset:calc(var(--circ) - var(--circ) * var(--p, 0));
+  transition:stroke-dashoffset var(--duration-slow) var(--ease-out)}
+.gauge-n{font-size:13px}
+.gauge-n .unit{font-size:9px}
+
+/* ============================================================
+   Screens
+   ============================================================ */
+.stage{position:relative; z-index:1; min-height:100svh; display:grid; align-items:center; padding:112px 0 96px}
+.screen{display:none}
+.screen[data-on="true"]{display:block}
+.js .screen[data-on="true"] > *{
+  opacity:0; transform:translateY(12px); filter:blur(6px);
+  animation:resolve 420ms var(--ease-out) both;
+}
+.js .screen[data-on="true"] > *:nth-child(2){animation-delay:60ms}
+.js .screen[data-on="true"] > *:nth-child(3){animation-delay:110ms}
+.js .screen[data-on="true"] > *:nth-child(4){animation-delay:150ms}
+@keyframes resolve{to{opacity:1; transform:none; filter:blur(0)}}
+/* the plan is read, not transitioned: it arrives, it does not resolve out of blur */
+.js .screen[data-screen="plan"][data-on="true"] > *{
+  filter:none; animation-name:arrive; animation-duration:260ms}
+@keyframes arrive{from{opacity:0; transform:translateY(8px)} to{opacity:1; transform:none}}
+
+/* the largest space sits above the primary statement */
+.q-head{margin-bottom:var(--space-grouped)}
+.q-over{margin-bottom:var(--space-related)}
+.q-sub{margin-top:14px; max-width:44ch}
+
+/* ---- options ---- */
+.opts{list-style:none; margin:0; padding:0; display:grid; gap:10px; max-width:44rem}
+.opts.two{grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); max-width:52rem}
+.opt{
+  -webkit-appearance:none; appearance:none; width:100%; text-align:left; cursor:pointer;
+  display:flex; align-items:center; gap:14px; min-height:56px;
+  padding:14px 20px; border:0; border-radius:var(--radius-pill);
+  background:var(--color-surface-glass); color:var(--color-text-primary);
+  box-shadow:var(--shadow-glass);
+  -webkit-backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  font:400 16px/1.35 var(--font-body); letter-spacing:-.01em;
+  transition:transform var(--duration-press) var(--ease-out),
+             opacity var(--duration-base) var(--ease-out),
+             filter var(--duration-base) var(--ease-out),
+             box-shadow var(--duration-base) var(--ease-out);
+}
+.opt:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){ .opt:hover{box-shadow:var(--shadow-lg), inset 0 1px 0 rgb(255 255 255 / .55)} }
+.opt:focus-visible{outline:2px solid var(--pf-sage-800); outline-offset:3px}
+.opt-k{
+  flex:none; width:26px; height:26px; border-radius:var(--radius-pill);
+  display:grid; place-items:center; background:color-mix(in srgb, var(--pf-stone) 45%, transparent);
+  font-family:var(--font-mono); font-size:10px; color:var(--color-text-muted);
+  transition:background var(--duration-base) var(--ease-out), color var(--duration-base) var(--ease-out);
+}
+.opt[aria-pressed="true"],.opt[data-sel="true"]{
+  background:var(--pf-ink); color:var(--pf-bone); box-shadow:var(--shadow-lg);
+}
+.opt[aria-pressed="true"] .opt-k,.opt[data-sel="true"] .opt-k{
+  background:rgb(244 242 238 / .18); color:var(--pf-bone)
+}
+/* the periphery: earlier picks recede, they are never removed */
+.opt[data-soft="true"]{opacity:var(--opacity-peripheral); filter:blur(1.4px)}
+.opts[data-full="true"] .opt:not([aria-pressed="true"]){opacity:.62}
+
+/* ---- inputs ---- */
+.field{
+  width:100%; max-width:36rem; min-height:56px;
+  padding:15px 20px; border:0; border-radius:var(--radius-input);
+  background:var(--color-surface-glass); box-shadow:var(--shadow-glass);
+  -webkit-backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  font:400 16px/1.5 var(--font-body); color:var(--color-text-primary);
+}
+.field::placeholder{color:var(--pf-ash)}
+.field:focus{outline:2px solid var(--pf-sage-800); outline-offset:3px}
+.field[aria-invalid="true"]{box-shadow:inset 0 0 0 1.5px var(--pf-ink), var(--shadow-md)}
+
+/* ---- the one filled button ---- */
+.btn{
+  -webkit-appearance:none; appearance:none; cursor:pointer; border:0;
+  min-height:52px; padding:15px 28px; border-radius:var(--radius-pill);
+  background:var(--color-action-primary); color:var(--color-action-primary-text);
+  font:500 15px/1 var(--font-body); letter-spacing:-.01em;
+  box-shadow:var(--shadow-md);
+  transition:transform var(--duration-press) var(--ease-out), opacity var(--duration-fast) var(--ease-out);
+}
+.btn:active{transform:scale(.97)}
+.btn[disabled]{opacity:.45; cursor:default}
+.btn:focus-visible{outline:2px solid var(--pf-sage-800); outline-offset:3px}
+.ghost{
+  -webkit-appearance:none; appearance:none; cursor:pointer; border:0; background:none;
+  padding:10px 2px; min-height:44px; color:var(--color-text-muted);
+  font:400 var(--type-caption)/1.4 var(--font-body); letter-spacing:var(--track-caption);
+  text-transform:uppercase; transition:color var(--duration-fast) var(--ease-out)
+}
+@media (hover:hover) and (pointer:fine){ .ghost:hover{color:var(--color-text-primary)} }
+.ghost:focus-visible{outline:2px solid var(--pf-sage-800); outline-offset:3px; border-radius:var(--radius-pill)}
+.foot{display:flex; align-items:center; gap:22px; flex-wrap:wrap; margin-top:var(--space-grouped)}
+
+/* ---- the mirror: one observation, mid-read ---- */
+.mirror{
+  margin-top:var(--space-grouped); max-width:38rem;
+  display:flex; gap:14px; align-items:flex-start;
+  opacity:0; transform:translateY(6px);
+  transition:opacity var(--duration-slow) var(--ease-out), transform var(--duration-slow) var(--ease-out);
+}
+.mirror[data-show="true"]{opacity:1; transform:none}
+.mirror-dot{flex:none; width:9px; height:9px; border-radius:var(--radius-pill); background:var(--pf-ink); margin-top:9px}
+.mirror p{margin:0; font-size:var(--type-body-lg); line-height:1.55; color:var(--color-text-primary); text-wrap:pretty}
+
+.msg{margin:14px 0 0; font-size:var(--type-caption); letter-spacing:var(--track-caption);
+  color:var(--color-text-primary); min-height:1.2em;
+  opacity:0; transform:translateY(-4px);
+  transition:opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out)}
+.msg[data-show="true"]{opacity:1; transform:none}
+
+/* ============================================================
+   The reveal — her plan, behind glass, one line sharp
+   ============================================================ */
+.reveal{display:grid; gap:var(--space-grouped); align-items:start}
+@media (min-width:900px){ .reveal{grid-template-columns:1.05fr .95fr; gap:56px} }
+.sheet{
+  position:relative; border-radius:var(--radius-sheet); padding:32px 30px;
+  background:var(--color-surface-glass); box-shadow:var(--shadow-glass);
+  -webkit-backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  overflow:hidden;
+}
+.sheet-rows{display:grid; gap:18px; margin-top:22px}
+.row{display:grid; gap:5px;
+  transition:opacity var(--duration-slow) var(--ease-out), filter var(--duration-slow) var(--ease-out)}
+.row .k{font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; color:var(--color-text-muted); font-weight:500}
+.row .v{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); margin:0; text-wrap:pretty}
+.sheet[data-locked="true"] .row:not([data-sharp]){opacity:var(--opacity-peripheral); filter:blur(3.4px)}
+.sheet[data-locked="true"] .row .v.hold{color:transparent; text-shadow:0 0 12px rgb(20 21 15 / .42)}
+
+/* ============================================================
+   The plan
+   ============================================================ */
+.plan{max-width:44rem}
+.reading{margin:0 0 var(--space-grouped)}
+.reading p{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.28; letter-spacing:var(--track-h3); margin:0 0 12px; text-wrap:pretty}
+.reading p + p{font-size:var(--type-body-lg); font-family:var(--font-body); letter-spacing:0; line-height:1.6; color:var(--color-text-secondary)}
+
+.block{margin-top:var(--space-separated)}
+.block > .overline{margin-bottom:var(--space-related)}
+
+.pass{display:grid; gap:6px; padding:22px 0}
+.pass + .pass{border-top:1px solid var(--pf-stone)}
+.pass-top{display:flex; align-items:baseline; gap:14px; flex-wrap:wrap}
+.pass-n{font-family:var(--font-mono); font-size:11px; letter-spacing:.09em; color:var(--color-text-muted)}
+.pass-when{font-family:var(--font-mono); font-size:10px; letter-spacing:.11em; text-transform:uppercase; color:var(--color-text-muted)}
+.pass-h{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); margin:6px 0 0}
+.pass-d{margin:6px 0 0; color:var(--color-text-secondary); max-width:46ch; text-wrap:pretty}
+.pass[data-soft="true"] .pass-h,.pass[data-soft="true"] .pass-d{opacity:.72}
+
+.list{list-style:none; margin:0; padding:0; display:grid; gap:14px}
+.list li{display:grid; grid-template-columns:26px 1fr; gap:14px; align-items:start}
+.list .i{font-family:var(--font-mono); font-size:10px; color:var(--color-text-muted); padding-top:6px; letter-spacing:.08em}
+.list .t{margin:0; text-wrap:pretty}
+
+.lanes{display:grid; gap:var(--space-grouped)}
+@media (min-width:820px){ .lanes{grid-template-columns:1fr 1fr; gap:48px} }
+
+.soft-list{display:flex; flex-wrap:wrap; gap:8px; margin-top:var(--space-related)}
+.chip{
+  display:inline-flex; align-items:center; padding:9px 16px; border-radius:var(--radius-pill);
+  background:color-mix(in srgb, var(--pf-paper) 70%, transparent); color:var(--color-text-muted);
+  font-size:13px; letter-spacing:-.005em;
+}
+.stat{display:flex; align-items:baseline; gap:0; margin-top:6px}
+.stat .num{font-size:var(--type-numeric-xl); line-height:.9}
+
+.close{
+  margin-top:var(--space-separated); padding:30px; border-radius:var(--radius-panel);
+  background:color-mix(in srgb, var(--pf-paper) 78%, transparent); box-shadow:var(--shadow-sm);
+}
+.dot{width:11px; height:11px; border-radius:var(--radius-pill); background:var(--pf-ink)}
+
+/* ============================================================
+   Print — the keepsake
+   ============================================================ */
+@media print{
+  .bar,.foot,.ghost,.btn,body::after,body::before{display:none !important}
+  body{background:#fff}  /* paper, not a page ground */
+  .stage{min-height:0; padding:0}
+  .plan{max-width:none}
+  .block{margin-top:28px; break-inside:avoid}
+  .pass{break-inside:avoid}
+}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important}
+  .js .screen[data-on="true"] > *{opacity:1; transform:none; filter:none}
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" aria-hidden="true" style="position:absolute">
+  <defs>
+    <linearGradient id="depth" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#C6D0B8"/><stop offset=".55" stop-color="#98A886"/><stop offset="1" stop-color="#3E4936"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<header class="bar">
+  <a class="mark" href="/">
+    <svg width="16" height="16" viewBox="0 0 32 32" aria-hidden="true"><path d="M16 3 A13 13 0 1 1 4.74 9.5" fill="none" stroke="#6E7F5E" stroke-width="1.9" stroke-linecap="round"/><circle cx="16" cy="16" r="3" fill="#14150F"/></svg>
+    Pretty Focussed
+  </a>
+  <div class="gauge" id="gauge">
+    <svg viewBox="0 0 64 64" aria-hidden="true">
+      <circle class="gauge-track" cx="32" cy="32" r="28"/>
+      <circle class="gauge-arc" id="arc" cx="32" cy="32" r="28" style="--circ:175.93"/>
+    </svg>
+    <span class="gauge-n num" id="count" aria-hidden="true">0<span class="unit">of 7</span></span>
+  </div>
+</header>
+
+<main class="stage">
+  <div class="wrap">
+
+    <!-- ============================================ 0 · the door -->
+    <section class="screen" data-screen="intro" data-on="true">
+      <p class="overline q-over">The Read</p>
+      <h1 class="display">Seven questions.<br>One sharp plane.</h1>
+      <p class="lede q-sub">Ninety seconds, no typing except one line. At the end you get the next 30 days laid out: what stays sharp, what is held soft, and the three things in each life that actually move.</p>
+      <div class="foot">
+        <button class="btn" data-go="runs">Start the read</button>
+        <span class="caption">No account. Nothing to install.</span>
+      </div>
+    </section>
+
+    <!-- ============================================ 1 · what she runs -->
+    <section class="screen" data-screen="runs">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">01 / 07</p>
+        <h2 class="h1">What do you run</h2>
+      </div>
+      <ul class="opts two" data-single="runs"></ul>
+    </section>
+
+    <!-- ============================================ 2 · stage -->
+    <section class="screen" data-screen="stage">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">02 / 07</p>
+        <h2 class="h1">Where is it right now</h2>
+        <p class="lede q-sub">Nobody sees this but you and me.</p>
+      </div>
+      <ul class="opts" data-single="stage"></ul>
+    </section>
+
+    <!-- ============================================ 3 · the three -->
+    <section class="screen" data-screen="focus">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">03 / 07</p>
+        <h2 class="h1">Pick what the next<br>30 days are for</h2>
+        <p class="lede q-sub">Three. The order matters: the first one you choose is the one that stays sharp.</p>
+      </div>
+      <ul class="opts two" data-multi="focus"></ul>
+      <div class="mirror" id="mirror-focus"><span class="mirror-dot"></span><p></p></div>
+      <div class="foot">
+        <button class="btn" data-go="friction" data-needs="focus" disabled>Continue</button>
+        <button class="ghost" data-back="stage">Back</button>
+      </div>
+    </section>
+
+    <!-- ============================================ 4 · friction -->
+    <section class="screen" data-screen="friction">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">04 / 07</p>
+        <h2 class="h1">Which one quietly<br>costs you the most</h2>
+      </div>
+      <ul class="opts" data-single="friction"></ul>
+    </section>
+
+    <!-- ============================================ 5 · hours -->
+    <section class="screen" data-screen="hours">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">05 / 07</p>
+        <h2 class="h1">How many hours a week<br>are actually yours</h2>
+        <p class="lede q-sub">Working hours you control. Not the ones already spoken for.</p>
+      </div>
+      <ul class="opts two" data-single="hours"></ul>
+    </section>
+
+    <!-- ============================================ 6 · sharpest -->
+    <section class="screen" data-screen="sharpest">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">06 / 07</p>
+        <h2 class="h1">When are you sharpest</h2>
+      </div>
+      <ul class="opts two" data-single="sharpest"></ul>
+    </section>
+
+    <!-- ============================================ 7 · the want -->
+    <section class="screen" data-screen="want">
+      <div class="q-head">
+        <p class="overline q-over" style="font-family:var(--font-mono)">07 / 07</p>
+        <h2 class="h1">What do you want to be<br>true on <span id="want-date">the 30th day</span></h2>
+        <p class="lede q-sub">One line, your words. I use it to build the plan, and I send it back to you on that day.</p>
+      </div>
+      <form id="form-want" novalidate>
+        <input class="field" id="want" name="want" type="text" maxlength="140" autocomplete="off"
+               placeholder="By then I want…" aria-label="What you want to be true in 30 days">
+        <p class="msg" id="msg-want" role="alert"></p>
+        <div class="foot">
+          <button class="btn" type="submit">Read it</button>
+          <button class="ghost" type="button" data-back="sharpest">Back</button>
+        </div>
+      </form>
+    </section>
+
+    <!-- ============================================ 8 · the reveal -->
+    <section class="screen" data-screen="reveal">
+      <div class="reveal">
+        <div>
+          <p class="overline q-over">Your reading</p>
+          <h2 class="h1" id="reveal-h">Three things.<br>Thirty days.</h2>
+          <p class="lede q-sub" id="reveal-sub"></p>
+          <form id="form-mail" novalidate style="margin-top:var(--space-grouped)">
+            <input class="field" id="email" name="email" type="email" inputmode="email" autocomplete="email"
+                   placeholder="you@studio.com" aria-label="Your email address" required>
+            <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
+              <input name="hp_note" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <p class="msg" id="msg-mail" role="alert"></p>
+            <div class="foot">
+              <button class="btn" type="submit"><span class="btn-label">Open the plan</span></button>
+            </div>
+            <p class="caption" style="margin-top:var(--space-related); max-width:42ch">The plan opens here straight away and lands in your inbox as well. One note on day 30. Nothing else, ever.</p>
+          </form>
+        </div>
+
+        <div class="sheet" id="sheet" data-locked="true" aria-hidden="true">
+          <p class="overline">30-day focal plane</p>
+          <div class="sheet-rows">
+            <div class="row" data-sharp><span class="k">Sharp</span><p class="v" id="pv-sharp">·</p></div>
+            <div class="row"><span class="k">Days 11 to 20</span><p class="v hold" id="pv-2">·</p></div>
+            <div class="row"><span class="k">Days 21 to 30</span><p class="v hold" id="pv-3">·</p></div>
+            <div class="row"><span class="k">Held soft</span><p class="v hold" id="pv-soft">·</p></div>
+            <div class="row"><span class="k">The number</span><p class="v hold" id="pv-num">·</p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================ 9 · the plan -->
+    <section class="screen" data-screen="plan">
+      <div class="plan" id="plan"></div>
+    </section>
+
+  </div>
+</main>
+
+<script>
+/* ============================================================
+   THE READ — Pretty Focussed
+   All personalisation is computed here, in the browser. The plan
+   exists before any address does, so the value is never contingent
+   on an email arriving.
+   ============================================================ */
+
+/* --- 1. Klaviyo. Same wiring and same holding switch as index.html. --- */
+const LIST_OPEN = false;   /* flip when a test signup lands on the list */
+const KLAVIYO = {
+  companyId: 'XJhFyV',     /* public API key / site ID. Safe in the browser. */
+  listId:    'XNCgAA',     /* Marketing · Email */
+  revision:  '2025-01-15',
+  wording:   'v1.0'
+};
+
+async function subscribe(email, source, extra){
+  if(!KLAVIYO.companyId || !KLAVIYO.listId) throw new Error('klaviyo not configured');
+  const properties = Object.assign({
+    signup_source:   source,
+    signup_page:     location.origin + location.pathname,
+    consent_at:      new Date().toISOString(),
+    consent_wording: KLAVIYO.wording,
+    language:        (navigator.language || 'en').toLowerCase().indexOf('nl') === 0 ? 'NL' : 'EN'
+  }, extra || {});
+  const res = await fetch('https://a.klaviyo.com/client/subscriptions/?company_id=' + encodeURIComponent(KLAVIYO.companyId), {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json', 'revision':KLAVIYO.revision },
+    body: JSON.stringify({ data:{ type:'subscription', attributes:{
+      custom_source: source,
+      profile:{ data:{ type:'profile', attributes:{ email, properties } } }
+    }, relationships:{ list:{ data:{ type:'list', id:KLAVIYO.listId } } } } })
+  });
+  if(!res.ok) throw new Error('klaviyo ' + res.status);
+  return { ok:true };
+}
+
+/* --- 2. The material. Ten areas, two lanes. --- */
+const AREAS = {
+  clients:{ lane:'business', label:'Clients and sales',
+    sharp:'The pipeline, and nothing else',
+    desc:'Not the website, not the brand. The people who could pay you inside 30 days.',
+    moves:[
+      'Write down the 12 people who could say yes this month. Names, not categories.',
+      'Three direct notes a week to people who already know you.',
+      'Ask the two who went quiet what happened. One line, no pitch.'
+    ],
+    habit:'One sales action before eleven, four days a week.',
+    metric:{n:12, unit:'conversations', line:'Real conversations opened in 30 days'},
+    soft:'Sales holds at whatever it does on its own. It will keep.' },
+
+  money:{ lane:'business', label:'Money and pricing',
+    sharp:'What you charge, and what actually lands',
+    desc:'The number on the invoice and the number in the account are two different numbers. This month you look at both.',
+    moves:[
+      'Put every price on one page. Look at the lowest one for a full minute.',
+      'Raise one price by 20 percent and quote it to the next person who asks.',
+      'Chase every open invoice on the same afternoon. All of them, one sitting.'
+    ],
+    habit:'Friday: open the account, read the number, close it again.',
+    metric:{n:20, unit:'percent', line:'On one price, by day 30'},
+    soft:'Pricing stays where it is. Deciding not to touch it is also a decision.' },
+
+  audience:{ lane:'business', label:'Audience and content',
+    sharp:'One idea, said properly',
+    desc:'Reach is not the problem. Saying one thing often enough that people can repeat it is.',
+    moves:[
+      'Choose the single idea you want to be known for. Write it in one sentence.',
+      'Publish twice a week for 30 days. Same idea, different door.',
+      'Reply to everyone who answers. That is the whole growth strategy.'
+    ],
+    habit:'One post drafted on the same morning each week.',
+    metric:{n:8, unit:'posts', line:'Published in 30 days, on one idea'},
+    soft:'Posting can go quiet for a month. Nothing collapses in a month.' },
+
+  offer:{ lane:'business', label:'The offer itself',
+    sharp:'What you sell, made obvious',
+    desc:'Most of what feels like a marketing problem is an offer nobody can repeat back to you.',
+    moves:[
+      'Write the offer as one sentence: who, what changes, how long, how much.',
+      'Say it out loud to three people who fit. Watch where their face goes.',
+      'Cut one thing out of it. Then cut one more.'
+    ],
+    habit:'One 92-minute block a week with the offer document open.',
+    metric:{n:1, unit:'sentence', line:'The offer, said in one line'},
+    soft:'The offer stays as it is until something forces the question.' },
+
+  systems:{ lane:'business', label:'Systems and delivery',
+    sharp:'The work that runs without you',
+    desc:'Everything currently runs because you run it. That is the ceiling, and you are standing on it.',
+    moves:[
+      'Write down what you did twice last week. That list is the build list.',
+      'Take the top one and make it a checklist, a template, or somebody else’s job.',
+      'Do that once per ten days. Three things leave your hands by day 30.'
+    ],
+    habit:'Twenty minutes each Friday writing down what you repeated.',
+    metric:{n:3, unit:'handed off', line:'Things that no longer need you'},
+    soft:'The messy version keeps working for another month. It has so far.' },
+
+  body:{ lane:'life', label:'Body and training',
+    sharp:'The training, actually scheduled',
+    desc:'It goes in the calendar as a booking with a name, or it goes nowhere.',
+    moves:[
+      'Book four sessions a week for the whole 30 days. Now, in one sitting.',
+      'Pick the time you are least likely to negotiate with. Usually early.',
+      'Miss one, keep the next. The plan survives a missed session; it does not survive a restart.'
+    ],
+    habit:'Movement four times a week, booked like a client.',
+    metric:{n:16, unit:'sessions', line:'Trained in 30 days'},
+    soft:'Training stays as it is. Nothing about this month has to be earned physically.' },
+
+  rest:{ lane:'life', label:'Sleep and rest',
+    sharp:'The end of the day, given a time',
+    desc:'The work expands to fill every hour you leave open. So stop leaving them open.',
+    moves:[
+      'Set the hour the laptop closes. Say it out loud to somebody.',
+      'Put the phone in another room at that hour. The room matters more than the intention.',
+      'One full day in ten with nothing in it. Three of them by day 30.'
+    ],
+    habit:'Laptop closed by the same hour, five nights a week.',
+    metric:{n:3, unit:'days off', line:'Days with nothing in them, in 30'},
+    soft:'Sleep stays imperfect for now. You already know what it needs.' },
+
+  people:{ lane:'life', label:'The people at home',
+    sharp:'Time with them, in the calendar',
+    desc:'They get the version of you that is left over. This month they get a booked hour instead.',
+    moves:[
+      'Book two evenings a week that the work is not allowed to touch.',
+      'One proper thing in 30 days. Booked and paid for, not discussed.',
+      'Tell them what you are doing this month and what you will be like. It costs nothing.'
+    ],
+    habit:'Two evenings a week the work does not enter.',
+    metric:{n:8, unit:'evenings', line:'Protected in 30 days'},
+    soft:'The people who love you can hold a month. Tell them it is a month.' },
+
+  mind:{ lane:'life', label:'Head and learning',
+    sharp:'One thing learned properly',
+    desc:'Not ten open tabs. One skill, taken far enough to use.',
+    moves:[
+      'Choose the one skill that would change the work. Write down why.',
+      'Three hours a week, same slot, on that one thing.',
+      'Use it once in real work before day 30. Reading is not learning.'
+    ],
+    habit:'Three hours a week, one subject, same slot.',
+    metric:{n:12, unit:'hours', line:'On one skill, in 30 days'},
+    soft:'The reading list keeps. It has kept this long.' },
+
+  outside:{ lane:'life', label:'A life outside the work',
+    sharp:'Something that is not the business',
+    desc:'The thing you talk about when it is going well and drop first when it is not.',
+    moves:[
+      'Name the thing. Write it down; it stops being vague the moment it has a name.',
+      'Book it four times in 30 days. Recurring, not hopeful.',
+      'Do not make it productive. The whole point is that it produces nothing.'
+    ],
+    habit:'One thing a week that has no business purpose.',
+    metric:{n:4, unit:'times', line:'In 30 days, on something else entirely'},
+    soft:'It waits. It has waited before and it is still there.' }
+};
+
+const Q = {
+  runs:[
+    ['solo',    'A service, on my own'],
+    ['coach',   'Coaching or consulting'],
+    ['creator', 'Content and creating'],
+    ['agency',  'A studio or agency'],
+    ['ecom',    'A shop or a product'],
+    ['tech',    'Something being built'],
+    ['other',   'Something else']
+  ],
+  stage:[
+    ['building', 'Building it. Not much money yet.'],
+    ['thin',     'Money comes in. Not enough of it.'],
+    ['steady',   'Steady. And it has been steady a while.'],
+    ['fast',     'Growing faster than I can hold.']
+  ],
+  friction:[
+    ['starting',  'Starting. The first twenty minutes.'],
+    ['finishing', 'Finishing. Something newer always arrives.'],
+    ['choosing',  'Choosing. I hold every option open.'],
+    ['broken',    'Being interrupted. Nothing gets a long run.'],
+    ['alone',     'Doing all of it myself.']
+  ],
+  hours:[
+    ['h10', 'Under 10'],
+    ['h20', '10 to 20'],
+    ['h35', '20 to 35'],
+    ['h50', 'More than 35']
+  ],
+  sharpest:[
+    ['early',   'Early, before anyone is awake'],
+    ['late',    'Late morning'],
+    ['pm',      'Afternoon'],
+    ['night',   'At night'],
+    ['cycle',   'It moves with my cycle']
+  ]
+};
+const HOURS_N = { h10:8, h20:15, h35:27, h50:40 };
+const HOURS_LABEL = { h10:'Under 10 hours', h20:'15 hours', h35:'27 hours', h50:'Over 35 hours' };
+
+const READING = {
+  starting:  'You do not have a discipline problem. You have a first-twenty-minutes problem.',
+  finishing: 'None of it is unfinished because it was hard. It is unfinished because something newer arrived.',
+  choosing:  'The expensive part was never the wrong choice. It is the fortnight spent not making one.',
+  broken:    'The work is fine. It has just never had ninety uninterrupted minutes to prove it.',
+  alone:     'Everything runs because you run it. That is the ceiling, and you are standing on it.'
+};
+const METHOD = {
+  starting:  'Every pass opens the same way: 20 minutes, booked, before anything else is allowed to happen.',
+  finishing: 'One rule for 30 days. Nothing new starts until the thing in front of you has shipped.',
+  choosing:  'Each pass gets one decision, made on the first day and not reopened for ten.',
+  broken:    'One 92-minute block, the same time, four days a week. Everything else negotiates around it.',
+  alone:     'One thing leaves your hands in each pass. Three fewer things need you by day 30.'
+};
+const STAGE_NOTE = {
+  building: 'At this stage the only real question is whether anyone pays. Everything else is decoration.',
+  thin:     'Money is coming in, so the machine works. It is running at the wrong price or the wrong volume.',
+  steady:   'Steady for a long time is not safety. It is the same month, repeated.',
+  fast:     'Growing fast breaks on delivery, not on demand. Build for the version of this in 90 days.'
+};
+
+/* the one place the plan disagrees with her, and only where it is safe to */
+function challenge(order, stage){
+  const first = order[0], has = k => order.indexOf(k) > -1;
+  if(stage === 'thin' && !['money','clients'].includes(first) && (has('money') || has('clients')))
+    return 'You put ' + AREAS[first].label.toLowerCase() + ' first. At this stage money usually has to move before that does, so it sits in the first pass anyway, quietly.';
+  if(stage === 'building' && first === 'audience' && has('offer'))
+    return 'Audience before offer is the long way round. Ten days on the offer first tends to save the other twenty.';
+  if(stage === 'fast' && first === 'clients' && has('systems'))
+    return 'More clients into the same delivery is how growing fast becomes stuck. Systems earn the first pass here.';
+  return '';
+}
+
+/* --- 3. State --- */
+const S = { runs:'', stage:'', focus:[], friction:'', hours:'', sharpest:'', want:'', email:'' };
+/* a second tap while the screen is already leaving must not advance twice */
+let busy = false;
+const ORDER = ['intro','runs','stage','focus','friction','hours','sharpest','want','reveal','plan'];
+const QUESTIONS = ['runs','stage','focus','friction','hours','sharpest','want'];
+let at = 'intro';
+
+const $  = s => document.querySelector(s);
+const $$ = s => [...document.querySelectorAll(s)];
+const KEYS = '1234567890';
+
+try{ const saved = JSON.parse(localStorage.getItem('pf-read') || '{}'); Object.assign(S, saved); }catch(e){}
+const save = () => { try{ localStorage.setItem('pf-read', JSON.stringify(S)); }catch(e){} };
+
+/* --- 4. Build the option lists --- */
+function build(){
+  $$('[data-single]').forEach(ul => {
+    const key = ul.dataset.single;
+    ul.innerHTML = Q[key].map(([v,l],i) =>
+      '<li><button class="opt" type="button" data-v="' + v + '" data-sel="' + (S[key]===v) + '">' +
+      '<span class="opt-k" aria-hidden="true">' + KEYS[i] + '</span>' + l + '</button></li>').join('');
+    const prev = ORDER[ORDER.indexOf(key) - 1];
+    if(prev && !ul.parentElement.querySelector('.foot')){
+      const foot = document.createElement('div');
+      foot.className = 'foot';
+      foot.innerHTML = '<button class="ghost" type="button" data-back="' + prev + '">Back</button>';
+      ul.insertAdjacentElement('afterend', foot);
+    }
+    ul.addEventListener('click', e => {
+      const b = e.target.closest('.opt'); if(!b || busy) return;
+      busy = true;
+      [...ul.querySelectorAll('.opt')].forEach(o => o.dataset.sel = 'false');
+      b.dataset.sel = 'true';
+      S[key] = b.dataset.v; save();
+      setTimeout(() => { next(); busy = false; }, 170);
+    });
+  });
+
+  const ul = $('[data-multi="focus"]');
+  ul.innerHTML = Object.entries(AREAS).map(([v,a],i) =>
+    '<li><button class="opt" type="button" role="button" aria-pressed="false" data-v="' + v + '">' +
+    '<span class="opt-k" aria-hidden="true">' + KEYS[i] + '</span>' + a.label + '</button></li>').join('');
+  ul.addEventListener('click', e => {
+    const b = e.target.closest('.opt'); if(!b) return;
+    toggleFocus(b.dataset.v);
+  });
+  paintFocus();
+}
+
+function toggleFocus(v){
+  const i = S.focus.indexOf(v);
+  if(i > -1){ S.focus.splice(i,1); }
+  else {
+    S.focus.push(v);
+    /* the fourth does not get rejected. The first one goes soft and leaves. */
+    if(S.focus.length > 3){
+      const dropped = S.focus.shift();
+      const el = $('[data-multi="focus"] .opt[data-v="' + dropped + '"]');
+      if(el){ el.dataset.soft = 'true'; setTimeout(() => { el.dataset.soft = 'false'; }, 520); }
+      /* paintFocus runs next and must not talk over this */
+      held = AREAS[dropped].label + ' just went soft. It is always the fourth one that stops the other three from happening.';
+    }
+  }
+  save(); paintFocus();
+}
+
+let held = '';
+function paintFocus(){
+  const ul = $('[data-multi="focus"]');
+  ul.dataset.full = String(S.focus.length >= 3);
+  [...ul.querySelectorAll('.opt')].forEach(o => {
+    const on = S.focus.indexOf(o.dataset.v) > -1;
+    o.setAttribute('aria-pressed', String(on));
+    const k = o.querySelector('.opt-k');
+    k.textContent = on ? String(S.focus.indexOf(o.dataset.v) + 1) : KEYS[[...ul.querySelectorAll('.opt')].indexOf(o)];
+  });
+  const btn = $('[data-needs="focus"]');
+  btn.disabled = S.focus.length !== 3;
+
+  if(held){ mirror(held); held = ''; return; }
+
+  if(S.focus.length === 3){
+    const lanes = S.focus.map(f => AREAS[f].lane);
+    const biz = lanes.filter(l => l === 'business').length;
+    if(biz === 3) mirror('All three are the business. The plan will hold one evening a week open anyway.');
+    else if(biz === 0) mirror('None of these are the business. That is a legitimate 30 days, and rarer than you think.');
+    else mirror('One sharp, two held close. ' + AREAS[S.focus[0]].label + ' leads.');
+  } else {
+    mirror('');
+  }
+}
+
+let mirrorT;
+function mirror(text){
+  const m = $('#mirror-focus');
+  if(!text){ m.dataset.show = 'false'; return; }
+  clearTimeout(mirrorT);
+  m.dataset.show = 'false';
+  mirrorT = setTimeout(() => { m.querySelector('p').textContent = text; m.dataset.show = 'true'; }, 120);
+}
+
+/* --- 5. Navigation --- */
+function show(name){
+  at = name;
+  $$('.screen').forEach(s => s.dataset.on = String(s.dataset.screen === name));
+  const i = QUESTIONS.indexOf(name);
+  const done = i > -1 ? i : (ORDER.indexOf(name) > ORDER.indexOf('want') ? 7 : 0);
+  const p = done / 7;
+  $('#arc').style.setProperty('--p', p.toFixed(4));
+  $('#count').innerHTML = done + '<span class="unit">of 7</span>';
+  document.documentElement.style.setProperty('--room', (p * 0.85).toFixed(4));
+  $('#gauge').style.opacity = (name === 'intro') ? '0' : '1';
+  window.scrollTo(0, 0);
+  // only the one screen that needs typing takes focus; options are reached by key or tap
+  if(name === 'want' && matchMedia('(pointer:fine)').matches){
+    setTimeout(() => $('#want').focus({ preventScroll:true }), 260);
+  }
+}
+function next(){
+  const i = ORDER.indexOf(at);
+  show(ORDER[Math.min(i + 1, ORDER.length - 1)]);
+}
+document.addEventListener('click', e => {
+  const go = e.target.closest('[data-go]'); if(go){ show(go.dataset.go); return; }
+  const back = e.target.closest('[data-back]'); if(back){ show(back.dataset.back); }
+});
+/* number keys pick, enter continues */
+addEventListener('keydown', e => {
+  if(e.metaKey || e.ctrlKey || e.altKey || busy) return;
+  const tag = (e.target.tagName || '').toLowerCase();
+  if(tag === 'input' || tag === 'textarea') return;
+  const single = $('.screen[data-on="true"] [data-single]');
+  const multi  = $('.screen[data-on="true"] [data-multi]');
+  const n = KEYS.indexOf(e.key);
+  if(n > -1){
+    const list = single || multi; if(!list) return;
+    const b = list.querySelectorAll('.opt')[n]; if(b){ e.preventDefault(); b.click(); }
+  }
+  if(e.key === 'Enter'){
+    const btn = $('.screen[data-on="true"] .btn:not([disabled])');
+    if(btn){ e.preventDefault(); btn.click(); }
+  }
+});
+
+/* --- 6. Dates --- */
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const plus = d => { const t = new Date(); t.setDate(t.getDate() + d); return t; };
+const fmt  = t => t.getDate() + ' ' + MONTHS[t.getMonth()];
+$('#want-date').textContent = fmt(plus(30));
+
+/* --- 7. The plan --- */
+function compose(){
+  const order = S.focus.slice();
+  const areas = order.map(k => AREAS[k]);
+  const notPicked = Object.keys(AREAS).filter(k => order.indexOf(k) === -1);
+  const biz  = order.filter(k => AREAS[k].lane === 'business');
+  const life = order.filter(k => AREAS[k].lane === 'life');
+  const hrs  = HOURS_N[S.hours] || 15;
+  const perPass = Math.round(hrs * 10 / 7);
+  const firstBiz = biz[0] || null;
+  const metricSrc = firstBiz ? AREAS[firstBiz] : AREAS[order[0]];
+
+  return {
+    order, areas, notPicked, biz, life, hrs, perPass,
+    reading:   READING[S.friction] || READING.choosing,
+    stageNote: STAGE_NOTE[S.stage] || STAGE_NOTE.steady,
+    method:    METHOD[S.friction] || METHOD.choosing,
+    challenge: challenge(order, S.stage),
+    metric:    metricSrc.metric,
+    passes: [
+      { n:1, from:plus(1),  to:plus(10), a:areas[0] },
+      { n:2, from:plus(11), to:plus(20), a:areas[1] },
+      { n:3, from:plus(21), to:plus(30), a:areas[2] }
+    ],
+    habits: order.map(k => AREAS[k].habit)
+      .concat([
+        S.sharpest === 'cycle'
+          ? 'The heavy work in the first half of your cycle. The admin in the second.'
+          : ({ early:'The hard thing before 9. Nothing before it.',
+               late:'The hard thing at 10, after the room is quiet.',
+               pm:'The hard thing after lunch. Mornings are for everything else.',
+               night:'The hard thing after 8. Protect the evening like a morning.' })[S.sharpest],
+        'Friday, 20 minutes: what moved, what did not, what next week owes you.'
+      ]).slice(0,5)
+  };
+}
+
+function fillSheet(p){
+  $('#pv-sharp').textContent = p.areas[0].sharp;
+  $('#pv-2').textContent = p.areas[1].sharp;
+  $('#pv-3').textContent = p.areas[2].sharp;
+  $('#pv-soft').textContent = p.notPicked.length + ' things, put down';
+  $('#pv-num').textContent = p.metric.n + ' ' + p.metric.unit;
+  $('#reveal-sub').textContent = p.reading + ' The plan underneath is built around that.';
+}
+
+function render(p){
+  const li = (arr) => arr.map((t,i) =>
+    '<li><span class="i">' + String(i+1).padStart(2,'0') + '</span><p class="t">' + t + '</p></li>').join('');
+  const spread = keys => {
+    const out = [];
+    for(let depth = 0; depth < 3 && out.length < 3; depth++)
+      keys.forEach(k => { if(out.length < 3 && AREAS[k].moves[depth]) out.push(AREAS[k].moves[depth]); });
+    return out;
+  };
+  const bizMoves  = spread(p.biz);
+  const lifeMoves = spread(p.life);
+
+  $('#plan').innerHTML =
+  '<p class="overline">' + fmt(plus(0)) + ' to ' + fmt(plus(30)) + '</p>' +
+  '<h2 class="display" style="margin-top:var(--space-related)">' + p.areas[0].sharp + '.</h2>' +
+
+  (S.want ? '<div class="reading" style="margin-top:var(--space-grouped)"><p style="color:var(--color-text-secondary)">On ' + fmt(plus(30)) + ' you want this to be true:</p><p style="font-family:var(--font-display);font-size:var(--type-h3);color:var(--color-text-primary);letter-spacing:var(--track-h3)">' + esc(S.want) + '</p></div>' : '') +
+
+  '<div class="block"><p class="overline">The reading</p>' +
+    '<div class="reading"><p>' + p.reading + '</p><p>' + p.stageNote + ' ' +
+    HOURS_LABEL[S.hours] + ' a week is not the problem. Spreading it over nine things is. ' +
+    'Over 30 days that is <span class="num">' + p.perPass + '</span> hours per pass.</p></div>' +
+    (p.challenge ? '<div class="mirror" data-show="true" style="margin-top:var(--space-related)"><span class="mirror-dot"></span><p>' + p.challenge + '</p></div>' : '') +
+  '</div>' +
+
+  '<div class="block"><p class="overline">Three passes of ten days</p>' +
+    p.passes.map(pass =>
+      '<div class="pass"' + (pass.n > 1 ? ' data-soft="true"' : '') + '>' +
+        '<div class="pass-top"><span class="pass-n">' + String(pass.n).padStart(2,'0') + ' / 03</span>' +
+        '<span class="pass-when">' + fmt(pass.from) + ' to ' + fmt(pass.to) + '</span></div>' +
+        '<h3 class="pass-h">' + pass.a.sharp + '</h3>' +
+        '<p class="pass-d">' + pass.a.desc + '</p>' +
+      '</div>').join('') +
+    '<p class="caption" style="margin-top:var(--space-grouped);max-width:52ch">' + p.method + '</p>' +
+  '</div>' +
+
+  '<div class="block"><p class="overline">The six moves</p><div class="lanes" style="margin-top:var(--space-related)">' +
+    laneBlockFrom('In the business', bizMoves) + laneBlockFrom('In your life', lifeMoves) +
+  '</div></div>' +
+
+  '<div class="block"><p class="overline">Held soft</p>' +
+    '<p class="lede" style="margin-top:var(--space-related)">Not dropped. Not behind. Out of focus for 30 days, which is the only way the other three get any.</p>' +
+    '<div class="soft-list">' + p.notPicked.map(k => '<span class="chip">' + AREAS[k].label + '</span>').join('') + '</div>' +
+    '<p class="lede" style="margin-top:var(--space-grouped);color:var(--color-text-primary)">' + AREAS[p.notPicked[0]].soft + '</p>' +
+  '</div>' +
+
+  '<div class="block"><p class="overline">Five, at most</p><ul class="list" style="margin-top:var(--space-related)">' +
+    li(p.habits) + '</ul></div>' +
+
+  '<div class="block"><p class="overline">The one number</p>' +
+    '<div class="stat"><span class="num">' + p.metric.n + '<span class="unit">' + p.metric.unit + '</span></span></div>' +
+    '<p class="lede" style="margin-top:6px">' + p.metric.line + '. Everything else is weather.</p>' +
+  '</div>' +
+
+  '<div class="close"><span class="dot" aria-hidden="true"></span>' +
+    '<h3 class="h3" style="margin-top:var(--space-related)">Friday, 20 minutes.</h3>' +
+    '<p class="lede" style="margin-top:10px">Every Friday you close the week: what moved, what did not, what next week owes you. Three times in 30 days. If you only keep one thing from this page, keep that one.</p>' +
+    '<div class="foot"><button class="btn" onclick="window.print()">Keep a copy</button>' +
+    '<a class="ghost" href="/" style="text-decoration:none;display:inline-flex;align-items:center">The system this came from</a></div>' +
+  '</div>' +
+
+  '<p class="caption" style="margin-top:var(--space-separated);max-width:52ch">Written by Laurence, run by a small instrument. If a line in here is wrong, reply to the email and tell me which one. That is how the next version gets built.</p>';
+}
+function laneBlockFrom(title, moves){
+  if(!moves.length) return '<div><p class="overline" style="margin-bottom:var(--space-related)">' + title + '</p><p class="lede">Nothing here this month, on purpose. It holds.</p></div>';
+  return '<div><p class="overline" style="margin-bottom:var(--space-related)">' + title + '</p><ul class="list">' +
+    moves.map((t,i) => '<li><span class="i">' + String(i+1).padStart(2,'0') + '</span><p class="t">' + t + '</p></li>').join('') +
+    '</ul></div>';
+}
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* --- 8. The two forms --- */
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+function say(el, t){
+  if(!t){ el.dataset.show = 'false'; el.textContent = ''; return; }
+  el.textContent = t;
+  requestAnimationFrame(() => requestAnimationFrame(() => { el.dataset.show = 'true'; }));
+}
+
+$('#form-want').addEventListener('submit', e => {
+  e.preventDefault();
+  const v = $('#want').value.trim();
+  if(v.length < 3){
+    $('#want').setAttribute('aria-invalid','true');
+    say($('#msg-want'), 'One line is enough. Even a rough one.');
+    $('#want').focus(); return;
+  }
+  S.want = v.slice(0,140); save();
+  const p = compose(); fillSheet(p);
+  show('reveal');
+});
+$('#want').addEventListener('input', () => { $('#want').removeAttribute('aria-invalid'); say($('#msg-want'), ''); });
+
+$('#form-mail').addEventListener('submit', async e => {
+  e.preventDefault();
+  /* Closed list: nothing is sent and nothing is stored, so nothing is asked
+     for. Straight to the plan. */
+  if(!LIST_OPEN){ open(); return; }
+  const form = e.currentTarget;
+  const input = $('#email');
+  const btn = form.querySelector('.btn');
+  const label = form.querySelector('.btn-label');
+  const email = input.value.trim();
+  const trap = form.querySelector('input[name="hp_note"]');
+
+  if(!EMAIL.test(email)){
+    input.setAttribute('aria-invalid','true');
+    say($('#msg-mail'), 'That address is missing something. Have another look.');
+    input.focus(); return;
+  }
+  if(trap && trap.value){ open(); return; }
+
+  S.email = email; save();
+  btn.disabled = true;
+  setTimeout(() => { label.textContent = 'Reading'; }, 140);
+
+  const p = compose();
+  const props = {
+    lifecycle_stage:  'Waitlist',
+    business_type:    ({ solo:'Solo service', coach:'Coach or consultant', creator:'Creator',
+                         agency:'Agency', ecom:'Ecommerce', tech:'Product or tech', other:'Other' })[S.runs],
+    read_stage:       S.stage,
+    read_focus:       S.focus.join(', '),
+    read_focus_1:     AREAS[S.focus[0]].label,
+    read_lane:        p.biz.length === 3 ? 'Business only' : (p.biz.length === 0 ? 'Life only' : 'Both'),
+    read_friction:    S.friction,
+    read_hours:       HOURS_N[S.hours],
+    read_sharpest:    S.sharpest,
+    read_want:        S.want,
+    read_completed_at:new Date().toISOString(),
+    read_day30_at:    plus(30).toISOString().slice(0,10),
+    /* the email pours these straight in — no conditional blocks in Klaviyo */
+    plan_sharp:       p.areas[0].sharp,
+    plan_pass_1:      p.areas[0].sharp + ', ' + fmt(plus(1))  + ' to ' + fmt(plus(10)),
+    plan_pass_2:      p.areas[1].sharp + ', ' + fmt(plus(11)) + ' to ' + fmt(plus(20)),
+    plan_pass_3:      p.areas[2].sharp + ', ' + fmt(plus(21)) + ' to ' + fmt(plus(30)),
+    plan_reading:     p.reading,
+    plan_method:      p.method,
+    plan_biz_1:       (p.biz[0] ? AREAS[p.biz[0]].moves[0] : ''),
+    plan_biz_2:       (p.biz[1] ? AREAS[p.biz[1]].moves[0] : (p.biz[0] ? AREAS[p.biz[0]].moves[1] : '')),
+    plan_biz_3:       (p.biz[2] ? AREAS[p.biz[2]].moves[0] : (p.biz[0] ? AREAS[p.biz[0]].moves[2] : '')),
+    plan_life_1:      (p.life[0] ? AREAS[p.life[0]].moves[0] : ''),
+    plan_life_2:      (p.life[1] ? AREAS[p.life[1]].moves[0] : (p.life[0] ? AREAS[p.life[0]].moves[1] : '')),
+    plan_life_3:      (p.life[2] ? AREAS[p.life[2]].moves[0] : (p.life[0] ? AREAS[p.life[0]].moves[2] : '')),
+    plan_soft:        p.notPicked.map(k => AREAS[k].label).join(', '),
+    plan_habits:      p.habits.join(' · '),
+    plan_number:      p.metric.n + ' ' + p.metric.unit + '. ' + p.metric.line
+  };
+
+  try{
+    if(LIST_OPEN) await subscribe(email, 'The Read', props);
+  }catch(err){
+    /* The plan is hers either way. Never hold it hostage to a network call. */
+  }
+  open();
+});
+$('#email').addEventListener('input', () => { $('#email').removeAttribute('aria-invalid'); say($('#msg-mail'), ''); });
+
+/* --- The holding state, in the copy as well as the wiring. ---
+   LIST_OPEN false means the subscribe call is skipped. Left alone, the page
+   still asked for an address and still said the plan lands in an inbox and
+   that a note follows on day 30 — three promises nothing behind the page can
+   keep. So while it is closed the address is not asked for, and the two lines
+   that promise an email say what actually happens instead. Flipping the flag
+   undoes all of it; there is no second copy to keep in sync. */
+if(!LIST_OPEN){
+  const mail = $('#form-mail');
+  if(mail){
+    const addr = mail.querySelector('#email');
+    if(addr) addr.remove();
+    const trap = mail.querySelector('input[name="hp_note"]');
+    if(trap && trap.parentNode) trap.parentNode.remove();
+    const cap = mail.querySelector('.caption');
+    if(cap) cap.textContent = 'The plan opens here straight away and stays on this device. Email delivery opens with the list, shortly.';
+  }
+  const want = document.querySelector('[data-screen="want"] .q-sub');
+  if(want) want.textContent = 'One line, your words. I use it to build the plan.';
+}
+
+/* the arrival: the ring closes, the room settles, the plane resolves */
+function open(){
+  const p = compose();
+  render(p);
+  $('#sheet').dataset.locked = 'false';
+  show('plan');
+  requestAnimationFrame(() => document.documentElement.style.setProperty('--room','1'));
+}
+
+/* --- 9. Go --- */
+build();
+show('intro');
+</script>
+</body>
+</html>
