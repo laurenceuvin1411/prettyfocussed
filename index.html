@@ -337,6 +337,17 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
 
 /* the display sits on line-height .94, so its descenders need real clearance */
 .intro-form{margin-top:clamp(48px,7vh,96px); max-width:34rem}
+/* The Reset is the opening move; the waiting list waits behind a quiet line. */
+.intro-cta{margin-top:clamp(48px,7vh,96px); display:grid; gap:var(--space-related); justify-items:start; max-width:34rem}
+.intro-cta + .intro-form{margin-top:var(--space-grouped)}
+.btn-link{display:inline-flex; align-items:center; text-decoration:none}
+.quiet-link{background:none; border:0; padding:0; cursor:pointer; font-family:inherit;
+  font-size:var(--type-caption); letter-spacing:var(--track-caption); color:var(--color-text-muted);
+  text-decoration:underline; text-underline-offset:4px; text-decoration-thickness:1px;
+  text-decoration-color:var(--color-border-default);
+  transition:color var(--duration-fast) var(--ease-out), transform var(--duration-press) var(--ease-out)}
+.quiet-link:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.quiet-link:hover{color:var(--color-text-primary)}}
 .intro .form .caption{margin-top:var(--space-grouped)}
 .app-fields label.narrow{max-width:9rem}
 
@@ -491,7 +502,13 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
     <p class="intro-sub rise r4">The business-and-life system</p>
     <h1 class="display rise r5">For women who<br>run their own thing.</h1>
 
-    <div class="intro-form rise r6">
+    <div class="intro-cta rise r6">
+      <a class="btn btn-link" href="/plan" id="cta-reset">Take the 3-minute Reset</a>
+      <p class="caption">Eleven questions. A plan for your next 30 days, on the screen the moment you finish.</p>
+      <button class="quiet-link" type="button" id="waitlist-toggle">Or just tell me when it opens</button>
+    </div>
+
+    <div class="intro-form rise r6" id="intro-form" hidden>
       <div class="swap" id="swap-hero">
         <div data-state="idle">
           <form class="form" id="form-hero" novalidate>
@@ -907,8 +924,17 @@ function hold(formId, line){
 if(!LIST_OPEN){
   hold('form-hero',  'The list opens shortly.');
   hold('form-offer', 'Founding places open shortly.');
-  const sticky = document.getElementById('sticky');
-  if(sticky) sticky.remove();
+  /* Founding places are held too, so the pill has nowhere useful to go. Rather
+     than remove it and leave the page with no persistent action, it carries the
+     Reset, which works whether or not the list is open. */
+  const pill = document.getElementById('sticky');
+  if(pill){
+    pill.dataset.to = 'reset';
+    pill.childNodes[0].nodeValue = '\n  Take the 3-minute Reset\n  ';
+  }
+  /* Nothing to join yet, so nothing offers to be joined. */
+  const wl = document.getElementById('waitlist-toggle');
+  if(wl) wl.hidden = true;
 }else{
 wire('form-hero','swap-hero','Site hero', { lifecycle_stage:'Waitlist' });
 wire('form-offer','swap-offer','Site founding', () => {
@@ -999,14 +1025,28 @@ if(matchMedia('(hover: hover) and (pointer: fine)').matches && !matchMedia('(pre
    ============================================================ */
 const nav = document.querySelector('.nav');
 const sticky = document.getElementById('sticky');
-sticky.addEventListener('click', () => {
+/* The pill is removed in some states. Everything below this line — the nav,
+   both observers — used to die with it, which left the whole page without a
+   navigation bar. */
+if(sticky) sticky.addEventListener('click', () => {
+  if(sticky.dataset.to === 'reset'){ location.href = '/plan'; return; }
   const t = document.getElementById('founding');
   if(window.__lenis) window.__lenis.scrollTo(t, { offset:-80 });
   else t.scrollIntoView({ behavior:'smooth', block:'center' });
   setTimeout(() => document.querySelector('#form-offer .input')?.focus({ preventScroll:true }), 700);
 });
+/* The waiting list is a second thought, not a form in the way of the first. */
+const wlToggle = document.getElementById('waitlist-toggle');
+const wlForm   = document.getElementById('intro-form');
+if(wlToggle && wlForm) wlToggle.addEventListener('click', () => {
+  wlForm.hidden = false;
+  wlToggle.hidden = true;
+  wlForm.querySelector('.input')?.focus({ preventScroll:true });
+});
+
 const gate = { intro:true, offer:false };
 const paint = () => {
+  if(!sticky) return;
   const done = document.querySelector('.swap[data-done="true"]');
   sticky.dataset.show = String(!gate.intro && !gate.offer && !done);
 };
