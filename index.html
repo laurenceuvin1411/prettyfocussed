@@ -341,7 +341,13 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
 
 /* the display sits on line-height .94, so its descenders need real clearance */
 .intro-form{margin-top:clamp(48px,7vh,96px); max-width:34rem}
-/* The Reset is the opening move; the waiting list waits behind a quiet line. */
+/* The plan is the opening move; the waiting list waits behind a quiet line. */
+.intro-lede{margin:var(--space-grouped) 0 0; max-width:36ch}
+.intro-lede + .intro-cta{margin-top:clamp(32px,4.5vh,56px)}
+/* A second action is still a pill, but never a second filled one. */
+.btn.btn-quiet{background:var(--color-surface-glass); color:var(--color-text-primary);
+  -webkit-backdrop-filter:blur(var(--blur-glass)) saturate(1.2); backdrop-filter:blur(var(--blur-glass)) saturate(1.2);
+  box-shadow:var(--shadow-glass)}
 .intro-cta{margin-top:clamp(48px,7vh,96px); display:grid; gap:var(--space-related); justify-items:start; max-width:34rem}
 .intro-cta + .intro-form{margin-top:var(--space-grouped)}
 .btn-link{display:inline-flex; align-items:center; text-decoration:none}
@@ -505,11 +511,12 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
     </p>
     <p class="intro-sub rise r4">The business-and-life system</p>
     <h1 class="display rise r5">For women who<br>run their own thing.</h1>
+    <p class="lede intro-lede rise r6">Pretty Focussed opens soon, to a small first group. While you wait, you can already make your plan for the next 30 days.</p>
 
     <div class="intro-cta rise r6">
-      <a class="btn btn-link" href="/plan" id="cta-reset">Take the 3-minute Reset</a>
-      <p class="caption">Eleven questions. A plan for your next 30 days, on the screen the moment you finish.</p>
-      <button class="quiet-link" type="button" id="waitlist-toggle">Or just tell me when it opens</button>
+      <a class="btn btn-link" href="/plan" id="cta-reset">Make your 30-day plan</a>
+      <p class="caption">It’s eleven questions and takes about three minutes. Your plan is on the screen the moment you finish.</p>
+      <button class="quiet-link" type="button" id="waitlist-toggle">Or put me on the list, so I get in first at the founding price</button>
     </div>
 
     <!-- No entrance animation here: this appears on a click, not on load, and the
@@ -521,23 +528,23 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
             <div class="form-row">
               <input class="input" type="email" name="email" inputmode="email" autocomplete="email"
                      placeholder="you@studio.com" aria-label="Your email address" required>
-              <button class="btn" type="submit"><span class="btn-label">On the waiting list</span></button>
+              <button class="btn btn-quiet" type="submit"><span class="btn-label">Put me on the list</span></button>
             </div>
             <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
               <input name="hp_note" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
             </div>
             <p class="msg" data-msg role="alert"></p>
-            <p class="caption">One email when it opens, at the founding price. Nothing else.</p>
+            <p class="caption">You get in before it opens to everyone, and you keep the founding price for as long as you stay. We’ll email you once, when it’s your turn.</p>
           </form>
         </div>
 
         <div data-state="done" aria-live="polite">
           <div class="done-in">
             <p class="overline done-badge">On the list</p>
-            <h2 class="h2">Noted.</h2>
-            <p class="caption" style="margin:0">You’re on the list, in order.</p>
+            <h2 class="h2">You’re on the list.</h2>
+            <p class="caption" style="margin:0">You get in before it opens to everyone, at the founding price.</p>
             <p class="done-mail" data-echo></p>
-            <p class="caption">One email when it opens, at the founding price. Nothing before that.</p>
+            <p class="caption">We’ll email you once, when it’s your turn, and not before.</p>
           </div>
         </div>
       </div>
@@ -763,7 +770,7 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
 
 <!-- sticky: glass, so it is never a second filled button -->
 <button class="sticky" id="sticky" type="button" data-plane>
-  On the waiting list
+  Your 30-day plan
   <span class="chip" aria-hidden="true">
     <svg viewBox="0 0 12 12" fill="none"><path d="M6 1v10M1.6 6.6 6 11l4.4-4.4" stroke="#F4F2EE" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
   </span>
@@ -911,7 +918,7 @@ function wire(formId, swapId, source, extra){
       btn.disabled = false;
       btn.dataset.busy = 'false';
       label.textContent = original;
-      say('That didn’t send. We’ve kept your address — try again in a moment.');
+      say('That didn’t send. We’ve kept your address, so you can try again in a moment.');
     }
   });
 }
@@ -933,14 +940,6 @@ function hold(formId, line){
 if(!LIST_OPEN){
   hold('form-hero',  'The list opens shortly.');
   hold('form-offer', 'Founding places open shortly.');
-  /* Founding places are held too, so the pill has nowhere useful to go. Rather
-     than remove it and leave the page with no persistent action, it carries the
-     Reset, which works whether or not the list is open. */
-  const pill = document.getElementById('sticky');
-  if(pill){
-    pill.dataset.to = 'reset';
-    pill.childNodes[0].nodeValue = '\n  Take the Reset\n  ';   /* short: the pill is narrow and wraps */
-  }
   /* Nothing to join yet, so nothing offers to be joined. */
   const wl = document.getElementById('waitlist-toggle');
   if(wl) wl.hidden = true;
@@ -1037,13 +1036,9 @@ const sticky = document.getElementById('sticky');
 /* The pill is removed in some states. Everything below this line — the nav,
    both observers — used to die with it, which left the whole page without a
    navigation bar. */
-if(sticky) sticky.addEventListener('click', () => {
-  if(sticky.dataset.to === 'reset'){ location.href = '/plan'; return; }
-  const t = document.getElementById('founding');
-  if(window.__lenis) window.__lenis.scrollTo(t, { offset:-80 });
-  else t.scrollIntoView({ behavior:'smooth', block:'center' });
-  setTimeout(() => document.querySelector('#form-offer .input')?.focus({ preventScroll:true }), 700);
-});
+/* One road through the page: the pill always leads to the plan, and the plan
+   ends in the list. The founding offer keeps its own button where it lives. */
+if(sticky) sticky.addEventListener('click', () => { location.href = '/plan'; });
 /* The waiting list is a second thought, not a form in the way of the first. */
 const wlToggle = document.getElementById('waitlist-toggle');
 const wlForm   = document.getElementById('intro-form');

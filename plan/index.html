@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Your 30-day plan · Pretty Focussed</title>
-<meta name="description" content="Three minutes. Twelve questions. One plan for the next 30 days, built around what actually deserves your attention.">
+<meta name="description" content="Answer eleven questions and get your own plan for the next 30 days, built around what deserves your attention.">
 <meta property="og:title" content="Your 30-day Pretty Focussed plan">
 <meta property="og:description" content="Your life has a lot of tabs open. Close the ones that don't matter right now.">
 <meta property="og:type" content="website">
@@ -693,8 +693,8 @@ function bucket(area){ return area ? (FOCUS_BUCKET[area.id] || 'lifestyle') : ''
 var AREAS = [
   /* ---- body and mind ---- */
   {id:'energy',   g:'body',  lane:'personal', label:'Energy',            lev:5, cost:2, comp:5, joy:0,
-   act:'Protect your energy before you spend it.',
-   why:'Everything else on this list is paid for out of this one. It goes first.',
+   act:'Look after your energy first this month.',
+   why:'When your energy is low, every other priority gets harder, so this one comes first.',
    nn:[{l:'body', n:[7,8], u:'h', t:'sleep, most nights'},{l:'body', n:[2,3], u:'x/wk', t:'walks without your phone'}],
    kw:['energy','tired','exhausted','burnout','burn out','moe','energie','opgebrand']},
   {id:'fitness',  g:'body',  lane:'personal', label:'Training',          lev:4, cost:3, comp:4, joy:0,
@@ -703,112 +703,112 @@ var AREAS = [
    nn:[{l:'body', n:[2,4], u:'x/wk', t:'strength sessions'}],
    kw:['strong','fit','gym','train','training','pilates','lift','muscle','body','sterk','sport']},
   {id:'food',     g:'body',  lane:'personal', label:'Eating well',       lev:3, cost:3, comp:4, joy:0,
-   act:'Decide what you eat once, not three times a day.',
-   why:'Fewer decisions, not better ones. That is the whole change.',
+   act:'Plan your meals once a week and stop deciding at every meal.',
+   why:'The goal is fewer food decisions in your day, and better food follows from that.',
    nn:[{l:'body', n:[3,3], u:'x/wk', t:'meals cooked ahead'}],
    kw:['eat','food','nutrition','diet','eten','voeding']},
   {id:'sleep',    g:'body',  lane:'personal', label:'Sleep',             lev:5, cost:1, comp:5, joy:0,
    act:'Give the day an end time and keep it.',
-   why:'The cheapest change on the list, and the one that makes the others possible.',
+   why:'It costs you nothing, and it makes everything else on this list easier.',
    nn:[{l:'body', n:[7,8], u:'h', t:'sleep, most nights'}],
    kw:['sleep','rest','slaap','rusten','tired']},
   {id:'mind',     g:'body',  lane:'personal', label:'Mental quiet',      lev:4, cost:2, comp:4, joy:0,
    act:'Build one hour a day that nobody can book.',
-   why:'The noise is not going anywhere. The hour has to be taken, not found.',
+   why:'The noise won’t stop by itself, so you have to block the hour in your calendar.',
    nn:[{l:'body', n:[1,1], u:'h/day', t:'unbookable'}],
    kw:['calm','quiet','peace','anxiety','overwhelm','stress','rust','kalm','hoofd']},
   {id:'confidence',g:'body', lane:'personal', label:'Confidence',        lev:3, cost:2, comp:2, joy:0,
-   act:'Do the thing you would do if you already believed it.',
-   why:'Confidence is downstream of evidence. Thirty days of evidence is enough to start.',
+   act:'Each week, do one thing you’ve been avoiding because it feels too visible.',
+   why:'Confidence grows when you have proof you can do something, and thirty days gives you that proof.',
    nn:[{l:'personal', n:[1,1], u:'x/wk', t:'thing you would normally avoid'}],
    kw:['confidence','confident','believe','self worth','zelfvertrouwen','durf']},
   {id:'rest',     g:'body',  lane:'personal', label:'Rest',              lev:4, cost:1, comp:4, joy:1, restore:1,
    act:'Book the empty evening before anything else takes it.',
-   why:'Rest that is not scheduled is not rest. It is the gap between two things.',
+   why:'If rest isn’t in your calendar, other plans fill the space, so give it a fixed evening.',
    nn:[{l:'personal', n:[1,2], u:'x/wk', t:'unscheduled evenings'}],
    kw:['rest','slow','space','breathe','ruimte','rust','pauze']},
   {id:'creative', g:'body',  lane:'personal', label:'Creative time',     lev:2, cost:2, comp:2, joy:1, restore:1,
    act:'Make one thing a week that nobody pays you for.',
-   why:'It is not a hobby. It is where the good ideas for the paid work come from.',
+   why:'Your best ideas for paid work often come from the things you make for yourself.',
    nn:[{l:'personal', n:[1,1], u:'x/wk', t:'hours making something unpaid'}],
    kw:['creative','create','art','write','music','draw','creatief','schrijven']},
 
   /* ---- money and work ---- */
   {id:'clients',  g:'work',  lane:'professional', label:'Getting clients', lev:5, cost:4, comp:4, joy:0,
    act:'Build one repeatable way people find you and book you.',
-   why:'One route that works beats four that half work. Pick the one that already brought someone in.',
+   why:'Pick the way that already brought you a client and repeat it, instead of trying four new ones.',
    nn:[{l:'business', n:[3,5], u:'x/wk', t:'direct approaches'}],
    kw:['client','clients','customer','booking','leads','lead','klant','klanten','boekingen']},
   {id:'sales',    g:'work',  lane:'professional', label:'Selling',         lev:5, cost:3, comp:4, joy:0,
-   act:'Ask for the sale in the room where the buyers already are.',
-   why:'Selling is the only task on this list with same-week consequences. Do it first in the day.',
+   act:'Talk to people who can buy from you, and ask them to.',
+   why:'Selling is the one task here that pays off the same week, so do it first thing in the day.',
    nn:[{l:'business', n:[3,5], u:'x/wk', t:'sales conversations'}],
    kw:['sell','sales','selling','close','pitch','verkopen','verkoop']},
   {id:'revenue',  g:'work',  lane:'professional', label:'Revenue',         lev:5, cost:4, comp:3, joy:0, deps:['sales','clients'],
-   act:'Name the number, then work only on what moves it.',
-   why:'Revenue is a result, not a task. The work is one layer underneath it.',
+   act:'Pick the number you want to reach this month and work on what gets you there.',
+   why:'You can’t work on revenue directly, so this plan works on the sales and clients that bring it in.',
    nn:[{l:'business', n:[1,1], u:'x/wk', t:'look at the numbers'}],
    kw:['money','revenue','income','earn','turnover','salary','paid','profit','geld','omzet','inkomen','verdienen']},
   {id:'offer',    g:'work',  lane:'professional', label:'The offer',       lev:4, cost:3, comp:3, joy:0,
-   act:'Make one offer so clear it needs no explaining.',
-   why:'Most quiet months are an offer problem wearing a marketing costume.',
+   act:'Write one offer that someone understands the first time they read it.',
+   why:'When a month is quiet, the offer is often unclear, even when it looks like a marketing problem.',
    nn:[{l:'business', n:[1,1], u:'x/wk', t:'deep work block on the offer'}],
    kw:['offer','package','service','product','pricing','price','aanbod','pakket']},
   {id:'brand',    g:'work',  lane:'professional', label:'Personal brand',  lev:3, cost:4, comp:2, joy:0, deps:['content'],
    act:'Say the same thing until people can repeat it back.',
-   why:'A brand is repetition, not range. Thirty days is one message, not ten.',
+   why:'People remember one message said many times, so give these 30 days one message.',
    nn:[{l:'business', n:[1,1], u:'x/wk', t:'piece in your own voice'}],
    kw:['brand','branding','visible','seen','known','authority','positioning','merk','zichtbaar']},
   {id:'content',  g:'work',  lane:'professional', label:'Content',         lev:3, cost:4, comp:3, joy:0,
    act:'Publish on a rhythm you can hold on a bad week.',
-   why:'Consistency at a low number beats a burst at a high one. Set the number low on purpose.',
+   why:'Posting twice a week for a month works better than posting daily for one week, so pick a number you can keep.',
    nn:[{l:'business', n:[2,3], u:'x/wk', t:'pieces published'}],
    kw:['content','post','instagram','tiktok','youtube','followers','audience','podcast','reels','video','volgers']},
   {id:'launch',   g:'work',  lane:'professional', label:'Launching something', lev:3, cost:5, comp:2, joy:0, deps:['offer','clients'],
-   act:'Sell it to ten people before you build it for a hundred.',
-   why:'A launch is the last step, not the first. It needs an audience and an offer already standing.',
+   act:'Sell it to ten people first, and build it after they’ve paid.',
+   why:'A launch works when you already have an offer and people waiting for it, so those come first.',
    nn:[{l:'business', n:[1,1], u:'x/wk', t:'deep work block'}],
    kw:['launch','course','program','book','app','launching','lanceren','cursus']},
   {id:'money',    g:'work',  lane:'professional', label:'Money management', lev:4, cost:2, comp:4, joy:0,
    act:'Look at the numbers weekly, on the same day, for twenty minutes.',
-   why:'Money avoided is money misread. The looking is most of the fix.',
+   why:'When you avoid your numbers you end up guessing, and twenty minutes a week is enough to stop.',
    nn:[{l:'business', n:[1,1], u:'x/wk', t:'money hour, same day'}],
    kw:['money','budget','savings','tax','finance','financial','sparen','belasting','financiën']},
   {id:'systems',  g:'work',  lane:'professional', label:'Systems and structure', lev:5, cost:3, comp:5, joy:0,
    act:'Write down the thing you keep re-deciding.',
-   why:'Structure buys back attention. It is the highest-return work nobody schedules.',
+   why:'Every decision you write down once is one you don’t have to make again every week.',
    nn:[{l:'business', n:[2,2], u:'x/wk', t:'deep work blocks'}],
    kw:['system','systems','structure','organis','process','admin','chaos','structuur','systeem','overzicht']},
   {id:'time',     g:'work',  lane:'professional', label:'Time and focus',   lev:5, cost:2, comp:5, joy:0,
    act:'Give the two things that matter the first hours of the day.',
-   why:'You do not need more hours. You need the good ones spent on the right two things.',
+   why:'Your first hours are usually your sharpest, so they go to the work that matters most.',
    nn:[{l:'business', n:[2,3], u:'x/wk', t:'deep work blocks'}],
    kw:['time','focus','productivity','procrastin','distract','discipline','tijd','uitstellen','focussen']},
   {id:'career',   g:'work',  lane:'professional', label:'Career',           lev:4, cost:3, comp:3, joy:0,
    act:'Have the conversation you have been rehearsing.',
-   why:'Careers move in conversations, not in performance. One is worth a quarter of quiet effort.',
+   why:'Careers usually move after a conversation with the right person, so have that one this month.',
    nn:[{l:'business', n:[1,2], u:'x/wk', t:'conversations that move it'}],
    kw:['career','promotion','job','raise','role','loopbaan','job','promotie']},
   {id:'team',     g:'work',  lane:'professional', label:'Leading people',   lev:3, cost:4, comp:2, joy:0,
    act:'Hand over the thing only you can currently do.',
-   why:'Delegation is slow for three weeks and free forever after.',
+   why:'Handing it over takes time for a few weeks, and after that it no longer needs you.',
    nn:[{l:'business', n:[1,1], u:'x/wk', t:'handover session'}],
    kw:['team','hire','hiring','staff','delegate','leader','leadership','manage','delegeren','personeel']},
 
   /* ---- life and people ---- */
   {id:'love',     g:'life',  lane:'personal', label:'Love',              lev:3, cost:2, comp:2, joy:1,
-   act:'Put it in the calendar like it is a client.',
-   why:'The thing you say matters most is the only thing with no time booked against it.',
+   act:'Put your relationship in the calendar the way you would a client.',
+   why:'You say it matters most, so give it time in the calendar before work fills the week.',
    nn:[{l:'personal', n:[1,1], u:'x/wk', t:'date, phone away'}],
    kw:['love','relationship','partner','dating','husband','boyfriend','marriage','liefde','relatie','vriend']},
   {id:'friends',  g:'life',  lane:'personal', label:'Friendships',       lev:3, cost:1, comp:3, joy:1, restore:1,
    act:'Be the one who picks the date.',
-   why:'Friendship fails on logistics, not on feeling. Someone has to send the message.',
+   why:'Most friendships fade because nobody plans the next meeting, so you send the message.',
    nn:[{l:'personal', n:[1,1], u:'x/wk', t:'seeing someone you like'}],
    kw:['friend','friends','friendship','social','vrienden','vriendinnen']},
   {id:'family',   g:'life',  lane:'personal', label:'Family',            lev:3, cost:2, comp:3, joy:0,
    act:'Give them a fixed hour instead of the leftovers.',
-   why:'Presence beats duration. A protected hour reads as more than a distracted evening.',
+   why:'One hour where you’re fully there means more to them than an evening with your phone out.',
    nn:[{l:'personal', n:[1,2], u:'x/wk', t:'hours fully off'}],
    kw:['family','kids','children','parents','mother','father','gezin','familie','kinderen']},
   {id:'home',     g:'life',  lane:'personal', label:'Home',              lev:2, cost:2, comp:3, joy:0,
@@ -817,13 +817,13 @@ var AREAS = [
    nn:[{l:'personal', n:[1,1], u:'h/wk', t:'on the house, timed'}],
    kw:['home','house','apartment','move','interior','huis','thuis','verhuizen']},
   {id:'travel',   g:'life',  lane:'personal', label:'Travel',            lev:1, cost:3, comp:1, joy:1,
-   act:'Book one thing. Any size.',
+   act:'Book one trip, however small.',
    why:'A booked date changes how the next thirty days feel, whatever the trip turns out to be.',
    nn:[{l:'personal', n:[1,1], u:'x/mo', t:'something booked ahead'}],
    kw:['travel','trip','holiday','abroad','reizen','vakantie']},
   {id:'fun',      g:'life',  lane:'personal', label:'Fun',               lev:3, cost:1, comp:3, joy:1, restore:1,
    act:'Do one thing a week with no outcome attached.',
-   why:'The absence of this is what makes ambitious months feel long.',
+   why:'Without it, busy months start to feel long.',
    nn:[{l:'personal', n:[1,1], u:'x/wk', t:'with no outcome attached'}],
    kw:['fun','play','joy','laugh','plezier','leuk']}
 ];
@@ -950,83 +950,83 @@ var ARCHETYPES = [
   {id:'builder', name:'The Builder',
    t:{load:.80, momentum:.75, tilt:.80, clarity:.50, capacity:.50, reinvent:.20},
    w:{load:1.2, momentum:1.1, tilt:1.0, clarity:.7, capacity:.6, reinvent:.5},
-   line:'You are not short of ambition. You are carrying too many priorities at the same time.',
-   note:'You will build whatever you point at. The whole question is what you point at this month.',
+   line:'You have plenty of ambition, and right now it’s spread over too many priorities at once.',
+   note:'You finish what you start, so this month the work is choosing what to start.',
    card:'Builder'},
   {id:'expander', name:'The Expander',
    t:{load:.55, momentum:.75, tilt:.90, clarity:.75, capacity:.65, reinvent:.20},
    w:{tilt:1.3, clarity:1.1, momentum:1.0, capacity:.8, load:.6, reinvent:.5},
-   line:'You know exactly what you want more of. The next 30 days decide how loudly you go after it.',
-   note:'Your risk is not doubt. It is spreading a good year across four directions instead of one.',
+   line:'You know exactly what you want more of, and this month is about going after it properly.',
+   note:'The risk for you is spreading a good year over four directions when one would take you further.',
    card:'Expander'},
   {id:'rebalancer', name:'The Rebalancer',
    t:{load:.75, momentum:.60, tilt:.15, clarity:.60, capacity:.25, reinvent:.20},
    w:{tilt:1.4, capacity:1.2, load:1.0, clarity:.6, momentum:.6, reinvent:.4},
-   line:'The work is fine. It is everything the work has been quietly borrowing from that needs the month.',
-   note:'You are not behind. You have simply been paying for the good quarter out of the wrong account.',
+   line:'Your work is going fine, and the rest of your life has been paying for it.',
+   note:'This month gives some of that time and energy back to you.',
    card:'Rebalancer'},
   {id:'reinventor', name:'The Reinventor',
    t:{load:.50, momentum:.45, tilt:.50, clarity:.20, capacity:.50, reinvent:.85},
    w:{reinvent:1.6, clarity:1.2, load:.5, momentum:.6, tilt:.4, capacity:.5},
-   line:'You are between two versions of your life. That is a position, not a problem.',
-   note:'Thirty days is too short to decide who you are becoming. It is exactly long enough to test it.',
+   line:'You’re between what you used to do and what comes next.',
+   note:'Thirty days is enough time to try the new direction and see how it feels.',
    card:'Reinventor'},
   {id:'achiever', name:'The High Achiever',
    t:{load:.90, momentum:.85, tilt:.70, clarity:.80, capacity:.25, reinvent:.15},
    w:{capacity:1.4, load:1.2, momentum:1.1, clarity:1.0, tilt:.6, reinvent:.4},
-   line:'You do not have an ambition problem. You have a capacity problem wearing its clothes.',
-   note:'You can keep this pace for another month. The question is what it costs to.',
+   line:'You get a lot done, and you’re doing it with less energy than it needs.',
+   note:'This month is about keeping the results and making them cost you less.',
    card:'High Achiever'},
   {id:'dreamer', name:'The Dreamer',
    t:{load:.60, momentum:.15, tilt:.55, clarity:.35, capacity:.55, reinvent:.35},
    w:{momentum:1.5, clarity:1.1, load:.8, capacity:.6, tilt:.5, reinvent:.5},
-   line:'The vision is not the issue. The distance between the vision and Tuesday is.',
-   note:'You do not need a bigger plan. You need a smaller first week.',
+   line:'You know where you want to go, and the hard part is what to do on an ordinary Tuesday.',
+   note:'So this plan starts with a first week that’s small enough to do on a busy day.',
    card:'Dreamer'}
 ];
 
 /* One line to carry the month. Short enough to remember on a bad Tuesday. */
 var MANTRA = {
-  builder:    'Three things. The same three, all month.',
-  expander:   'One direction, all the way down it.',
-  rebalancer: 'The work will keep. This will not.',
-  reinventor: 'Test it before you decide it.',
-  achiever:   'The pace was never the point.',
-  dreamer:    'Small enough to do on a bad day.'
+  builder:    'Pick three things, and keep the same three all month.',
+  expander:   'Choose one direction and give it the whole month.',
+  rebalancer: 'This month, you get back the time your work has been taking.',
+  reinventor: 'Try the new thing before you decide if it’s right.',
+  achiever:   'You don’t have to keep this pace to keep your results.',
+  dreamer:    'Make each step small enough to do on a busy day.'
 };
 
 /* The four weeks. Verbs, not encouragement. */
 var WEEKS = [
-  {t:'Clear',  d:'Three things get a place in the week. Everything else moves to a list you are allowed to ignore.'},
-  {t:'Build',  d:'Put each of the three somewhere in the week where it cannot be moved.'},
-  {t:'Execute',d:'Same three. Same slots. This is the week where it stops being a plan.'},
-  {t:'Expand', d:'Keep what held. Cut what did not. Add one thing, not four.'}
+  {t:'Clear',  d:'Give your three priorities a place in your week, and put everything else on a list you can ignore for now.'},
+  {t:'Build',  d:'Give each of the three a fixed time in your week that nothing else can take.'},
+  {t:'Execute',d:'Keep the same three in the same time slots, and this is the week it starts to feel normal.'},
+  {t:'Expand', d:'Keep what worked, drop what didn’t, and add one new thing if there’s room.'}
 ];
 
 var HINTS = ['More money','A stronger body','More time','A bigger audience','Fewer clients, better ones','My own thing','More room for love','A quieter head'];
 
 /* Why something waits. Specific where it earns it, honest where it doesn't. */
 var WAIT = {
-  launch:  'A launch needs an offer and an audience already standing. Both are earlier than this.',
-  sales:   'This is not a separate project. It happens inside the first priority, or it does not happen.',
-  clients: 'It is the same work as the priority above it. Do it there rather than twice.',
-  time:    'Focus is not a task on the list. It is what the three above buy you.',
-  career:  'One conversation, when the month has proved something. Not before.',
-  content: 'Publishing more will not fix a month that has no room in it.',
-  systems: 'Structure built before the habit is a filing system for nothing.',
-  brand:   'A brand is what people repeat back. Give them one message first.',
-  travel:  'Book it, then stop planning it. That is the whole job for now.',
-  home:    'It is real. It is also the thing you will do instead of the hard one.',
-  team:    'Handing over takes three weeks of your time before it gives any back.',
-  food:    'One change to how you eat, not four. The rest is optimisation.',
-  creative:'This comes back on its own once the week has air in it.',
-  money:   'Twenty minutes on a fixed day. Anything more is avoidance in a spreadsheet.',
-  revenue: 'You cannot work on revenue. You work on the thing one layer under it.'
+  launch:  'A launch works once you have an offer and people waiting, and those come first.',
+  sales:   'Selling is part of your first priority already, so it doesn’t need its own spot.',
+  clients: 'It’s the same work as one of your three, so you’re already doing it there.',
+  time:    'Focus comes from working on fewer things, which is what this plan already does.',
+  career:  'Have that conversation after this month, when you have results to point to.',
+  content: 'Posting more won’t help while your weeks are this full.',
+  systems: 'Build the system after the habit is there, so you know what it needs.',
+  brand:   'Start with one clear message, and build the brand around it later.',
+  travel:  'Book it and leave the planning for later.',
+  home:    'It matters, and it’s also the easy thing you’d do to avoid the hard one.',
+  team:    'Handing work over costs you time for a few weeks before it saves you any.',
+  food:    'One change to how you eat is enough for this month.',
+  creative:'It usually comes back by itself once your week has more space.',
+  money:   'Twenty minutes on a fixed day is enough, and more than that is usually a way to put off the real work.',
+  revenue: 'Revenue follows from the sales and clients in your plan, so it doesn’t need its own spot.'
 };
 var WAIT_FALLBACK = [
-  'It will still be here in 30 days, and you will have more to give it.',
-  'Nothing is lost by leaving this until the three above are holding.',
-  'Real, and not urgent. Those are allowed to be different things.'
+  'It’ll still be here in 30 days, and you’ll have more time for it then.',
+  'You lose nothing by leaving this until your three priorities are running.',
+  'It matters, it isn’t urgent, and that’s fine.'
 ];
 /* `r` is the scored row, where there is one. An area someone put in their own three
    and then lost the slot is the one line on this page most likely to read as
@@ -1035,12 +1035,12 @@ var WAIT_FALLBACK = [
 function waitReason(a, i, r){
   /* Keyed on where it was ranked, so two displaced picks never give the
      same sentence twice in one list. */
-  if(r && r.desire >= 10) return 'You put this first, and it is still the one to come back to. It waits only because the month cannot start in three places at once.';
-  if(r && r.desire >= 8)  return 'You ranked this yourself, which is why it is the hardest one to leave out. It is here because the three above have to hold first, not because it matters less.';
-  if(r && r.desire >= 6)  return 'Also yours, also real. Third of three is the one a month quietly drops anyway, so it is better named here than missed later.';
+  if(r && r.desire >= 10) return 'You ranked this first, so it’s the first one to come back to next month.';
+  if(r && r.desire >= 8)  return 'You ranked this yourself, so leaving it out is hard. It’s here because your three priorities need to settle first, and it matters as much as they do.';
+  if(r && r.desire >= 6)  return 'You ranked this third, and a third priority often slips anyway, so it’s better to name it here.';
   if(WAIT[a.id]) return WAIT[a.id];
-  if(a.deps && a.deps.length) return 'It depends on something further up this list being true first.';
-  if(a.cost >= 4) return 'It costs more attention than this particular month has spare.';
+  if(a.deps && a.deps.length) return 'It depends on one of your other priorities, so it comes after that one.';
+  if(a.cost >= 4) return 'It takes more time and energy than this month has left over.';
   return WAIT_FALLBACK[(i || 0) % WAIT_FALLBACK.length];
 }
 
@@ -1380,12 +1380,12 @@ function idealWeek(P){
               [P.proSecondary, P.perSecondary, P.energy, P.joy]
                 .filter(function(x){ return x && used.indexOf(x) === -1; })[0];
   return [
-    {d:'Monday',    t:work.label,                       n:'The week opens on the thing that pays for it'},
-    {d:'Tuesday',   t:body ? body.label : 'Movement',   n:'Before the day gets a say in it'},
+    {d:'Monday',    t:work.label,                       n:'Start the week with the work that brings in money'},
+    {d:'Tuesday',   t:body ? body.label : 'Movement',   n:'Early, before the day fills up'},
     {d:'Wednesday', t:'Deep work',                      n:'Nothing booked before noon'},
-    {d:'Thursday',  t:extra ? extra.label : 'Whatever slipped', n:'The one the week tried to lose'},
-    {d:'Friday',    t:'Review, then stop',              n:'Twenty minutes on the numbers, then close it'},
-    {d:'Weekend',   t:life ? life.label : 'Off',        n:'One thing planned. The rest unplanned.'}
+    {d:'Thursday',  t:extra ? extra.label : 'Whatever slipped', n:'The one that usually slips'},
+    {d:'Friday',    t:'Review, then stop',              n:'Twenty minutes on your numbers, then stop'},
+    {d:'Weekend',   t:life ? life.label : 'Off',        n:'Plan one thing and leave the rest open'}
   ];
 }
 
@@ -1417,47 +1417,47 @@ var SCREENS = [
   {id:'intro', type:'intro', chapter:''},
 
   {id:'name', type:'text', chapter:'Who you are', over:'One',
-   h:'Start with your name.', lede:'The plan gets written to you, not to a segment.',
+   h:'Start with your name.', lede:'We use it to write the plan to you.',
    ph:'First name', key:'name'},
 
   {id:'season', type:'single', chapter:'Who you are', over:'Two', cols:2,
-   h:'Which season are you in right now.', lede:'One of them will be close enough. You can be in two; pick the one that has your attention.',
+   h:'Pick the season you’re in right now.', lede:'One of them will be close enough, and if two fit, pick the one that’s on your mind most.',
    list:SEASONS, key:'season'},
 
   {id:'run', type:'double', chapter:'Who you are', over:'Three',
-   h:'And how you spend your days.',
+   h:'Tell us how you spend your days.',
    a:{label:'Work', list:RUNS, key:'run'},
    b:{label:'Age', list:AGE_OPTS, key:'age', chips:true}},
 
   {id:'areas', type:'areas', chapter:'What you want', over:'Four',
-   h:'Choose what you want the most.', lede:'Up to five. This is the long list, so be greedy here.',
+   h:'Choose what you want the most.', lede:'You can pick up to five, so be greedy here.',
    key:'areas', max:5},
 
   {id:'top', type:'rank', chapter:'What you want', over:'Five',
-   h:'Now be ruthless.', lede:'If only three of them moved this month, which three. Tap them in order.',
+   h:'Now be ruthless.', lede:'If you could only move three of them this month, tap those three in order.',
    key:'top', max:3},
 
   {id:'ambition', type:'long', chapter:'What you want', over:'Six',
-   h:'Say what a very good year looks like.', lede:'Your words, not ours. One line is enough. More is better.',
+   h:'Say what a very good year looks like.', lede:'Write it in your own words, and one line is enough.',
    key:'ambition'},
 
   {id:'hardest', type:'multi', chapter:'What is in the way', over:'Seven',
-   h:'Name what is hardest right now.', lede:'Up to two. None of these is a character flaw.',
+   h:'Name what is hardest right now.', lede:'You can pick up to two.',
    list:OBSTACLES, key:'obstacles', max:2},
 
   {id:'pushed', type:'multi', chapter:'What is in the way', over:'Eight',
-   h:'And what keeps moving to tomorrow.', lede:'Up to three. The honest ones, not the admirable ones.',
+   h:'Pick what keeps moving to tomorrow.', lede:'You can pick up to three, and the honest answers help the most.',
    list:DEFERRED, key:'deferred', max:3, cols:2},
 
   {id:'dial', type:'dial', chapter:'What is in the way', over:'Nine',
-   h:'Set where your focus is today.', lede:'Then one word for how full your head feels.'},
+   h:'Set where your focus is today.', lede:'Then pick one word for how full your head feels.'},
 
   {id:'identity', type:'multi', chapter:'Meet the person you are becoming', over:'Ten',
-   h:'Pick the three words.', lede:'The ones that fit. Not the twenty you admire.',
+   h:'Pick the three words.', lede:'Choose the three that fit you best.',
    list:IDENTITY, key:'identity', max:3, chips:true},
 
   {id:'style', type:'double', chapter:'Meet the person you are becoming', over:'Eleven',
-   h:'Two quick ones about how you actually work.',
+   h:'Here are two quick questions about how you work.',
    a:{label:'When the list gets long', list:STYLE_LIST, key:'style'},
    b:{label:'What costs you the most', list:STYLE_COST, key:'cost'}},
 ];
@@ -1545,7 +1545,7 @@ function swap(build, cls){
 function askBlock(s){
   var w = h('div', 'ask');
   var head = s.h;
-  if(s.id === 'season' && A.name) head = 'Which season are you in, ' + esc(first(A.name)) + '.';
+  if(s.id === 'season' && A.name) head = esc(first(A.name)) + ', pick the season you’re in right now.';
   w.appendChild(h('h1', 'h2', head));
   if(s.lede) w.appendChild(h('p', 'lede', s.lede));
   return w;
@@ -1585,9 +1585,9 @@ function build(s){
 
 function sIntro(n){
   var w = h('div', 'ask');
-  w.appendChild(h('p', 'overline', 'Three minutes'));
+  w.appendChild(h('p', 'overline', 'Eleven questions'));
   w.appendChild(h('h1', 'display', 'Your life has a lot of tabs open.'));
-  w.appendChild(h('p', 'lede', 'Close the ones that do not matter this month. Eleven questions, about three minutes, and one plan for the next 30 days built around what actually deserves you.'));
+  w.appendChild(h('p', 'lede', 'Close the ones that don’t matter this month. Your answers turn into a plan for the next 30 days, built around what deserves your time.'));
   n.appendChild(w);
 
   var resumed = RESUMABLE;
@@ -1595,7 +1595,7 @@ function sIntro(n){
     A.started = Date.now();
     trackOnce('assessment_started', {resumed:false});
     go(1);
-  }, 'No account. Nothing sent until you say so.');
+  }, 'You don’t need an account, and nothing is sent until you say so.');
   n.appendChild(a.wrap);
 
   if(resumed && resumed.done){
@@ -1741,7 +1741,7 @@ function sRank(n, s){
     A.top = chosen.slice(0, 3); save();
   }
   n.appendChild(askBlock(chosen.length <= 3
-    ? Object.assign({}, s, {h:'These are your three.', lede:'You already narrowed it. Confirm the order by tapping them, most important first.'})
+    ? Object.assign({}, s, {h:'These are your three.', lede:'You already picked three, so tap them in order, most important first.'})
     : s));
   var box = h('div', 'rank');
   var a = actBlock('Continue', function(){ if(A.top.length === s.max || A.top.length === chosen.length) next(); });
@@ -1810,7 +1810,7 @@ function sLong(n, s){
   function paint(){
     var len = (t.value || '').trim().length;
     a.btn.disabled = len < 3;
-    count.textContent = len < 3 ? 'A few words is plenty' : 'This comes back in your result, in your words';
+    count.textContent = len < 3 ? 'A few words is plenty' : 'You’ll see this again in your plan';
   }
 }
 
@@ -1926,7 +1926,7 @@ function showPreview(){
     var w = h('div', 'ask');
     w.appendChild(h('p', 'overline', esc(PLAN.arch.name)));
     w.appendChild(h('h1', 'h1', name ? esc(name) + ', your 30 days are ready.' : 'Your 30 days are ready.'));
-    w.appendChild(h('p', 'lede', 'Everything you told us, turned into one plan. Three things to move, four weeks to move them, and a list of what gets to wait.'));
+    w.appendChild(h('p', 'lede', 'We turned your answers into one plan. It has your three priorities, what to do each week, and a list of what can wait.'));
     n.appendChild(w);
 
     var peek = h('div', 'peek');
@@ -1950,8 +1950,8 @@ function showPreview(){
       track('plan_cta_clicked', {archetype:PLAN.arch.id, live:!!live});
       if(live) showCapture();
       else openResult();
-    }, live ? 'Free. Yours. One email, then one more the day it opens.'
-            : 'Free, and it stays on this device. The list opens shortly.');
+    }, live ? 'It’s free, and it lands in your inbox within a minute.'
+            : 'It’s free, and it stays on this device for now.');
     n.appendChild(a.wrap);
   });
 }
@@ -1959,9 +1959,9 @@ function showPreview(){
 function showCapture(){
   swap(function(n){
     var w = h('div', 'ask');
-    w.appendChild(h('p', 'overline', 'Almost'));
-    w.appendChild(h('h1', 'h2', 'Where should we send it.'));
-    w.appendChild(h('p', 'lede', 'Your plan is built. Tell us where it goes and it is in your inbox in a minute.'));
+    w.appendChild(h('p', 'overline', 'Your plan'));
+    w.appendChild(h('h1', 'h2', 'Tell us where to send it.'));
+    w.appendChild(h('p', 'lede', 'Your plan is ready, and it lands in your inbox within a minute.'));
     n.appendChild(w);
 
     var f = h('div', 'field');
@@ -1996,15 +1996,15 @@ function showCapture(){
     var box = h('input', '');
     box.type = 'checkbox';
     consent.appendChild(box);
-    consent.appendChild(h('span', '', 'Send me the occasional Pretty Focussed letter as well. A few a month, never more.'));
+    consent.appendChild(h('span', '', 'Also send me the occasional letter from Pretty Focussed. It’s a few a month at most.'));
     n.appendChild(consent);
 
     var a = actBlock('Send my plan', submit,
-      'You get your plan, and one email the day Pretty Focussed opens. That is the whole of it unless you tick the box. Unsubscribe in a tap. <a href="https://prettyfocussed.com/privacy" target="_blank" rel="noopener">Privacy</a>.');
+      'You get your plan, and one email on the day Pretty Focussed opens. You only hear more from us if you tick the box, and you can unsubscribe any time. <a href="https://prettyfocussed.com/privacy" target="_blank" rel="noopener">Privacy</a>.');
     a.btn.disabled = !EMAIL.test((A.email || '').trim());
     n.appendChild(a.wrap);
 
-    var skip = h('button', 'ghost', 'Just show me the plan');
+    var skip = h('button', 'ghost', 'Show me the plan now');
     skip.type = 'button';
     skip.addEventListener('click', function(){ track('email_skipped', {}); openResult(); });
     n.appendChild(skip);
@@ -2048,8 +2048,8 @@ function showSuccess(){
         '<circle class="ring-dot" cx="16" cy="16" r="1.9"/>' +
       '</svg>';
     w.appendChild(ap);
-    w.appendChild(h('h1', 'h2', 'It is on its way.'));
-    w.appendChild(h('p', 'lede', 'Your plan is heading to ' + esc(A.email) + '. Now let us make it real.'));
+    w.appendChild(h('h1', 'h2', 'It’s on its way.'));
+    w.appendChild(h('p', 'lede', 'We’re sending your plan to ' + esc(A.email) + '. It opens here in a moment.'));
     n.appendChild(w);
   }, 'is-success');
   /* No second button to press. The plan opens on its own. */
@@ -2130,10 +2130,10 @@ function reveal(){
     w.appendChild(ap);
     var lines = h('div', 'lines');
     var copy = [
-      A.name ? 'We have you, ' + esc(first(A.name)) + '.' : 'We have you.',
-      'Reading what you actually said.',
-      'Finding the work with the most leverage.',
-      'Clearing the rest.',
+      A.name ? 'Thanks, ' + esc(first(A.name)) + '.' : 'Thanks.',
+      'We’re reading your answers.',
+      'We’re finding what will help most.',
+      'We’re sorting out what can wait.',
       'Your plan is ready.'
     ];
     copy.forEach(function(t, i){ var p = h('p', '', t); p.dataset.i = i; lines.appendChild(p); });
@@ -2169,7 +2169,8 @@ function trim(t, max){
 /* a, b and c — never a, b, c */
 function listJoin(a){
   if(a.length < 2) return a[0] || '';
-  return a.slice(0, -1).join(', ') + ' and ' + a[a.length - 1];
+  if(a.length === 2) return a[0] + ' and ' + a[1];
+  return a.slice(0, -1).join(', ') + ', and ' + a[a.length - 1];   /* the brand keeps the Oxford comma */
 }
 function laneWord(area){
   if(area.g === 'body') return 'Body';
@@ -2201,7 +2202,7 @@ function showResult(){
       e.appendChild(h('p', 'quote', '“' + esc(trim(A.ambition, 190)) + '”'));
       e.appendChild(h('p', 'after', 'So the next 30 days go to ' +
         listJoin(P.three.map(function(r){ return '<b style="font-weight:500">' + esc(r.a.label.toLowerCase()) + '</b>'; })) +
-        '. Everything else waits, on purpose.'));
+        '. Everything else can wait.'));
       s2.appendChild(e);
       res.appendChild(s2);
     }
@@ -2222,7 +2223,7 @@ function showResult(){
       row.appendChild(h('p', 'lane', esc(laneWord(r.a)) + ' · ' + esc(r.a.label)));
       row.appendChild(h('h3', 'head', esc(r.a.act)));
       var why = r.hit ? r.a.why + ' You named it yourself.'
-              : r.debt ? r.a.why + ' It is the one that keeps moving to tomorrow.'
+              : r.debt ? r.a.why + ' It’s the one that keeps moving to tomorrow.'
               : r.a.why;
       row.appendChild(h('p', 'why', esc(why)));
       prios.appendChild(row);
@@ -2233,8 +2234,8 @@ function showResult(){
     /* --- what waits --- */
     var s4 = h('section', '');
     s4.appendChild(h('p', 'overline', 'Not now'));
-    s4.appendChild(h('h2', 'h3', 'Not now does not mean never.'));
-    s4.appendChild(h('p', 'lede', 'These can matter and still not deserve your attention this month.'));
+    s4.appendChild(h('h2', 'h3', 'These can wait until next month.'));
+    s4.appendChild(h('p', 'lede', 'They still matter, and they’ll get your attention once your three priorities are running.'));
     var ul = h('ul', 'notnow');
     P.notNow.forEach(function(r, i){
       var li = document.createElement('li');
@@ -2256,7 +2257,7 @@ function showResult(){
       'Start with ' + P.three[0].a.label.toLowerCase() + '.',
       P.three[1].a.act,
       P.three[0].a.act,
-      'If one of the three has not moved by now, it was the wrong one. Swap it, do not add to it.'
+      'If one of the three hasn’t moved by now, swap it for another one instead of adding more.'
     ];
     WEEKS.forEach(function(w, i){
       var row = h('div', 'week');
@@ -2270,7 +2271,7 @@ function showResult(){
 
     /* --- non-negotiables --- */
     var s6 = h('section', '');
-    s6.appendChild(h('p', 'overline', 'Your week, at the smallest size that still works'));
+    s6.appendChild(h('p', 'overline', 'Your week'));
     var grid = h('div', 'nonneg');
     [['body', 'Body'], ['business', 'Work'], ['personal', 'Personal']].forEach(function(pair){
       var c = h('div', 'nn');
@@ -2285,13 +2286,13 @@ function showResult(){
       grid.appendChild(c);
     });
     s6.appendChild(grid);
-    s6.appendChild(h('p', 'caption', 'These are floors, not targets. A week where you hit exactly this is a good week.'));
+    s6.appendChild(h('p', 'caption', 'These are the minimums. A week where you do exactly this is a good week.'));
     res.appendChild(s6);
 
     /* --- the shape of a week --- */
     var s7 = h('section', '');
     s7.appendChild(h('p', 'overline', 'Your Pretty Focussed week'));
-    s7.appendChild(h('h2', 'h3', 'Structure, not a timetable.'));
+    s7.appendChild(h('h2', 'h3', 'One focus per day, and the rest of the day stays flexible.'));
     var days = h('div', 'days');
     idealWeek(P).forEach(function(row){
       var d = h('div', 'day');
@@ -2306,21 +2307,19 @@ function showResult(){
     /* --- the line to carry --- */
     var s8 = h('section', 'mantra');
     s8.appendChild(h('p', 'overline', 'If you remember one thing'));
-    s8.appendChild(h('p', 'mline', esc(MANTRA[P.arch.id] || 'Three things. The same three, all month.')));
+    s8.appendChild(h('p', 'mline', esc(MANTRA[P.arch.id] || 'Pick three things, and keep the same three all month.')));
     res.appendChild(s8);
 
     /* --- thirty days from now --- */
     var s9 = h('section', '');
     s9.appendChild(h('p', 'overline', '30 days from now'));
-    s9.appendChild(h('h2', 'h3', 'You are not trying to become someone else in 30 days.'));
+    s9.appendChild(h('h2', 'h3', 'In 30 days you’ll have a month of proof.'));
     var words = A.identity.map(function(id){
       return esc(((byId(IDENTITY, id) || {}).label || '').toLowerCase());
     }).filter(Boolean);
-    s9.appendChild(h('p', 'lede', 'You are becoming the person who keeps promises to themselves. Thirty days of ' +
-      listJoin(P.three.map(function(r){ return esc(r.a.label.toLowerCase()); })) +
-      ' is not a transformation. It is evidence' +
-      (words.length ? ', and evidence is what ' + listJoin(words) +
-        (words.length > 1 ? ' are' : ' is') + ' actually made of.' : '.')));
+    s9.appendChild(h('p', 'lede', 'For thirty days you’ll have kept the promises you made to yourself about ' +
+      listJoin(P.three.map(function(r){ return esc(r.a.label.toLowerCase()); })) + '.' +
+      (words.length ? ' That’s how feeling ' + listJoin(words) + ' starts.' : '')));
     res.appendChild(s9);
 
     /* --- the card --- */
@@ -2337,7 +2336,7 @@ function showResult(){
     window.scrollTo(0, 0);
     track('results_viewed', {archetype:P.arch.id, fit:P.fit, focus:bucket(P.three[0].a),
       three:P.three.map(function(r){ return r.a.id; }).join(','), capacity:Math.round(P.d.capacity * 100)});
-    foot.innerHTML = '<hr class="hair dot" style="margin-bottom:22px"><p class="caption">Built in your browser from what you answered. Your words are stored on this device and, if you gave an address, on our email list. Nothing else. <a href="' + CONFIG.waitlistUrl + '" style="color:inherit">Pretty Focussed</a></p>';
+    foot.innerHTML = '<hr class="hair dot" style="margin-bottom:22px"><p class="caption">We made this plan in your browser from your answers. Your words stay on this device, and on our email list if you gave us your address. <a href="' + CONFIG.waitlistUrl + '" style="color:inherit">Pretty Focussed</a></p>';
   }, 160);
 }
 
@@ -2358,13 +2357,14 @@ function cardWords(){
   return PLAN.three.map(function(r){ return r.a.label.toUpperCase(); }).join('  ×  ');
 }
 function shareText(){
-  return 'I did the Pretty Focussed 3-minute reset. I am a ' + PLAN.arch.card + '. My next 30 days: ' + cardWords() + '.';
+  return 'I made my 30-day plan with Pretty Focussed. I’m ' + (/^[aeiou]/i.test(PLAN.arch.card) ? 'an ' : 'a ') + PLAN.arch.card +
+    ', and my next 30 days are about ' + listJoin(PLAN.three.map(function(r){ return r.a.label.toLowerCase(); })) + '.';
 }
 
 function cardSection(){
   var s = h('section', '');
   s.appendChild(h('p', 'overline', 'For your camera roll'));
-  s.appendChild(h('h2', 'h3', 'Someone you know has 47 tabs open too. Send them the three minutes.'));
+  s.appendChild(h('h2', 'h3', 'Send this to the friend who has 47 tabs open.'));
   var wrap = h('div', 'cardwrap');
 
   var card = h('div', 'card');
@@ -2374,7 +2374,7 @@ function cardSection(){
     '<span class="overline" style="color:var(--color-text-secondary)">Pretty Focussed</span>';
   card.appendChild(top);
   var mid = h('div', 'cmid');
-  mid.appendChild(h('p', 'caption', 'I AM A'));
+  mid.appendChild(h('p', 'caption', /^[aeiou]/i.test(PLAN.arch.card) ? 'I AM AN' : 'I AM A'));
   mid.appendChild(h('h3', 'cname', esc(PLAN.arch.card)));
   mid.appendChild(h('hr', 'hair dot'));
   mid.appendChild(h('p', 'caption', 'MY NEXT 30 DAYS'));
@@ -2417,8 +2417,8 @@ function cardSection(){
 
   wrap.appendChild(row);
   wrap.appendChild(h('p', 'caption', canSave
-    ? 'A screenshot works just as well. That is what it was designed for.'
-    : 'Screenshot it. That is what it was designed for.'));
+    ? 'A screenshot works too. We made the card for that.'
+    : 'Take a screenshot. We made the card for that.'));
   s.appendChild(wrap);
   return s;
 }
@@ -2450,7 +2450,7 @@ function exportCard(btn){
 
   var y = H * .40;
   x.fillStyle = '#6B675F'; x.font = '400 22px "Instrument Sans", system-ui, sans-serif';
-  x.letterSpacing = '2.6px'; x.fillText('I AM A', pad, y);
+  x.letterSpacing = '2.6px'; x.fillText(/^[aeiou]/i.test(PLAN.arch.card) ? 'I AM AN' : 'I AM A', pad, y);
   x.fillStyle = '#14150F'; x.letterSpacing = '-3px';
   var nm = PLAN.arch.card.toUpperCase(), size = nm.length > 12 ? 96 : 120;
   x.font = '400 ' + size + 'px "Instrument Sans", system-ui, sans-serif';
@@ -2494,65 +2494,114 @@ function exportCard(btn){
 }
 
 /* ---- the close ---- */
-var FEATURES = ['Business and life goals in one place','A weekly session that resets the week',
-  'Today, and only today','Revenue you can see without a spreadsheet','Five habits, not fifty',
-  'A plan drafted for you, not a blank page'];
+var FEATURES = ['Your business and your life, planned in one place', 'A short session on Monday that plans your week',
+  'One screen for today, with only today on it', 'Your income, without opening a spreadsheet',
+  'Up to five habits, tracked without streaks', 'A first draft of each week, made from your plan'];
 
+/* Share the plan: the phone’s own share sheet where there is one, the link otherwise. */
+function sharePlan(btn, from){
+  track('share_clicked', {channel:'native', from:from});
+  track('referral_started', {code:refCode()});
+  if(navigator.share){
+    navigator.share({title:'Pretty Focussed', text:shareText(), url:shareUrl('native')}).catch(function(){});
+    return;
+  }
+  if(navigator.clipboard) navigator.clipboard.writeText(shareUrl('native'));
+  var label = btn.querySelector('.btn-label'), was = label.textContent;
+  label.textContent = 'Link copied';
+  setTimeout(function(){ label.textContent = was; }, 1800);
+}
+
+/* The end of the plan says what is true for this person, and asks for the list
+   right here. It used to open the home page, which offered the plan they had
+   just made, and had nowhere to sign up while the list was closed. */
 function closeSection(){
   var live   = CONFIG.appState === 'live';
   var canAsk = CONFIG.listOpen || CONFIG.preview;
   var s = h('section', '');
   var box = h('div', 'close');
 
-  box.appendChild(h('p', 'overline', A.email ? 'You are on the list' : 'What this becomes'));
-  box.appendChild(h('h2', 'h2', 'Imagine having this clarity every week.'));
-  box.appendChild(h('p', 'lede', 'Pretty Focussed turns what you want into a system for the life you actually have. Goals, business, money, habits and progress in one calm place.'));
+  box.appendChild(h('p', 'overline', 'After day 30'));
+  box.appendChild(h('h2', 'h2', 'This plan covers 30 days. The app is for the weeks after that.'));
+  box.appendChild(h('p', 'lede', 'Every Monday it puts your three priorities in front of you and plans the week around them. The rest stays out of view until it’s time for it.'));
 
   var ul = h('ul', 'feat');
   FEATURES.forEach(function(f){ var li = document.createElement('li'); li.textContent = f; ul.appendChild(li); });
   box.appendChild(ul);
 
-  box.appendChild(h('p', 'pull', 'Your plan is the preview. The app is where you live it.'));
-
-  var state = h('p', 'caption', '');
-
+  var note = h('p', 'caption', '');
   var act = h('div', 'act');
-  var b = h('button', 'btn');
-  b.type = 'button';
-  b.appendChild(h('span', 'btn-label', live ? 'Get Pretty Focussed' : 'Join the waitlist'));
-  b.addEventListener('click', function(){
-    track(live ? 'app_download_clicked' : 'waitlist_clicked',
-      {archetype:PLAN.arch.id, focus:bucket(PLAN.three[0].a), on_list:!!A.email});
-    window.open(CONFIG.waitlistUrl, '_blank', 'noopener');
-  });
-  act.appendChild(b);
-  act.appendChild(state);
-  box.appendChild(act);
+  var b = h('button', 'btn'); b.type = 'button';
+  var label = h('span', 'btn-label', '');
+  b.appendChild(label);
 
-  /* Skipped the address and still wants the plan in an inbox. A quiet way
-     back, not a second filled button. */
-  if(!A.email && canAsk){
-    var again = h('button', 'ghost', 'Email me this plan as well');
-    again.type = 'button';
-    again.addEventListener('click', function(){ track('plan_cta_clicked', {from:'result'}); showCapture(); });
-    box.appendChild(again);
+  if(live){
+    label.textContent = 'Get Pretty Focussed';
+    b.addEventListener('click', function(){
+      track('app_download_clicked', {archetype:PLAN.arch.id, focus:bucket(PLAN.three[0].a), on_list:!!A.email});
+      window.open(CONFIG.waitlistUrl, '_blank', 'noopener');
+    });
+  }else if(A.email || !canAsk){
+    /* Already on the list, or no list to join yet: the useful next step is a friend. */
+    label.textContent = 'Send it to a friend';
+    b.addEventListener('click', function(){ sharePlan(b, 'close'); });
+  }else{
+    /* Not on the list, and the list is open: sign up here, without leaving the plan. */
+    var field = h('div', 'field');
+    var mail = h('input', 'input');
+    mail.type = 'email'; mail.placeholder = 'you@studio.com';
+    mail.setAttribute('inputmode', 'email'); mail.setAttribute('autocomplete', 'email');
+    mail.setAttribute('aria-label', 'Your email address'); mail.setAttribute('enterkeyhint', 'go');
+    field.appendChild(mail);
+    var msg = h('p', 'msg'); msg.setAttribute('role', 'alert'); field.appendChild(msg);
+    box.appendChild(field);
+    var consent = h('label', 'consent');
+    var tick = h('input', ''); tick.type = 'checkbox';
+    consent.appendChild(tick);
+    consent.appendChild(h('span', '', 'Also send me the occasional letter from Pretty Focussed. It’s a few a month at most.'));
+    box.appendChild(consent);
+    label.textContent = 'Put me on the list';
+    var join = function(){
+      var v = mail.value.trim();
+      if(!EMAIL.test(v)){
+        mail.setAttribute('aria-invalid', 'true');
+        msg.textContent = 'That address is missing something. Have another look.';
+        requestAnimationFrame(function(){ msg.dataset.show = 'true'; });
+        mail.focus(); return;
+      }
+      A.email = v; A.optIn = !!tick.checked; save();
+      track('email_submitted', {from:'result', opt_in:A.optIn});
+      track('waitlist_joined', {source:'Assessment result'});
+      send();
+      s.replaceWith(closeSection());   /* now on the list, so the page says so */
+    };
+    b.addEventListener('click', join);
+    mail.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); join(); } });
+    mail.addEventListener('input', function(){ mail.removeAttribute('aria-invalid'); msg.dataset.show = 'false'; msg.textContent = ''; });
   }
 
+  act.appendChild(b);
+  act.appendChild(note);
+  box.appendChild(act);
   s.appendChild(box);
   paintSend();
   SENT.watch = paintSend;
   return s;
 
   function paintSend(){
-    var el = state;   /* the node itself: it is not in the document yet on the first call */
-    if(!el) return;
-    if(!A.email){ el.textContent = live ? '' : 'It opens to a small first group.'; return; }
-    if(SENT.ok === 'kept')         el.textContent = 'Your plan is in your inbox already.';
-    else if(SENT.ok === 'held')    el.textContent = 'Email delivery opens with the list. Your plan is here and it stays on this device.';
-    else if(SENT.ok === 'preview') el.textContent = 'Preview. Nothing was sent and nobody was added to a list.';
-    else if(SENT.ok === true)      el.textContent = 'Your plan is on its way to ' + A.email + '.';
-    else if(SENT.ok === false)     el.textContent = 'Your plan is ready. We are having a small email hiccup, so it is here rather than in your inbox.';
-    else                           el.textContent = 'Sending your plan to ' + A.email + '.';
+    if(live){ note.textContent = ''; return; }
+    if(!A.email){
+      note.textContent = canAsk
+        ? 'You get in before it opens to everyone, and you keep the founding price for as long as you stay. We’ll email you once, when it’s your turn.'
+        : 'The list opens soon. Until then your plan stays here, on this device.';
+      return;
+    }
+    if(SENT.ok === 'kept')         note.textContent = 'You’re on the list and you keep the founding price. Your plan is already in your inbox.';
+    else if(SENT.ok === 'held')    note.textContent = 'Email starts when the list opens. Until then your plan stays here, on this device.';
+    else if(SENT.ok === 'preview') note.textContent = 'This is a preview, so nothing was sent and nobody was added to a list.';
+    else if(SENT.ok === true)      note.textContent = 'You’re on the list and you keep the founding price. Your plan is on its way to ' + A.email + '.';
+    else if(SENT.ok === false)     note.textContent = 'Something went wrong with the email, so your plan stays here on this device for now.';
+    else                           note.textContent = 'Sending your plan to ' + A.email + '.';
   }
 }
 
@@ -2767,10 +2816,10 @@ function showMissing(){
   swap(function(n){
     var w = h('div', 'ask');
     w.appendChild(h('p', 'overline', 'Your next 30 days'));
-    w.appendChild(h('h1', 'h2', 'This one lives on the device it was made on.'));
-    w.appendChild(h('p', 'lede', 'Nothing about you sits on a server, which is why it is not here. The link in your email carries it. Otherwise the reset takes three minutes and the plan comes back.'));
+    w.appendChild(h('h1', 'h2', 'Your plan isn’t on this device.'));
+    w.appendChild(h('p', 'lede', 'We don’t keep your answers on a server, so your plan only lives on the device where you made it. The link in your email opens it anywhere, or you can answer the questions again.'));
     n.appendChild(w);
-    var a = actBlock('Take the three minutes', function(){ location.href = CONFIG.assessmentPath; });
+    var a = actBlock('Make your plan again', function(){ location.href = CONFIG.assessmentPath; });
     n.appendChild(a.wrap);
   });
 }
