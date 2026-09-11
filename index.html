@@ -512,7 +512,9 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
       <button class="quiet-link" type="button" id="waitlist-toggle">Or just tell me when it opens</button>
     </div>
 
-    <div class="intro-form rise r6" id="intro-form" hidden>
+    <!-- No entrance animation here: this appears on a click, not on load, and the
+         page-load stagger it used to carry meant 1.2 s of nothing after the click. -->
+    <div class="intro-form" id="intro-form" hidden>
       <div class="swap" id="swap-hero">
         <div data-state="idle">
           <form class="form" id="form-hero" novalidate>
