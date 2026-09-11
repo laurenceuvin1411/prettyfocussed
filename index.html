@@ -263,6 +263,10 @@ body.is-joined{transition:background-color 800ms var(--ease-out)}
    The form
    ============================================================ */
 .form{max-width:34rem}
+/* The hidden attribute has to win. Without this, any class that sets display
+   (.form-row is display:flex) quietly overrides it, and a held form stays on
+   screen with nothing behind it. */
+[hidden]{display:none !important}
 .form-row{display:flex; gap:10px; align-items:stretch; flex-wrap:wrap}
 .input{
   flex:1 1 15rem; min-width:0; appearance:none; border:0; outline:0;
@@ -912,6 +916,9 @@ function wire(formId, swapId, source, extra){
 function hold(formId, line){
   const form = document.getElementById(formId);
   if(!form) return;
+  /* Held means held. With no handler and no action, a native submit would
+     reload this page with the address in the URL. */
+  form.addEventListener('submit', e => e.preventDefault());
   const row = form.querySelector('.form-row');
   if(row) row.hidden = true;
   const note = document.createElement('p');
