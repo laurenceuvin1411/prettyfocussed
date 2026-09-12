@@ -546,8 +546,8 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
       <div class="fnd-price">
         <div data-plane>
           <p class="overline">A founding place</p>
-          <p class="price num" style="margin-top:var(--space-grouped)">€<span data-price>149</span><span class="unit">/ year</span></p>
-          <p class="was">About <span data-day>40 cents</span> a day. <span data-places>100</span> places. At launch a year costs €<span data-regular>199</span>, and yours stays at €<span data-price>149</span>.</p>
+          <p class="price num" style="margin-top:var(--space-grouped)">€<span data-day-num>0,40</span><span class="unit">/ day</span></p>
+          <p class="was">That is €<span data-price>149</span> for a year, paid once. There are <span data-places>100</span> places. At launch a year costs €<span data-regular>199</span>, and yours stays at €<span data-price>149</span>.</p>
           <ul class="perks">
             <li>Your price stays €<span data-price>149</span> a year for as long as you keep your account.</li>
             <li>You get your account by <span data-opens>15 November 2026</span>, before anyone else does.</li>
@@ -658,6 +658,7 @@ const OFFER = {
   places:  100,                 // founding places in this round
   opensBy: '15 November 2026',  // the date the account is promised by
   perDay:  '40 cents',          // 149 / 365 is 40.8 cents; Laurence chose to say 40
+  perDayNum: '0,40',            // the same figure as the headline number on the card
   /* Stripe Payment Link for the founding price. Create it in Stripe, Payment links:
      product "Pretty Focussed, Founding member", €149 / year, tax inclusive, Stripe Tax on,
      after payment redirect to https://prettyfocussed.com/founding/?paid=1
@@ -669,6 +670,7 @@ document.querySelectorAll('[data-regular]').forEach(n => n.textContent = String(
 document.querySelectorAll('[data-places]').forEach(n => n.textContent = String(OFFER.places));
 document.querySelectorAll('[data-opens]').forEach(n => n.textContent = OFFER.opensBy);
 document.querySelectorAll('[data-day]').forEach(n => n.textContent = OFFER.perDay);
+document.querySelectorAll('[data-day-num]').forEach(n => n.textContent = OFFER.perDayNum);
 
 /* ============================================================
    2. KLAVIYO. Same account and list as the home page. The address is
