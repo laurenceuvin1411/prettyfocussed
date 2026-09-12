@@ -531,7 +531,7 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
     </p>
     <p class="intro-sub rise r4">The founding offer</p>
     <h1 class="display rise r5">You get in first, and you keep this price for as long as you stay.</h1>
-    <p class="lede intro-lede rise r6">Pretty Focussed opens to <span data-places>100</span> founding members before it opens to anyone else. A founding place costs €<span data-price>149</span> for a year, and that price never rises for you.</p>
+    <p class="lede intro-lede rise r6">Pretty Focussed opens to <span data-places>100</span> founding members before it opens to anyone else. A founding place costs €<span data-price>149</span> for a year, which is about <span data-day>40 cents</span> a day, and that price never rises for you.</p>
     <div class="intro-cta rise r6">
       <a class="btn btn-link" href="#place">Take a founding place</a>
       <p class="caption">You pay through Stripe and get your account by <span data-opens>15 November 2026</span>. Until 14 days after it opens, you can get the full amount back.</p>
@@ -547,7 +547,7 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
         <div data-plane>
           <p class="overline">A founding place</p>
           <p class="price num" style="margin-top:var(--space-grouped)">€<span data-price>149</span><span class="unit">/ year</span></p>
-          <p class="was"><span data-places>100</span> places. At launch a year costs €<span data-regular>199</span>, and yours stays at €<span data-price>149</span>.</p>
+          <p class="was">About <span data-day>40 cents</span> a day. <span data-places>100</span> places. At launch a year costs €<span data-regular>199</span>, and yours stays at €<span data-price>149</span>.</p>
           <ul class="perks">
             <li>Your price stays €<span data-price>149</span> a year for as long as you keep your account.</li>
             <li>You get your account by <span data-opens>15 November 2026</span>, before anyone else does.</li>
@@ -657,6 +657,7 @@ const OFFER = {
   regular: 199,                 // euro a year at launch
   places:  100,                 // founding places in this round
   opensBy: '15 November 2026',  // the date the account is promised by
+  perDay:  '40 cents',          // 149 / 365 is 40.8 cents; Laurence chose to say 40
   /* Stripe Payment Link for the founding price. Create it in Stripe, Payment links:
      product "Pretty Focussed, Founding member", €149 / year, tax inclusive, Stripe Tax on,
      after payment redirect to https://prettyfocussed.com/founding/?paid=1
@@ -667,6 +668,7 @@ document.querySelectorAll('[data-price]').forEach(n => n.textContent = String(OF
 document.querySelectorAll('[data-regular]').forEach(n => n.textContent = String(OFFER.regular));
 document.querySelectorAll('[data-places]').forEach(n => n.textContent = String(OFFER.places));
 document.querySelectorAll('[data-opens]').forEach(n => n.textContent = OFFER.opensBy);
+document.querySelectorAll('[data-day]').forEach(n => n.textContent = OFFER.perDay);
 
 /* ============================================================
    2. KLAVIYO. Same account and list as the home page. The address is

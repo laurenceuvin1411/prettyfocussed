@@ -709,44 +709,22 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
       <div class="offer-grid">
         <div data-plane>
           <p class="overline">The founding offer</p>
-          <p class="price num" style="margin-top:var(--space-grouped)">€<span data-price-founding>9,90</span><span class="unit">/ month</span></p>
-          <p class="was">At launch it will cost €<span data-price-regular>24,90</span> a month. Yours stays at €9,90.</p>
+          <p class="price num" style="margin-top:var(--space-grouped)">€<span data-price-founding>149</span><span class="unit">/ year</span></p>
+          <p class="was">That is about 40 cents a day. At launch a year costs €<span data-price-regular>199</span>, and yours stays at €149.</p>
           <ul class="perks">
             <li>The founding price never rises, for as long as you stay.</li>
-            <li>You get in first, in the order you joined the list.</li>
+            <li>You get your account first, before it opens to everyone.</li>
             <li>You get all five topics, cycle syncing, and the weekly review from the first day.</li>
             <li>You can write directly to the people who are building it.</li>
+            <li>You can get every euro back until 14 days after your account opens.</li>
           </ul>
         </div>
 
-        <div class="swap" id="swap-offer">
-          <div data-state="idle">
-            <form class="form" id="form-offer" novalidate>
-              <p class="overline" style="margin:0 0 var(--space-related)">Ask for a founding place</p>
-              <div class="form-row">
-                <input class="input" id="runs-offer" name="what_you_run" type="text" style="flex:1 1 100%"
-                       maxlength="160" placeholder="What you run" aria-label="What you run"
-                       data-required data-message="Tell me what you run. One line is enough." required>
-                <input class="input" type="email" name="email" inputmode="email" autocomplete="email"
-                       placeholder="you@studio.com" aria-label="Your email address" required>
-                <button class="btn" type="submit"><span class="btn-label">Ask for a place</span></button>
-              </div>
-              <div aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden">
-                <input name="hp_note" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
-              </div>
-              <p class="msg" data-msg role="alert"></p>
-              <p class="caption">I read every request myself. You don’t need a card now.</p>
-            </form>
-          </div>
-          <div data-state="done" aria-live="polite">
-            <div class="done-in">
-              <p class="overline done-badge">On the list</p>
-              <h2 class="h2">You’re on the list.</h2>
-            <p class="caption" style="margin:0">Your place is saved in the order you asked.</p>
-              <p class="done-mail" data-echo></p>
-              <p class="caption">We’ll email you once, when it opens, at the founding price. You won’t hear from us before that.</p>
-            </div>
-          </div>
+        <div data-plane>
+          <p class="overline" style="margin:0 0 var(--space-related)">100 places</p>
+          <p class="lede" style="margin:0 0 var(--space-grouped)">You pay €149 through Stripe today and get your account by 15 November 2026. Your 30-day plan is already in it if you made one.</p>
+          <a class="btn btn-link" href="/founding">Take a founding place</a>
+          <p class="caption" style="margin-top:var(--space-related)">It takes about a minute, and your card details never reach us.</p>
         </div>
       </div>
     </div>
