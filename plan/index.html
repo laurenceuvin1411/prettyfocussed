@@ -2004,10 +2004,10 @@ function showCapture(){
     a.btn.disabled = !EMAIL.test((A.email || '').trim());
     n.appendChild(a.wrap);
 
-    var skip = h('button', 'ghost', 'Show me the plan now');
-    skip.type = 'button';
-    skip.addEventListener('click', function(){ track('email_skipped', {}); openResult(); });
-    n.appendChild(skip);
+    /* There is no way past this screen without an address. The skip link that
+       used to sit here ("Show me the plan now") cost more addresses than the
+       question itself did, and everyone who reaches this point has already
+       answered eleven questions. Decision of 12 Sep 2026. */
 
     i.addEventListener('input', function(){
       i.removeAttribute('aria-invalid'); msg.dataset.show = 'false'; msg.textContent = '';

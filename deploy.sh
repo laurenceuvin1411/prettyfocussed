@@ -17,6 +17,11 @@ cp ../site/plan.html plan/index.html
 # renders the result instead of the assessment.
 mkdir -p your-next-30-days
 cp ../site/plan.html your-next-30-days/index.html
+# The founding offer, served at both /founding and /founding.html. Stripe sends
+# her back to /founding/?paid=1 after payment; the same file renders that state.
+cp ../site/founding.html founding.html
+mkdir -p founding
+cp ../site/founding.html founding/index.html
 # The podcast page, and /reset — the one-word address spoken in every episode.
 cp ../site/podcast.html podcast.html
 mkdir -p reset
