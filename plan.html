@@ -338,17 +338,24 @@ textarea.input{min-height:132px; resize:vertical; line-height:1.5; font-size:1.0
 .peek::after{content:''; position:absolute; left:0; right:0; bottom:0; height:96px; pointer-events:none;
   background:linear-gradient(to bottom, transparent,
     color-mix(in oklab, var(--ground-s0) calc((1 - var(--room)) * 100%), var(--ground-s1)) 92%)}
-.peek .prio{padding:20px 0; transition:opacity var(--duration-base) var(--ease-out)}
-/* Depth of field, not a paywall. Nothing is hidden; the plane simply falls
-   away, and the gradient says there is more below. */
-.peek .prio[data-depth="1"]{opacity:.72}
-.peek .prio[data-depth="2"]{opacity:.5}
-.peek .prio[data-depth="2"] .head{filter:blur(2.5px)}
+/* Depth of field, not a paywall. This is the finished plan, in the same cards
+   and the same timeline, with the planes falling away one by one. The first
+   priority is readable, so she knows exactly what she is about to get. */
+.peek .pcards{gap:14px}
+.peek .pcard,.peek .tl{transition:opacity var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out)}
+.peek .pcard[data-depth="1"]{opacity:.78}
+.peek .pcard[data-depth="1"] .head,.peek .pcard[data-depth="1"] .why{filter:blur(1.8px)}
+.peek .pcard[data-depth="2"]{opacity:.55}
+.peek .pcard[data-depth="2"] .pname{filter:blur(3px)}
+.peek .pcard[data-depth="2"] .head,.peek .pcard[data-depth="2"] .why{filter:blur(3.6px)}
+.peek .tl{margin-top:22px; opacity:.4; filter:blur(4px); pointer-events:none}
+@media (min-width:900px){.peek .pcards{gap:18px}}
 @media (prefers-reduced-motion: reduce){
-  .peek .prio[data-depth="2"] .head{filter:none}
+  .peek .pcard[data-depth] .pname,.peek .pcard[data-depth] .head,
+  .peek .pcard[data-depth] .why,.peek .tl{filter:none}
+  .peek .pcard[data-depth="1"]{opacity:.7}
+  .peek .pcard[data-depth="2"]{opacity:.45}
 }
-.peek .prio .head{font-size:clamp(1.375rem,1.05rem + 1.4vw,1.875rem)}
-.peek .prio:first-child .head{font-size:clamp(1.625rem,1.1rem + 2.2vw,2.375rem)}
 .stats{display:flex; flex-wrap:wrap; gap:26px 34px; align-items:baseline}
 .stat{display:flex; align-items:baseline; gap:6px}
 .stat .num{font-size:1.75rem; line-height:1}
@@ -2014,13 +2021,44 @@ function sDial(n, s){
    The plan is finished before the address is asked for. That order is the
    whole point: nothing is being unlocked, it is being delivered.
    ============================================================ */
-function previewRow(r, i){
-  var row = h('div', 'prio');
-  row.setAttribute('data-depth', String(i));
-  row.appendChild(h('span', 'idx', pad(i + 1)));
-  row.appendChild(h('p', 'lane', esc(laneWord(r.a)) + ' · ' + esc(r.a.label)));
-  row.appendChild(h('h3', 'head', esc(r.a.act)));
+/* One builder for a priority card and one for the timeline, used by the plan
+   and by the preview. The preview is the plan behind glass, so it has to be
+   the same thing, not a drawing of it. */
+function prioCard(r, i){
+  var row = h('div', 'pcard');
+  var top = h('p', 'ptop');
+  top.appendChild(h('span', 'pidx', pad(i + 1)));
+  top.appendChild(h('span', '', esc(laneWord(r.a))));
+  row.appendChild(top);
+  row.appendChild(h('h3', 'pname', esc(r.a.label)));
+  row.appendChild(h('div', 'prule'));
+  row.appendChild(h('p', 'head', esc(r.a.act)));
+  var why = r.hit ? r.a.why + ' You named it yourself.'
+          : r.debt ? r.a.why + ' It’s the one that keeps moving to tomorrow.'
+          : r.a.why;
+  row.appendChild(h('p', 'why', esc(why)));
   return row;
+}
+
+function weekTimeline(P){
+  var weeks = h('div', 'tl');
+  var tail = [
+    'Start with ' + P.three[0].a.label.toLowerCase() + '.',
+    P.three[1].a.act,
+    P.three[0].a.act,
+    'If one of the three hasn’t moved by now, swap it for another one instead of adding more.'
+  ];
+  WEEKS.forEach(function(w, i){
+    var row = h('div', 'tlitem');
+    row.appendChild(h('span', 'tldot'));
+    var body = h('div', 'tlbody');
+    body.appendChild(h('p', 'tlwk', 'Week ' + (i + 1)));
+    body.appendChild(h('h3', 'tlname', esc(w.t)));
+    body.appendChild(h('p', 'tltext', esc(w.d) + ' ' + esc(tail[i])));
+    row.appendChild(body);
+    weeks.appendChild(row);
+  });
+  return weeks;
 }
 
 function showPreview(){
@@ -2033,10 +2071,21 @@ function showPreview(){
     w.appendChild(h('p', 'lede', 'We turned your answers into one plan. It has your three priorities, what to do each week, and a list of what can wait.'));
     n.appendChild(w);
 
+    /* The plan itself, one plane sharp and the rest held soft: the first
+       priority is readable, the second sits back, the third and the weeks are
+       behind the glass. Nothing is hidden that she has not already answered. */
     var peek = h('div', 'peek');
-    var prios = h('div', 'prios');
-    PLAN.three.forEach(function(r, i){ prios.appendChild(previewRow(r, i)); });
+    var prios = h('div', 'pcards');
+    PLAN.three.forEach(function(r, i){
+      var card = prioCard(r, i);
+      card.setAttribute('data-depth', String(i));
+      prios.appendChild(card);
+    });
     peek.appendChild(prios);
+    var tl = weekTimeline(PLAN);
+    tl.setAttribute('data-depth', '3');
+    tl.setAttribute('aria-hidden', 'true');
+    peek.appendChild(tl);
     n.appendChild(peek);
 
     var stats = h('div', 'stats');
@@ -2362,21 +2411,7 @@ function showResult(){
     var s3 = h('section', '');
     s3.appendChild(h('p', 'overline', 'Your three'));
     var prios = h('div', 'pcards');
-    P.three.forEach(function(r, i){
-      var row = h('div', 'pcard');
-      var top = h('p', 'ptop');
-      top.appendChild(h('span', 'pidx', pad(i + 1)));
-      top.appendChild(h('span', '', esc(laneWord(r.a))));
-      row.appendChild(top);
-      row.appendChild(h('h3', 'pname', esc(r.a.label)));
-      row.appendChild(h('div', 'prule'));
-      row.appendChild(h('p', 'head', esc(r.a.act)));
-      var why = r.hit ? r.a.why + ' You named it yourself.'
-              : r.debt ? r.a.why + ' It’s the one that keeps moving to tomorrow.'
-              : r.a.why;
-      row.appendChild(h('p', 'why', esc(why)));
-      prios.appendChild(row);
-    });
+    P.three.forEach(function(r, i){ prios.appendChild(prioCard(r, i)); });
     s3.appendChild(prios);
     res.appendChild(s3);
     focusOne(prios);
@@ -2402,23 +2437,7 @@ function showResult(){
     /* --- the four weeks --- */
     var s5 = h('section', '');
     s5.appendChild(h('p', 'overline', 'The four weeks'));
-    var weeks = h('div', 'tl');
-    var tail = [
-      'Start with ' + P.three[0].a.label.toLowerCase() + '.',
-      P.three[1].a.act,
-      P.three[0].a.act,
-      'If one of the three hasn’t moved by now, swap it for another one instead of adding more.'
-    ];
-    WEEKS.forEach(function(w, i){
-      var row = h('div', 'tlitem');
-      row.appendChild(h('span', 'tldot'));
-      var body = h('div', 'tlbody');
-      body.appendChild(h('p', 'tlwk', 'Week ' + (i + 1)));
-      body.appendChild(h('h3', 'tlname', esc(w.t)));
-      body.appendChild(h('p', 'tltext', esc(w.d) + ' ' + esc(tail[i])));
-      row.appendChild(body);
-      weeks.appendChild(row);
-    });
+    var weeks = weekTimeline(P);
     s5.appendChild(weeks);
     focusOne(weeks);
     res.appendChild(s5);
