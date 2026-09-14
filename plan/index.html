@@ -924,7 +924,16 @@ var SEASONS = [
   {id:'slow',     label:'Slowing down and recalibrating', d:{tilt:-.30, capacity:-.10},                push:['rest','energy','mind']}
 ];
 var SEASON_ALIAS = {building:'business', growing:'big', body:'slow', people:'life', next:'reinvent'};
-function seasonOf(){ return byId(SEASONS, SEASON_ALIAS[A.season] || A.season) || {}; }
+/* Two seasons are allowed, because people are often in both at once. The first
+   pick still stands in wherever one season is expected, and the engine halves
+   the pull of each when there are two, so a second pick widens the picture
+   instead of doubling the shift. */
+function seasonsOf(){
+  return A.seasons.map(function(id){ return byId(SEASONS, SEASON_ALIAS[id] || id); })
+    .filter(function(s){ return !!s; });
+}
+function seasonOf(){ return seasonsOf()[0] || {}; }
+function scaleD(src, f){ var out = {}; for(var k in src) out[k] = src[k] * f; return out; }
 
 var RUNS = [
   {id:'business', label:'I run my own business',  bt:'Solo service'},
@@ -1048,13 +1057,13 @@ function waitReason(a, i, r){
    3. STORE — answers live in the browser. Nothing leaves until it is sent.
    ============================================================ */
 var A = {
-  name:'', email:'', optIn:false, season:'', run:'', age:'', areas:[], top:[], ambition:'',
+  name:'', email:'', optIn:false, seasons:[], run:'', age:'', areas:[], top:[], ambition:'',
   obstacles:[], deferred:[], focus:50, mload:'', identity:[], style:'', cost:'',
   country:'', tz:'', lang:'', utm:{}, ref:'', code:'', started:0, screen:0, done:false
 };
 function save(){
   /* An untouched visit must never overwrite answers left from a previous one. */
-  if(!A.name && !A.season && !A.areas.length) return;
+  if(!A.name && !A.seasons.length && !A.areas.length) return;
   try{ localStorage.setItem(CONFIG.storeKey, JSON.stringify({t:Date.now(), a:A})); }catch(e){}
 }
 function load(){
@@ -1089,7 +1098,7 @@ function unb64url(str){
 }
 function encodeState(){
   try{
-    return b64url([1, A.name, A.season, A.run, A.age,
+    return b64url([1, A.name, A.seasons.join('.'), A.run, A.age,
       A.areas.join('.'), A.top.join('.'), A.obstacles.join('.'), A.deferred.join('.'),
       A.focus, A.mload, A.identity.join('.'), A.style, A.cost,
       (A.ambition || '').replace(/\s+/g, ' ').slice(0, 400)
@@ -1101,7 +1110,7 @@ function decodeState(token){
     var f = unb64url(token).split('|');
     if(f[0] !== '1' || f.length < 15) return false;
     var list = function(v){ return v ? v.split('.') : []; };
-    A.name = f[1]; A.season = f[2]; A.run = f[3]; A.age = f[4];
+    A.name = f[1]; A.seasons = list(f[2]); A.run = f[3]; A.age = f[4];
     A.areas = list(f[5]); A.top = list(f[6]);
     A.obstacles = list(f[7]); A.deferred = list(f[8]);
     A.focus = +f[9] || 50; A.mload = f[10];
@@ -1189,7 +1198,8 @@ function byId(list, id){ for(var i=0;i<list.length;i++) if(list[i].id === id) re
 function dimensions(){
   var d = {load:.45, clarity:.50, momentum:.50, tilt:.50, capacity:.55, reinvent:.05};
 
-  applyD(d, seasonOf().d);
+  var ss = seasonsOf();
+  ss.forEach(function(s){ applyD(d, scaleD(s.d || {}, 1 / ss.length)); });
   A.obstacles.forEach(function(id){ applyD(d, (byId(OBSTACLES, id) || {}).d); });
   applyD(d, (byId(STYLE_LIST, A.style) || {}).d);
   applyD(d, (byId(STYLE_COST, A.cost) || {}).d);
@@ -1242,7 +1252,9 @@ function scoreAreas(d){
     (row.push || []).forEach(function(x){ push[x] = (push[x] || 0) + 1; });
   });
   (byId(STYLE_COST, A.cost) || {push:[]}).push.forEach(function(x){ push[x] = (push[x] || 0) + 1; });
-  (seasonOf().push || []).forEach(function(x){ push[x] = (push[x] || 0) + 1.3; });
+  seasonsOf().forEach(function(s){
+    (s.push || []).forEach(function(x){ push[x] = (push[x] || 0) + 1.3; });
+  });
   var ident = {};
   A.identity.forEach(function(id){
     var row = byId(IDENTITY, id); if(!row) return;
@@ -1420,9 +1432,9 @@ var SCREENS = [
    h:'Start with your name.', lede:'We use it to write the plan to you.',
    ph:'First name', key:'name'},
 
-  {id:'season', type:'single', chapter:'Who you are', over:'Two', cols:2,
-   h:'Pick the season you’re in right now.', lede:'One of them will be close enough, and if two fit, pick the one that’s on your mind most.',
-   list:SEASONS, key:'season'},
+  {id:'season', type:'multi', chapter:'Who you are', over:'Two', cols:2, max:2,
+   h:'Pick the season you’re in right now.', lede:'One of them will be close enough. If you are in two at once, pick both, and stop there.',
+   list:SEASONS, key:'seasons'},
 
   {id:'run', type:'double', chapter:'Who you are', over:'Three',
    h:'Tell us how you spend your days.',
@@ -2634,7 +2646,7 @@ function planProperties(){
   props[KP.archetype]      = P.arch.name;
   props[KP.archetypeId]    = P.arch.id;
   props[KP.archetypeFit]   = P.fit;
-  props[KP.lifeSeason]     = seasonOf().label || '';
+  props[KP.lifeSeason]     = seasonsOf().map(function(s){ return s.label; }).join(', ');
   props[KP.ageBand]        = A.age || '';
   props[KP.country]        = A.country || '';
   props[KP.timezone]       = A.tz || '';
