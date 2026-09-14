@@ -403,10 +403,62 @@ textarea.input{min-height:132px; resize:vertical; line-height:1.5; font-size:1.0
 .prio:last-child{border-bottom:1px solid var(--color-border-default)}
 .prio .idx{font-family:var(--font-mono); font-size:11px; color:var(--color-text-muted); padding-top:7px; letter-spacing:.02em}
 .prio .lane{grid-column:2; font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; color:var(--color-text-muted); margin:0 0 6px}
-.prio .head{grid-column:2; font-family:var(--font-display); font-size:clamp(1.5rem,1.1rem + 1.6vw,2.125rem);
+.prio .head{grid-column:2; font-family:var(--font-display); font-size:clamp(1.25rem,1rem + 1vw,1.625rem);
   line-height:1.14; letter-spacing:-.025em; margin:0}
 .prio .why{grid-column:2; margin:10px 0 0; font-size:.9375rem; line-height:1.55; color:var(--color-text-secondary); max-width:46ch}
-.prio:first-child .head{font-size:clamp(1.75rem,1.1rem + 2.6vw,2.75rem)}
+/* The first priority stays the dominant one, but the three now sit close
+   enough to be read as one set instead of three separate screens. */
+.prio:first-child .head{font-size:clamp(1.5rem,1.1rem + 1.7vw,2.125rem)}
+
+/* The three as cards, in the language of the share card: one word to grab,
+   the sentence underneath, the reason in small. A card holds one thing, and
+   three cards read as three things instead of one wall. */
+.pcards{display:grid; gap:var(--space-related)}
+.pcard{position:relative; overflow:hidden; border-radius:var(--radius-panel); background:var(--pf-bone);
+  box-shadow:var(--shadow-lg); padding:clamp(22px,3.2vw,30px); display:grid; gap:13px; border:0}
+.pcard::before{content:''; position:absolute; inset:0;
+  background:radial-gradient(120% 90% at 18% 8%, rgb(226 231 218 / .95), rgb(226 231 218 / 0) 62%),
+             radial-gradient(110% 80% at 92% 100%, rgb(239 227 216 / .9), rgb(239 227 216 / 0) 60%)}
+.pcard::after{content:''; position:absolute; inset:0; background-image:var(--noise); opacity:.04; mix-blend-mode:multiply}
+.pcard > *{position:relative; z-index:1}
+.pcard .ptop{display:flex; align-items:baseline; gap:10px; margin:0;
+  font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; color:var(--color-text-muted)}
+.pcard .pidx{font-family:var(--font-mono); font-size:11px; letter-spacing:.02em}
+.pcard .pname{font-family:var(--font-display); font-size:clamp(1.5rem,1.1rem + 1.9vw,2.125rem); line-height:.98;
+  letter-spacing:-.035em; text-transform:uppercase; margin:0}
+.pcard .prule{height:1px; background:var(--color-border-default); margin:1px 0}
+.pcard .head{font-family:var(--font-display); font-size:clamp(1.0625rem,.98rem + .45vw,1.25rem); line-height:1.3;
+  letter-spacing:-.02em; margin:0}
+.pcard .why{margin:0; font-size:.9375rem; line-height:1.55; color:var(--color-text-secondary); max-width:46ch}
+
+/* Wide enough for three: they stand next to each other, like the share card,
+   and the whole month is one glance. Below this they stack, and the depth of
+   field takes over because only one fits on the screen at a time anyway. */
+@media (min-width:900px){
+  .pcards{grid-template-columns:repeat(3, 1fr); gap:var(--space-related)}
+  .pcard{display:flex; flex-direction:column; gap:13px; min-height:20rem; padding:26px}
+  .pcard .pname{font-size:clamp(1.375rem,.6rem + 1.5vw,1.75rem)}
+  .pcard .head{font-size:1.0625rem}
+  .pcard .why{margin-top:auto; max-width:none}
+}
+
+/* Depth of field on the result, the same idea as the preview: the priority you
+   are reading is sharp and the other two stay present but out of focus, so
+   there is only ever one thing to hold. The class is added by script, so a page
+   without JS shows all three at full strength instead of a dimmed page. */
+.focusing .prio,.focusing .pcard{transition:opacity var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out), box-shadow var(--duration-base) var(--ease-out)}
+.focusing .prio:not([data-on]),.focusing .pcard:not([data-on]){opacity:.42}
+.focusing .pcard:not([data-on]){box-shadow:var(--shadow-sm)}
+.focusing .prio:not([data-on]) .head,.focusing .pcard:not([data-on]) .pname{filter:blur(2.2px)}
+.focusing .prio:not([data-on]) .why,.focusing .pcard:not([data-on]) .head,
+.focusing .pcard:not([data-on]) .why{filter:blur(1.4px)}
+@media (prefers-reduced-motion: reduce){
+  .focusing [data-on] ~ *,
+  .focusing .prio:not([data-on]) .head,.focusing .prio:not([data-on]) .why,
+  .focusing .pcard:not([data-on]) .pname,.focusing .pcard:not([data-on]) .head,
+  .focusing .pcard:not([data-on]) .why{filter:none}
+  .focusing .prio:not([data-on]),.focusing .pcard:not([data-on]){opacity:.58}
+}
 
 /* not now — the relief */
 .notnow{display:grid; gap:0}
@@ -2068,6 +2120,48 @@ function showSuccess(){
   setTimeout(openResult, 1700);
 }
 
+/* One priority at a time. The one closest to the middle of the screen is the
+   sharp plane; the other two stay where they are and go soft. Nothing is
+   hidden and nothing moves, so there is no hunting and nothing to click.
+   Scroll drives it, and the first priority is sharp before you touch anything. */
+function focusOne(box){
+  var rows = [].slice.call(box.querySelectorAll('.prio, .pcard'));
+  if(!rows.length) return;
+  box.classList.add('focusing');
+  rows[0].setAttribute('data-on', 'true');
+  var ticking = false;
+  /* Side by side, all three are already in one glance, so nothing is held soft.
+     Stacked, only one fits the screen, so the depth of field does its work. */
+  var sideBySide = function(){
+    if(rows.length < 2) return false;
+    return Math.abs(rows[0].getBoundingClientRect().top - rows[1].getBoundingClientRect().top) < 8;
+  };
+  var pick = function(){
+    ticking = false;
+    if(sideBySide()){
+      box.classList.remove('focusing');
+      rows.forEach(function(r){ r.removeAttribute('data-on'); });
+      return;
+    }
+    box.classList.add('focusing');
+    var mid = innerHeight / 2, best = null, bestGap = Infinity;
+    rows.forEach(function(r){
+      var b = r.getBoundingClientRect();
+      var gap = Math.abs((b.top + b.height / 2) - mid);
+      if(gap < bestGap){ bestGap = gap; best = r; }
+    });
+    rows.forEach(function(r){
+      if(r === best) r.setAttribute('data-on', 'true');
+      else r.removeAttribute('data-on');
+    });
+  };
+  addEventListener('scroll', function(){
+    if(!ticking){ ticking = true; requestAnimationFrame(pick); }
+  }, { passive:true });
+  addEventListener('resize', pick, { passive:true });
+  pick();
+}
+
 /* The one door into the finished plan, wherever it is opened from. */
 var RESULT_OPEN = false;
 function openResult(){
@@ -2219,21 +2313,24 @@ function showResult(){
       res.appendChild(s2);
     }
 
-    /* --- one instruction for the month --- */
-    var sf = h('section', 'focusline');
-    sf.appendChild(h('p', 'overline', 'Your focus'));
-    sf.appendChild(h('h2', 'h2', esc(focusStatement(P))));
-    res.appendChild(sf);
+    /* The "Your focus" block used to sit here and said the first priority word
+       for word, one line above the same sentence in larger type. Two screens of
+       reading for one instruction. It is gone; the three speak for themselves.
+       focusStatement() stays, because the email and the share card use it. */
 
     /* --- the three --- */
     var s3 = h('section', '');
     s3.appendChild(h('p', 'overline', 'Your three'));
-    var prios = h('div', 'prios');
+    var prios = h('div', 'pcards');
     P.three.forEach(function(r, i){
-      var row = h('div', 'prio');
-      row.appendChild(h('span', 'idx', pad(i + 1)));
-      row.appendChild(h('p', 'lane', esc(laneWord(r.a)) + ' · ' + esc(r.a.label)));
-      row.appendChild(h('h3', 'head', esc(r.a.act)));
+      var row = h('div', 'pcard');
+      var top = h('p', 'ptop');
+      top.appendChild(h('span', 'pidx', pad(i + 1)));
+      top.appendChild(h('span', '', esc(laneWord(r.a))));
+      row.appendChild(top);
+      row.appendChild(h('h3', 'pname', esc(r.a.label)));
+      row.appendChild(h('div', 'prule'));
+      row.appendChild(h('p', 'head', esc(r.a.act)));
       var why = r.hit ? r.a.why + ' You named it yourself.'
               : r.debt ? r.a.why + ' It’s the one that keeps moving to tomorrow.'
               : r.a.why;
@@ -2242,6 +2339,7 @@ function showResult(){
     });
     s3.appendChild(prios);
     res.appendChild(s3);
+    focusOne(prios);
 
     /* --- what waits --- */
     var s4 = h('section', '');
