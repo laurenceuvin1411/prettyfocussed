@@ -442,6 +442,46 @@ textarea.input{min-height:132px; resize:vertical; line-height:1.5; font-size:1.0
   .pcard .why{margin-top:auto; max-width:none}
 }
 
+/* The four weeks are a line with four points on it, because they happen one
+   after the other. The line runs down the side on a phone and across the page
+   on a wide screen, and the point of the week you are reading is filled in. */
+.tl{display:grid; gap:26px; position:relative; margin-top:var(--space-related)}
+/* The line is drawn per step, from one point to the next, so it starts at the
+   first point and stops at the last one instead of running off the edge. */
+.tlitem{position:relative; display:grid; grid-template-columns:auto 1fr; gap:0 18px; align-items:start}
+.tlitem::after{content:''; position:absolute; left:5px; top:18px; bottom:-30px; width:1px;
+  background:var(--color-border-default)}
+.tlitem:last-child::after{display:none}
+.tldot{width:11px; height:11px; border-radius:50%; margin-top:5px;
+  border:1px solid var(--color-border-strong, var(--color-border-default));
+  background:var(--color-surface-default);
+  transition:background-color var(--duration-base) var(--ease-out), border-color var(--duration-base) var(--ease-out)}
+.tlitem[data-on] .tldot{background:var(--color-text-primary); border-color:var(--color-text-primary)}
+.tlbody{display:grid; gap:7px}
+.tlwk{margin:0; font-family:var(--font-mono); font-size:11px; letter-spacing:.02em; color:var(--color-text-muted)}
+.tlname{margin:0; font-family:var(--font-display); font-size:1.3125rem; line-height:1; letter-spacing:-.025em; text-transform:uppercase}
+.tltext{margin:0; font-size:.9375rem; line-height:1.55; color:var(--color-text-secondary); max-width:46ch}
+
+@media (min-width:900px){
+  .tl{grid-template-columns:repeat(4, 1fr); gap:30px}
+  .tlitem{grid-template-columns:1fr; gap:14px; align-content:start}
+  .tlitem::after{left:16px; right:-30px; top:5px; bottom:auto; width:auto; height:1px}
+  .tldot{margin:0}
+  .tlbody{gap:6px; padding-right:14px}
+}
+
+/* Stacked, the week you are reading is the sharp one. Side by side they are
+   all in one glance, so the script turns this off. */
+.focusing .tlitem{transition:opacity var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out)}
+.focusing .tlitem:not([data-on]){opacity:.42}
+.focusing .tlitem:not([data-on]) .tlname{filter:blur(2px)}
+.focusing .tlitem:not([data-on]) .tltext{filter:blur(1.3px)}
+@media (prefers-reduced-motion: reduce){
+  .focusing .tlitem:not([data-on]) .tlname,
+  .focusing .tlitem:not([data-on]) .tltext{filter:none}
+  .focusing .tlitem:not([data-on]){opacity:.58}
+}
+
 /* Depth of field on the result, the same idea as the preview: the priority you
    are reading is sharp and the other two stay present but out of focus, so
    there is only ever one thing to hold. The class is added by script, so a page
@@ -2125,7 +2165,7 @@ function showSuccess(){
    hidden and nothing moves, so there is no hunting and nothing to click.
    Scroll drives it, and the first priority is sharp before you touch anything. */
 function focusOne(box){
-  var rows = [].slice.call(box.querySelectorAll('.prio, .pcard'));
+  var rows = [].slice.call(box.querySelectorAll('.prio, .pcard, .tlitem'));
   if(!rows.length) return;
   box.classList.add('focusing');
   rows[0].setAttribute('data-on', 'true');
@@ -2362,7 +2402,7 @@ function showResult(){
     /* --- the four weeks --- */
     var s5 = h('section', '');
     s5.appendChild(h('p', 'overline', 'The four weeks'));
-    var weeks = h('div', 'weeks');
+    var weeks = h('div', 'tl');
     var tail = [
       'Start with ' + P.three[0].a.label.toLowerCase() + '.',
       P.three[1].a.act,
@@ -2370,13 +2410,17 @@ function showResult(){
       'If one of the three hasn’t moved by now, swap it for another one instead of adding more.'
     ];
     WEEKS.forEach(function(w, i){
-      var row = h('div', 'week');
-      row.appendChild(h('span', 'wn', 'WK ' + pad(i + 1)));
-      row.appendChild(h('h3', 'wt', esc(w.t)));
-      row.appendChild(h('p', 'wd', esc(w.d) + ' ' + esc(tail[i])));
+      var row = h('div', 'tlitem');
+      row.appendChild(h('span', 'tldot'));
+      var body = h('div', 'tlbody');
+      body.appendChild(h('p', 'tlwk', 'Week ' + (i + 1)));
+      body.appendChild(h('h3', 'tlname', esc(w.t)));
+      body.appendChild(h('p', 'tltext', esc(w.d) + ' ' + esc(tail[i])));
+      row.appendChild(body);
       weeks.appendChild(row);
     });
     s5.appendChild(weeks);
+    focusOne(weeks);
     res.appendChild(s5);
 
     /* --- non-negotiables --- */
