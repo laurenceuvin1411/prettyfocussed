@@ -661,6 +661,18 @@ var CONFIG = {
   klaviyo: {
     companyId: 'XJhFyV',        // public site id. Safe in the browser.
     listId:    'XNCgAA',        // Marketing · Email
+    /* Campaign traffic that arrives already consented. The Instagram DM asks
+       for the address before it sends this link and subscribes her to Focus 30,
+       single opt-in, so putting her on the double opt-in list here would send a
+       confirmation email to someone who confirmed in a DM. Keyed by
+       utm_campaign, lowercased. */
+    campaigns: {
+      'focus-30': {
+        listId:'Vq8S75',            // Focus 30
+        source:'focus-30',
+        line:'You asked how I plan the five. This works out yours.'
+      }
+    },
     revision:  '2025-01-15',
     wording:   'v1.0',
     metric:    'Completed focus assessment'
@@ -758,7 +770,10 @@ var KP = {
   seconds:         'pf_seconds',
   referralCode:    'pf_referral_code',
   referredBy:      'pf_referred_by',
-  referralSource:  'pf_referral_source'
+  referralSource:  'pf_referral_source',
+
+  /* Which of the five areas she tapped in the DM, before she saw the page. */
+  dmArea:          'pf_dm_area'
 };
 /* The metric a flow triggers on, and the one profile property a segment can
    be built from without touching an event. */
@@ -1255,6 +1270,13 @@ function readContext(){
   A.lang = (navigator.language || 'en');
   A.country = countryFrom(A.tz, A.lang);
 }
+/* The campaign this visit belongs to, or null. Read from the link the DM sent,
+   and it decides three things: which list she joins, what Klaviyo records as
+   the source, and one line on the intro. */
+function campaign(){
+  return CONFIG.klaviyo.campaigns[(A.utm.utm_campaign || '').toLowerCase()] || null;
+}
+
 /* Region without a dropdown and without an IP lookup. Coarse on purpose. */
 function countryFrom(tz, lang){
   var city = (tz || '').split('/')[1] || '';
@@ -1699,6 +1721,10 @@ function sIntro(n){
   w.appendChild(h('p', 'overline', 'Eleven questions'));
   w.appendChild(h('h1', 'display', 'Your life has a lot of tabs open.'));
   w.appendChild(h('p', 'lede', 'Close the ones that don’t matter this month. Your answers turn into a plan for the next 30 days, built around what deserves your time.'));
+  /* One line for the traffic a campaign sent, so the page answers the video it
+     came from. Everyone else sees the intro unchanged. */
+  var camp = campaign();
+  if(camp && camp.line) w.appendChild(h('p', 'caption', camp.line));
   n.appendChild(w);
 
   var resumed = RESUMABLE;
@@ -2791,8 +2817,11 @@ function planProperties(){
     return ids.map(function(id){ return (byId(list, id) || {}).label || ''; }).filter(Boolean).join(', ');
   };
   var props = {};
-  props[KP.source]         = 'Assessment';
+  /* Instagram says so, in the audience-system enum. Everything else keeps the
+     value the page has always written. */
+  props[KP.source]         = A.utm.utm_source === 'instagram' ? 'Instagram' : 'Assessment';
   props[KP.page]           = location.origin + location.pathname;
+  if(campaign() && A.utm.utm_content) props[KP.dmArea] = A.utm.utm_content;
   props[KP.consentAt]      = new Date().toISOString();
   props[KP.consentWording] = CONFIG.klaviyo.wording;
   props[KP.language]       = (A.lang || 'en').toLowerCase().indexOf('nl') === 0 ? 'NL' : 'EN';
@@ -2944,12 +2973,13 @@ function send(){
         data:{
           type:'subscription',
           attributes:{
-            custom_source:'Assessment',
+            custom_source:(campaign() || {}).source || 'Assessment',
             profile:{data:{type:'profile', attributes:{
               email:A.email, first_name:name, properties:props
             }}}
           },
-          relationships:{list:{data:{type:'list', id:CONFIG.klaviyo.listId}}}
+          relationships:{list:{data:{type:'list',
+            id:(campaign() || {}).listId || CONFIG.klaviyo.listId}}}
         }
       })
       .then(function(){
