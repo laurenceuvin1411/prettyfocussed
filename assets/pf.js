@@ -395,10 +395,10 @@ areasForm.addEventListener('submit', function(e){
   go('focus');
 });
 
-/* ---- Q2: one area per screen. Tap a suggestion, or write your own. ---- */
+/* ---- Q2: one area per screen, as a sentence she completes:
+        "Business: my focus is ____". A tile fills the blank; she can type over it. ---- */
 var focusForm = $('[data-form="focus"]');
 var tilesEl = $('[data-tiles]');
-var ownWrap = $('[data-own]');
 var ownIn = $('#f-own');
 var fIdx = 0;
 function focusArea(){ return S.areas[fIdx]; }
@@ -407,45 +407,32 @@ function drawFocus(){
   if(!a) return;
   $('[data-focus-area]').textContent = a.name;
   $('[data-focus-count]').textContent = (fIdx + 1) + ' of 3';
-  var cur = (S.focus[id] || '').trim();
-  var own = !!cur && a.ex.indexOf(cur) < 0;
+  ownIn.value = S.focus[id] || '';
   tilesEl.textContent = '';
-  a.ex.concat(['']).forEach(function(text, i){
-    var b = el('button', 'tile' + (text ? '' : ' tile-own'));
+  a.ex.forEach(function(text, i){
+    var b = el('button', 'tile');
     b.type = 'button';
-    b.setAttribute('role', 'radio');
+    b.setAttribute('aria-pressed', 'false');
     b.appendChild(el('span', 'n', '0' + (i + 1)));
-    b.appendChild(el('span', 't', text || 'In my own words'));
-    b.setAttribute('aria-checked', (text ? cur === text : own) ? 'true' : 'false');
+    b.appendChild(el('span', 't', text));
     b.addEventListener('click', function(){
-      if(text){
-        S.focus[id] = text; ownWrap.hidden = true;
-        track('focus_suggestion_picked', { category:id });
-      }else{
-        if(a.ex.indexOf((S.focus[id] || '').trim()) >= 0) S.focus[id] = '';
-        ownIn.value = S.focus[id] || '';
-        ownWrap.hidden = false;
-        ownIn.focus();
-      }
+      S.focus[id] = text; ownIn.value = text;
+      track('focus_suggestion_picked', { category:id });
       say(focusForm, ''); save(); syncFocus();
     });
     tilesEl.appendChild(b);
   });
-  ownWrap.hidden = !own;
-  ownIn.value = own ? cur : '';
   syncFocus();
 }
 function syncFocus(){
-  var id = focusArea(), cur = (S.focus[id] || '').trim(), a = AREA[id];
-  var own = !ownWrap.hidden;
-  $$('.tile', tilesEl).forEach(function(t, i){
-    var text = a.ex[i];
-    t.setAttribute('aria-checked', (text ? cur === text && !own : own) ? 'true' : 'false');
-  });
+  var id = focusArea(), cur = (S.focus[id] || '').trim();
+  $$('.tile', tilesEl).forEach(function(t){ t.setAttribute('aria-pressed', $('.t', t).textContent === cur ? 'true' : 'false'); });
+  ownIn.classList.toggle('is-filled', !!cur);
   $('button[type="submit"]', focusForm).setAttribute('aria-disabled', cur ? 'false' : 'true');
   return !!cur;
 }
 ownIn.addEventListener('input', function(){ S.focus[focusArea()] = ownIn.value; say(focusForm, ''); save(); syncFocus(); });
+ownIn.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); focusForm.requestSubmit(); } });
 /* the next area slides in within the same screen: out fast, in a touch slower */
 function toFocus(i, push){
   var q = focusForm;
@@ -466,7 +453,7 @@ function toFocus(i, push){
 focusForm.addEventListener('submit', function(e){
   e.preventDefault();
   var id = focusArea();
-  if(!syncFocus()){ say(focusForm, ownWrap.hidden ? 'Pick one, or write your own.' : 'Write your focus to continue.'); return; }
+  if(!syncFocus()){ say(focusForm, 'Pick one, or write your own.'); ownIn.focus(); return; }
   S.focus[id] = S.focus[id].trim(); save();
   if(fIdx < 2){ toFocus(fIdx + 1, true); return; }
   track('focuses_completed', { categories:S.areas.join(',') });

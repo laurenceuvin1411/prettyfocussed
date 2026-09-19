@@ -91,6 +91,8 @@ input{font:inherit; color:inherit}
 a{color:inherit}
 ::selection{background:var(--pf-sage-200); color:var(--pf-ink)}
 :focus-visible{outline:2px solid var(--color-border-focus); outline-offset:3px; border-radius:var(--radius-input)}
+/* headings take focus only so screen readers land on them; no ring */
+[tabindex="-1"]:focus{outline:none}
 .sr{position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
 [hidden]{display:none !important}
 
@@ -279,34 +281,36 @@ main{position:relative; z-index:10}
 .dock .caption{flex:1 1 140px}
 
 /* ============================================================ Q2 — the one thing
-   One area per screen: numbered tiles, two across, the last one is her own words. */
-.q-one .ask .h2{max-width:16ch}
+   One area per screen, as a sentence with a blank. Tiles fill the blank. */
+.q-one .ask{gap:10px}
+.fill-head label{cursor:text}
 .q[data-state="out"]{opacity:0; filter:blur(6px); transform:translate3d(-10px,0,0);
   transition:opacity 150ms var(--ease-out), filter 150ms var(--ease-out), transform 150ms var(--ease-out)}
 .q[data-state="pre"]{opacity:0; filter:blur(6px); transform:translate3d(14px,0,0)}
 .q[data-state="in"]{transition:opacity 220ms var(--ease-out), filter 220ms var(--ease-out), transform 220ms var(--ease-out)}
-.tiles{display:grid; grid-template-columns:1fr 1fr; gap:10px}
-.tile{position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:18px; min-height:104px;
-  padding:16px 18px 18px; border-radius:var(--radius-panel); text-align:left;
+/* the blank: dotted while it waits (scaffold), solid once it holds her words (a value) */
+.blank{width:100%; border:0; border-radius:0; background:none; outline:none; padding:2px 0 10px;
+  font-family:var(--font-display); font-size:var(--type-h2); line-height:1.15; letter-spacing:var(--track-h2); color:var(--pf-ink);
+  border-bottom:2px dotted var(--pf-ash)}
+.blank.is-filled{border-bottom:1px solid var(--pf-ink); padding-bottom:11px}
+.blank:focus-visible{border-bottom-color:var(--pf-ink)}
+.tiles{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px}
+.tile{position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:14px; min-height:92px;
+  padding:14px 18px 16px; border-radius:var(--radius-panel); text-align:left;
   background:var(--color-surface-default); color:var(--color-text-secondary);
   transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out),
              box-shadow var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out),
              opacity var(--duration-base) var(--ease-out)}
 .tile:active{transform:scale(.97)}
 .tile .n{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.02em; color:var(--color-text-muted)}
-.tile .t{font-size:1.0625rem; line-height:1.25; letter-spacing:-.01em}
-.tile-own .t{color:var(--color-text-muted)}
-/* chosen: frosted glass with a fine ink ring and the full stop in the corner */
-.tile[aria-checked="true"]{background:rgb(255 255 255 / .86); color:var(--pf-ink); box-shadow:var(--shadow-glass), 0 0 0 1px var(--pf-ink)}
-.tile[aria-checked="true"] .t{color:var(--pf-ink); font-weight:500}
-.tile[aria-checked="true"]::after{content:''; position:absolute; top:18px; right:18px; width:8px; height:8px; border-radius:50%; background:var(--pf-ink)}
-/* one chosen: the others soften, still there, still reachable */
-.tiles:has([aria-checked="true"]) .tile[aria-checked="false"]{opacity:.62}
-@media (hover:hover) and (pointer:fine){
-  .tile[aria-checked="false"]:hover{color:var(--pf-ink); opacity:1}
-}
-.own-in{font-family:var(--font-display); font-size:var(--type-h3); letter-spacing:var(--track-h3); min-height:64px}
-.q-one .dock{margin-top:4px}
+.tile .t{font-size:1.0625rem; line-height:1.25; letter-spacing:-.01em; overflow-wrap:anywhere}
+@media (max-width:420px){ .tile{padding:12px 14px 14px} .tile .t{font-size:.9375rem} }
+/* chosen: frosted glass, a fine ink ring and the full stop in the corner */
+.tile[aria-pressed="true"]{background:rgb(255 255 255 / .86); color:var(--pf-ink); box-shadow:var(--shadow-glass), 0 0 0 1px var(--pf-ink)}
+.tile[aria-pressed="true"] .t{color:var(--pf-ink); font-weight:500}
+.tile[aria-pressed="true"]::after{content:''; position:absolute; top:16px; right:18px; width:8px; height:8px; border-radius:50%; background:var(--pf-ink)}
+.tiles:has([aria-pressed="true"]) .tile[aria-pressed="false"]{opacity:.62}
+@media (hover:hover) and (pointer:fine){ .tile[aria-pressed="false"]:hover{color:var(--pf-ink); opacity:1} }
 
 /* ============================================================ Q3 — the time */
 .time-grid{display:grid; gap:var(--space-grouped)}

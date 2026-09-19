@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/pf.css?v=20260919f">
+<link rel="stylesheet" href="/assets/pf.css?v=20260919h">
 </head>
 <body data-view="landing">
 
@@ -109,18 +109,15 @@
 </section>
 
 <!-- ============================================================ Q2 · FOCUS
-     One area per screen, 3 screens. -->
+     One area per screen, 3 screens. A sentence she completes. -->
 <section class="view" id="v-focus" hidden aria-labelledby="q2-title">
   <form class="q q-one" data-form="focus" novalidate>
     <div class="ask">
-      <p class="overline"><span data-focus-area>Business</span> · <span data-focus-count>1 of 3</span></p>
-      <h1 class="h2" id="q2-title" tabindex="-1">What’s the one thing you want to spend more energy on?</h1>
+      <p class="overline">Your focus · <span data-focus-count>1 of 3</span></p>
+      <h1 class="h2 fill-head" id="q2-title" tabindex="-1"><label for="f-own"><span data-focus-area>Business</span>: my focus is</label></h1>
+      <input class="blank" id="f-own" type="text" maxlength="80" autocomplete="off" autocapitalize="sentences" spellcheck="true">
     </div>
-    <div class="tiles" data-tiles role="radiogroup" aria-labelledby="q2-title"></div>
-    <div class="own" data-own hidden>
-      <label class="sr" for="f-own">Your focus, in your own words</label>
-      <input class="input own-in" id="f-own" type="text" maxlength="80" autocomplete="off" autocapitalize="sentences" placeholder="My focus is…">
-    </div>
+    <div class="tiles" data-tiles role="group" aria-label="Suggestions"></div>
     <p class="note" data-note aria-live="polite"></p>
     <div class="dock">
       <button class="btn" type="submit" aria-disabled="true">Continue</button>
@@ -257,6 +254,6 @@
 
 </main>
 
-<script src="/assets/pf.js?v=20260919f"></script>
+<script src="/assets/pf.js?v=20260919h"></script>
 </body>
 </html>
