@@ -430,7 +430,19 @@ function syncFocus(){
   $$('.tile', tilesEl).forEach(function(t){ t.setAttribute('aria-pressed', $('.t', t).textContent === cur ? 'true' : 'false'); });
   ownIn.classList.toggle('is-filled', !!cur);
   $('button[type="submit"]', focusForm).setAttribute('aria-disabled', cur ? 'false' : 'true');
+  paintFocusMap();
   return !!cur;
+}
+/* the map beside the question: equal blocks (time comes later), the area she is
+   on is sharp, and her words land in it as she types */
+var focusMap = $('[data-map="focus"]');
+function paintFocusMap(){
+  if(S.areas.length !== 3) return;
+  focusMap.dataset.wide = 'off';
+  renderMap(focusMap, planFrom(S.areas.map(function(id){
+    return { id:id, focus:(S.focus[id] || '').trim(), minutes:60 };
+  })), { min:60, sharp:focusArea() });
+  $('[data-focus-done]').textContent = String(S.areas.filter(function(id){ return (S.focus[id] || '').trim(); }).length);
 }
 ownIn.addEventListener('input', function(){ S.focus[focusArea()] = ownIn.value; say(focusForm, ''); save(); syncFocus(); });
 ownIn.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); focusForm.requestSubmit(); } });

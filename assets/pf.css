@@ -312,9 +312,17 @@ main{position:relative; z-index:10}
 .tiles:has([aria-pressed="true"]) .tile[aria-pressed="false"]{opacity:.62}
 @media (hover:hover) and (pointer:fine){ .tile[aria-pressed="false"]:hover{color:var(--pf-ink); opacity:1} }
 
+/* the focus map: no numbers yet, only names and her words */
+.map[data-mode="focus"] .b-pct,.map[data-mode="focus"] .b-hrs{display:none}
+.map[data-mode="focus"] .b-focus{font-size:clamp(1rem, 7cqmin, 1.75rem); line-height:1.2}
+.map[data-mode="focus"] .blk{opacity:.6; filter:blur(2px)}
+.map[data-mode="focus"] .blk[data-sharp]{opacity:1; filter:none}
+.one-main{display:grid; gap:var(--space-grouped); align-content:start}
+@media (min-width:760px){ .q-one .preview .map{aspect-ratio:4 / 5} }
+
 /* ============================================================ Q3 — the time */
 .time-grid{display:grid; gap:var(--space-grouped)}
-@media (min-width:980px){
+@media (min-width:760px){
   .q.q-time{max-width:1080px}
   .time-grid{grid-template-columns:minmax(0,1fr) minmax(0,.86fr); gap:clamp(40px,5vw,72px); align-items:start}
   .time-grid .preview{position:sticky; top:120px}
@@ -349,11 +357,14 @@ input[type=range]:focus-visible{outline-offset:0}
 .preview{display:grid; gap:14px}
 .preview .map{aspect-ratio:1 / 1}
 /* small screens: the map rides above the sliders, so she sees it answer every drag */
-@media (max-width:979px){
+@media (max-width:759px){
   .preview{order:-1; position:sticky; top:calc(max(16px, env(safe-area-inset-top)) + 52px); z-index:3; gap:8px;
     margin:0 -10px; padding:8px 10px 10px; border-radius:var(--radius-panel);
     background:rgb(244 242 238 / .8); -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px)}
-  .preview .map{aspect-ratio:auto; height:clamp(150px, 24svh, 220px)}
+  .preview .map{aspect-ratio:auto; height:clamp(176px, 26svh, 232px)}
+  /* on a phone the focus map sits above the question and scrolls away, so it never
+     covers the field while the keyboard is open */
+  .q-one .preview{position:relative; top:auto}
   .preview .total .overline{display:none}
   .preview .total{justify-content:flex-end; margin-top:-4px}
   .preview .total .num{font-size:1.125rem}
@@ -394,7 +405,14 @@ input[type=range]:focus-visible{outline-offset:0}
   max-width:22ch; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden}
 /* a block too small for everything keeps the number and the name */
 @container (max-height:150px){ .blk .b-focus{-webkit-line-clamp:1} }
-@container (max-height:110px){ .blk .b-focus{display:none} .blk .b-pct{font-size:clamp(1.75rem,34cqmin,3rem)} }
+@container (max-height:118px){
+  .blk{flex-direction:row; align-items:flex-end; justify-content:space-between; gap:10px}
+  .blk .b-top{align-self:flex-start; min-width:0}
+  .blk .b-hrs,.blk .b-focus{display:none}
+  .blk .b-bot{justify-items:end}
+  .blk .b-pct{font-size:clamp(1.5rem, 40cqh, 2.5rem)}
+  .map[data-mode="focus"] .blk .b-focus{display:-webkit-box; -webkit-line-clamp:2; font-size:.9375rem; text-align:right; max-width:16ch}
+}
 @container (max-width:150px){ .blk .b-hrs{display:none} }
 
 /* hero specimen: one plane sharp, the others held soft. Hover moves the focus. */

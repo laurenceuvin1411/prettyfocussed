@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/pf.css?v=20260919i">
+<link rel="stylesheet" href="/assets/pf.css?v=20260919k">
 </head>
 <body data-view="landing">
 
@@ -109,16 +109,27 @@
 </section>
 
 <!-- ============================================================ Q2 · FOCUS
-     One area per screen, 3 screens. A sentence she completes. -->
+     One area per screen, 3 screens. The map beside it fills in as she answers. -->
 <section class="view" id="v-focus" hidden aria-labelledby="q2-title">
-  <form class="q q-one" data-form="focus" novalidate>
-    <div class="ask">
-      <p class="overline">Your focus · <span data-focus-count>1 of 3</span></p>
-      <h1 class="h1 fill-head" id="q2-title" tabindex="-1" data-focus-area>Business</h1>
-      <label class="sr" for="f-own">Your focus for <span data-focus-area-sr>Business</span></label>
-      <input class="blank" id="f-own" type="text" maxlength="80" autocomplete="off" autocapitalize="sentences" spellcheck="true" placeholder="My focus is…">
+  <form class="q q-time q-one" data-form="focus" novalidate>
+    <div class="time-grid">
+      <div class="one-main">
+        <div class="ask">
+          <p class="overline">Your focus · <span data-focus-count>1 of 3</span></p>
+          <h1 class="h1 fill-head" id="q2-title" tabindex="-1" data-focus-area>Business</h1>
+          <label class="sr" for="f-own">Your focus for <span data-focus-area-sr>Business</span></label>
+          <input class="blank" id="f-own" type="text" maxlength="80" autocomplete="off" autocapitalize="sentences" spellcheck="true" placeholder="My focus is…">
+        </div>
+        <div class="tiles" data-tiles role="group" aria-label="Suggestions"></div>
+      </div>
+      <div class="preview" aria-hidden="true">
+        <div class="map" data-map="focus" data-mode="focus"></div>
+        <div class="total">
+          <p class="overline">Your focus, as it stands</p>
+          <p class="num" style="margin:0"><span data-focus-done>0</span><span class="unit">of 3</span></p>
+        </div>
+      </div>
     </div>
-    <div class="tiles" data-tiles role="group" aria-label="Suggestions"></div>
     <p class="note" data-note aria-live="polite"></p>
     <div class="dock">
       <button class="btn" type="submit" aria-disabled="true">Continue</button>
@@ -255,6 +266,6 @@
 
 </main>
 
-<script src="/assets/pf.js?v=20260919i"></script>
+<script src="/assets/pf.js?v=20260919k"></script>
 </body>
 </html>
