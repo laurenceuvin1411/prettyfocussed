@@ -131,7 +131,7 @@ section{position:relative}
    The opening, the field soft, only the dot sharp
    ============================================================ */
 .intro{position:relative; min-height:100svh; display:flex; align-items:flex-end; overflow:hidden;
-  padding:110px 0 clamp(56px,9vh,112px);
+  padding:110px 0 clamp(40px,6vh,72px);
   background:linear-gradient(168deg,#CBDDEC 0%,#DBE6F1 32%,#E8E9E7 64%,#F1E7DE 100%)}
 .intro::after{content:''; position:absolute; inset:0; background-image:var(--noise);
   opacity:.035; mix-blend-mode:multiply; pointer-events:none}
@@ -328,7 +328,7 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
 /* ============================================================
    Sections
    ============================================================ */
-.band{padding:var(--space-chaptered) 0}
+.band{padding:clamp(48px,6vw,96px) 0}
 .band-head{max-width:44rem}
 .band-head .overline{margin:0 0 var(--space-grouped)}
 .band-head .h2{margin-bottom:var(--space-related)}
