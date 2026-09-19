@@ -240,34 +240,60 @@ main{position:relative; z-index:10}
   box-shadow:var(--shadow-glass); font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500; color:var(--color-text-secondary)}
 .glass .pip{width:6px; height:6px; border-radius:50%; background:var(--pf-ink)}
 
-/* ============================================================ Q1 — the areas */
-.chips{display:flex; flex-wrap:wrap; gap:10px}
-.chip{position:relative; display:inline-flex; align-items:center; gap:10px; min-height:48px; padding:12px 20px 12px 12px;
-  border-radius:var(--radius-pill); background:var(--color-surface-default); color:var(--color-text-secondary);
-  font-size:1rem; line-height:1.2; letter-spacing:-.01em;
+/* ============================================================ Q1 — the areas
+   Glass tiles on the Air plate (brand/air-system.md), numbered like instruments. */
+.sky{position:fixed; inset:0; z-index:1; pointer-events:none; opacity:0;
+  background:linear-gradient(170deg, #B7CDE0 0%, #CBD9E4 30%, #E6ECEF 62%, #EFE3D8 100%);
+  transition:opacity 500ms var(--ease-out)}
+.sky::after{content:''; position:absolute; inset:0; background-image:var(--noise); opacity:.05; mix-blend-mode:multiply}
+body[data-view="areas"] .sky{opacity:1}
+body[data-view="areas"] .top::before{opacity:0}
+.q-areas{max-width:920px}
+.q-areas .overline{color:var(--color-text-secondary)}
+.q-areas .h2{max-width:17ch}
+.chips{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px}
+@media (min-width:600px){ .chips{grid-template-columns:repeat(3, minmax(0, 1fr))} }
+@media (min-width:900px){ .chips{grid-template-columns:repeat(4, minmax(0, 1fr)); gap:12px} }
+.chip{position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:18px; min-height:96px;
+  padding:14px 16px 16px 18px; border-radius:28px; text-align:left; color:var(--pf-ink);
+  background:rgb(255 255 255 / .22); -webkit-backdrop-filter:blur(20px) saturate(1.15); backdrop-filter:blur(20px) saturate(1.15);
+  /* the bright hairline on the edge of the glass */
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .6), inset 0 1px 0 rgb(255 255 255 / .7);
+  font-size:1.0625rem; line-height:1.2; letter-spacing:-.01em;
   transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out),
-             box-shadow var(--duration-fast) var(--ease-out), opacity var(--duration-base) var(--ease-out),
-             filter var(--duration-base) var(--ease-out), color var(--duration-fast) var(--ease-out)}
+             box-shadow var(--duration-base) var(--ease-out), opacity var(--duration-base) var(--ease-out),
+             filter var(--duration-base) var(--ease-out)}
 .chip:active{transform:scale(.97)}
-/* the slot: dotted when empty (scaffold), a solid dot with her order when chosen (a value) */
-.chip .slot{position:relative; width:24px; height:24px; flex:none; border-radius:50%; border:1px dotted var(--color-border-default); display:grid; place-items:center}
-.chip .slot b{position:absolute; inset:-1px; border-radius:50%; background:var(--pf-ink); color:var(--pf-bone);
+.chip .n{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.02em; color:var(--color-text-secondary)}
+.chip .name{font-weight:400}
+/* her order, top right: the full stop, only once she has chosen it */
+.chip .slot{position:absolute; top:12px; right:12px; width:24px; height:24px}
+.chip .slot b{position:absolute; inset:0; border-radius:50%; background:var(--pf-ink); color:var(--pf-bone);
   font:400 10px/24px var(--font-mono); text-align:center; opacity:0; transform:scale(.6);
   transition:opacity var(--duration-fast) var(--ease-out), transform var(--duration-base) var(--ease-out)}
-.chip[aria-pressed="true"]{background:rgb(255 255 255 / .82); color:var(--color-text-primary); font-weight:500; box-shadow:var(--shadow-glass)}
-.chip[aria-pressed="true"] .slot{border-color:transparent}
+/* chosen: frosted, brighter, lit from behind */
+.chip[aria-pressed="true"]{background:rgb(255 255 255 / .74);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .9), inset 0 1px 0 #fff, 0 10px 36px rgb(62 73 54 / .10), 0 0 44px rgb(255 255 255 / .55)}
+.chip[aria-pressed="true"] .name{font-weight:500}
 .chip[aria-pressed="true"] .slot b{opacity:1; transform:none}
-/* three chosen: the rest of the list recedes. Still there, still reachable. */
-.chips[data-full="true"] .chip[aria-pressed="false"]{opacity:var(--opacity-peripheral); filter:blur(1.5px)}
+/* 3 chosen: the rest of the list recedes. Still there, still reachable. */
+.chips[data-full="true"] .chip[aria-pressed="false"]{opacity:.5; filter:blur(1.5px)}
 .chips[data-full="true"] .chip[aria-pressed="false"]:focus-visible{opacity:1; filter:none}
 @media (hover:hover) and (pointer:fine){
-  .chip[aria-pressed="false"]:hover{color:var(--color-text-primary)}
-  .chips[data-full="true"] .chip[aria-pressed="false"]:hover{opacity:.8; filter:none}
+  .chip[aria-pressed="false"]:hover{background:rgb(255 255 255 / .4)}
+  .chips[data-full="true"] .chip[aria-pressed="false"]:hover{opacity:.85; filter:none}
 }
-.tally{display:flex; align-items:center; gap:12px; min-height:30px}
+@media (max-width:420px){ .chip{min-height:84px; padding:12px 14px 14px 16px; font-size:1rem; border-radius:24px} }
+.tally{display:flex; align-items:center; gap:12px; min-height:30px; min-width:0}
 .tally .ring{width:26px; height:26px; flex:none}
-.tally p{margin:0; font-size:.9375rem; color:var(--color-text-secondary); transition:opacity var(--duration-fast) var(--ease-out)}
+.tally p{margin:0; font-size:.9375rem; line-height:1.35; color:var(--color-text-secondary)}
 .tally[data-full="true"] p{color:var(--color-text-primary)}
+/* the bar: glass across the bottom, count on the left, the action on the right */
+.dock.bar{justify-self:stretch; justify-content:space-between; flex-wrap:nowrap; margin:0 -10px; padding:8px 8px 8px 18px;
+  background:rgb(255 255 255 / .5); box-shadow:inset 0 0 0 1px rgb(255 255 255 / .7), 0 8px 32px rgb(62 73 54 / .08)}
+.dock.bar .tally{flex:1 1 auto}
+.dock.bar .btn{flex:none}
+@media (max-width:420px){ .dock.bar .tally p{font-size:.8125rem} .dock.bar .btn{padding:15px 22px} }
 .note{margin:0; font-size:var(--type-caption); letter-spacing:var(--track-caption); color:var(--color-text-primary);
   background:var(--color-feedback-error-bg); padding:9px 14px; border-radius:var(--radius-input); justify-self:start;
   opacity:0; transform:translateY(-3px); transition:opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out)}

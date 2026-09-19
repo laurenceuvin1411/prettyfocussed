@@ -15,11 +15,12 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/pf.css?v=20260919k">
+<link rel="stylesheet" href="/assets/pf.css?v=20260919l">
 </head>
 <body data-view="landing">
 
 <div class="atmos" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="sky" aria-hidden="true"></div>
 
 <header class="top">
   <a class="mark" href="/" data-home aria-label="Pretty Focussed, home">
@@ -85,24 +86,24 @@
   </footer>
 </section>
 
-<!-- ============================================================ Q1 · AREAS -->
+<!-- ============================================================ Q1 · AREAS
+     Glass tiles on the Air plate. The bar at the bottom holds the count and the action. -->
 <section class="view" id="v-areas" hidden aria-labelledby="q1-title">
-  <form class="q" data-form="areas" novalidate>
+  <form class="q q-areas" data-form="areas" novalidate>
     <div class="ask">
-      <p class="overline">Your areas</p>
+      <p class="overline">Choose 3</p>
       <h1 class="h2" id="q1-title" tabindex="-1">What areas of your life do you want to focus on right now?</h1>
-      <p class="lede">Choose the 3 that deserve your attention in this season.</p>
     </div>
     <div class="chips" data-chips role="group" aria-labelledby="q1-title"></div>
-    <div class="tally" data-tally>
-      <svg class="ring" viewBox="0 0 34 34" aria-hidden="true">
-        <circle class="track" cx="17" cy="17" r="14" pathLength="1"/>
-        <circle class="value" cx="17" cy="17" r="14" pathLength="1" data-tally-ring style="stroke-dasharray:0 1"/>
-      </svg>
-      <p data-tally-text aria-live="polite">0 of 3 chosen</p>
-    </div>
     <p class="note" data-note aria-live="polite"></p>
-    <div class="dock">
+    <div class="dock bar">
+      <div class="tally" data-tally>
+        <svg class="ring" viewBox="0 0 34 34" aria-hidden="true">
+          <circle class="track" cx="17" cy="17" r="14" pathLength="1"/>
+          <circle class="value" cx="17" cy="17" r="14" pathLength="1" data-tally-ring style="stroke-dasharray:0 1"/>
+        </svg>
+        <p data-tally-text aria-live="polite">0 of 3 chosen</p>
+      </div>
       <button class="btn" type="submit" aria-disabled="true">Continue</button>
     </div>
   </form>
@@ -266,6 +267,6 @@
 
 </main>
 
-<script src="/assets/pf.js?v=20260919k"></script>
+<script src="/assets/pf.js?v=20260919l"></script>
 </body>
 </html>

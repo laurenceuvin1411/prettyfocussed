@@ -350,14 +350,15 @@ var chipsEl = $('[data-chips]');
 var areasForm = $('[data-form="areas"]');
 function drawChips(){
   if(!chipsEl.children.length){
-    AREAS.forEach(function(a){
+    AREAS.forEach(function(a, i){
       var b = el('button', 'chip');
       b.type = 'button';
       b.dataset.id = a.id;
+      b.appendChild(el('span', 'n', (i < 9 ? '0' : '') + (i + 1)));
       var slot = el('span', 'slot'); slot.setAttribute('aria-hidden', 'true');
       slot.appendChild(el('b'));
       b.appendChild(slot);
-      b.appendChild(el('span', '', a.name));
+      b.appendChild(el('span', 'name', a.name));
       b.addEventListener('click', function(){ toggleArea(a.id); });
       chipsEl.appendChild(b);
     });
@@ -383,7 +384,7 @@ function syncChips(){
   tally.dataset.full = full ? 'true' : 'false';
   $('[data-tally-ring]').style.strokeDasharray = (n / 3).toFixed(3) + ' 1';
   $('[data-tally-text]').textContent = full
-    ? 'These 3 are your focus for now. Everything else can wait.'
+    ? 'These 3 are your focus. Everything else can wait.'
     : n + ' of 3 chosen';
   $('button[type="submit"]', areasForm).setAttribute('aria-disabled', full ? 'false' : 'true');
 }
