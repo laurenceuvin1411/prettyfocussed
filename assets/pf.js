@@ -661,6 +661,7 @@ function reveal(isAuthor){
     S.mine = S.mine.filter(function(h){ return h !== hash; }).concat(hash).slice(-10);
     save();
   }
+  drawWeek(plan);
   closing(isAuthor);
   history.replaceState({ v:'plan', depth:(history.state && history.state.depth) || 0 }, '', CONFIG.resultPath + '#' + hash);
   var h = $('h1[data-open-only]');
@@ -672,6 +673,191 @@ function longDate(iso){
   try{ return d.toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' }); }
   catch(e){ return d.toDateString(); }
 }
+
+/* ============================================================ 9b. THE WEEK
+   Her weekly minutes become sessions on real days. Each area has a sensible
+   default time and preferred days; sessions within an area share a time, so
+   each one can be a single weekly repeating calendar event. */
+var SLOT = {
+  business:      { t:540,  d:[0,1,2,3,4,5,6] },
+  career:        { t:540,  d:[0,1,2,3,4,5,6] },
+  learning:      { t:480,  d:[1,3,0,2,4,5,6] },
+  health:        { t:420,  d:[0,2,4,1,3,5,6] },
+  money:         { t:1080, d:[6,2,4,0,1,3,5] },
+  rest:          { t:1200, d:[5,6,2,4,0,1,3] },
+  relationships: { t:1170, d:[5,6,2,4,1,3,0] },
+  family:        { t:1020, d:[6,5,2,4,0,1,3] },
+  friends:       { t:1170, d:[4,5,1,3,2,6,0] },
+  creativity:    { t:600,  d:[5,6,1,3,0,2,4] },
+  home:          { t:600,  d:[5,6,2,0,1,3,4] },
+  travel:        { t:600,  d:[5,6,4,0,1,2,3] }
+};
+var DAY_SHORT = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'];
+var DAY_LONG = ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'];
+var BYDAY = ['MO','TU','WE','TH','FR','SA','SU'];
+function buildWeek(plan){
+  var areas = plan.categories.map(function(c){
+    var M = c.weeklyMinutes, pref = SLOT[c.id] || { t:540, d:[0,1,2,3,4,5,6] };
+    /* equal sessions where possible (one calendar event per area): the count
+       nearest to 90-minute sessions that divides her time into whole 5 minutes */
+    var ideal = M / 90, n = 0;
+    [1,2,3,4,5,6,7].filter(function(k){ var L = M / k; return L % 5 === 0 && L >= 30 && L <= 240; })
+      .forEach(function(k){ if(!n || Math.abs(k - ideal) < Math.abs(n - ideal)) n = k; });
+    if(!n){ n = Math.max(1, Math.min(6, Math.round(ideal))); while(n > 1 && M / n < 30) n--; }
+    var base = Math.floor(M / n / 5) * 5, extra = (M - base * n) / 5;
+    var days = pref.d.slice(0, n).sort(function(a, b){ return a - b; });
+    var sessions = days.map(function(d, i){ return { day:d, len:base + (i < extra ? 5 : 0) }; });
+    return { cat:c, start:pref.t, sessions:sessions, max:Math.max.apply(null, sessions.map(function(x){ return x.len; })) };
+  });
+  /* no two sessions on the same day at the same time */
+  areas.forEach(function(a, i){
+    for(var guard = 0; guard < 6; guard++){
+      var clash = areas.slice(0, i).filter(function(b){
+        var shared = a.sessions.some(function(x){ return b.sessions.some(function(y){ return y.day === x.day; }); });
+        return shared && a.start < b.start + b.max && b.start < a.start + a.max;
+      })[0];
+      if(!clash) break;
+      var after = clash.start + clash.max + 30;
+      a.start = after + a.max <= 22 * 60 ? after : Math.max(6 * 60, clash.start - a.max - 30);
+    }
+  });
+  return areas;
+}
+function hhmm(min){ var h = Math.floor(min / 60), m = min % 60; return (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m; }
+function lenLabel(min){ var h = Math.floor(min / 60), m = min % 60; return h ? (m ? h + ' h ' + m : h + ' h') : m + ' min'; }
+function nextMonday(){
+  var d = new Date(); d.setHours(0, 0, 0, 0);
+  var add = (8 - d.getDay()) % 7 || 7;
+  d.setDate(d.getDate() + add); return d;
+}
+function dayDate(mon, i){ var d = new Date(mon); d.setDate(mon.getDate() + i); return d; }
+function stamp(d, min){
+  var p = function(n){ return (n < 10 ? '0' : '') + n; };
+  return d.getFullYear() + p(d.getMonth() + 1) + p(d.getDate()) + 'T' + p(Math.floor(min / 60)) + p(min % 60) + '00';
+}
+function planLink(){ return location.origin + CONFIG.resultPath + location.hash; }
+function sentenceCase(t){ return t ? t.charAt(0).toUpperCase() + t.slice(1) : t; }
+
+var WEEK = null, weekSel = 0;
+function drawWeek(plan){
+  WEEK = buildWeek(plan);
+  var mon = nextMonday();
+  var sun = dayDate(mon, 6);
+  var fmt = function(d){ try{ return d.toLocaleDateString('en-GB', { day:'numeric', month:'long' }); }catch(e){ return d.toDateString(); } };
+  $('[data-week-range]').textContent = fmt(mon) + ' to ' + fmt(sun);
+  $('[data-sched-lede]').textContent = 'Here are your ' + hours(plan.totalWeeklyMinutes) + ' hours as sessions in a normal week, each with its own time. Tap a day to see it.';
+  var days = $('[data-days]'); days.textContent = '';
+  var first = -1;
+  for(var i = 0; i < 7; i++){
+    var list = daySessions(i);
+    if(first < 0 && list.length) first = i;
+    var b = el('button', 'day');
+    b.type = 'button'; b.setAttribute('role', 'tab'); b.dataset.i = String(i);
+    b.setAttribute('aria-label', DAY_LONG[i] + ', ' + (list.length ? list.length + (list.length === 1 ? ' session' : ' sessions') : 'free'));
+    b.appendChild(el('span', 'dn', DAY_SHORT[i]));
+    b.appendChild(el('span', 'dd', String(dayDate(mon, i).getDate())));
+    var dots = el('span', 'dots');
+    list.forEach(function(x){ var dot = el('i'); dot.dataset.plate = String(x.a.cat.order + 1); dots.appendChild(dot); });
+    b.appendChild(dots);
+    if(!list.length) b.classList.add('is-free');
+    b.addEventListener('click', (function(k){ return function(){ selectDay(k); }; })(i));
+    days.appendChild(b);
+  }
+  selectDay(first < 0 ? 0 : first);
+  drawGcal(plan, mon);
+  trackOnce('schedule_viewed');
+}
+function daySessions(i){
+  var out = [];
+  WEEK.forEach(function(a){ a.sessions.forEach(function(x){ if(x.day === i) out.push({ a:a, len:x.len }); }); });
+  return out.sort(function(p, q){ return p.a.start - q.a.start; });
+}
+function selectDay(i){
+  weekSel = i;
+  $$('.day', $('[data-days]')).forEach(function(b){ b.setAttribute('aria-selected', b.dataset.i === String(i) ? 'true' : 'false'); });
+  var box = $('[data-dayplan]'); box.textContent = '';
+  box.appendChild(el('p', 'overline', DAY_LONG[i]));
+  var list = daySessions(i);
+  if(!list.length){ box.appendChild(el('p', 'free', 'Nothing planned. This day is yours.')); return; }
+  list.forEach(function(x){
+    var row = el('div', 'slot-row');
+    row.dataset.plate = String(x.a.cat.order + 1);
+    var t = el('p', 'slot-time num');
+    t.appendChild(document.createTextNode(hhmm(x.a.start)));
+    row.appendChild(t);
+    var body = el('div', 'slot-body');
+    body.appendChild(el('p', 'slot-area', x.a.cat.name));
+    body.appendChild(el('p', 'slot-focus', sentenceCase(x.a.cat.focus)));
+    row.appendChild(body);
+    var len = el('p', 'slot-len', lenLabel(x.len));
+    row.appendChild(len);
+    box.appendChild(row);
+  });
+}
+function gcalGroups(){
+  var groups = [];
+  WEEK.forEach(function(a){
+    var byLen = {};
+    a.sessions.forEach(function(x){ (byLen[x.len] = byLen[x.len] || []).push(x.day); });
+    Object.keys(byLen).forEach(function(len){ groups.push({ a:a, len:+len, days:byLen[len] }); });
+  });
+  return groups;
+}
+function drawGcal(plan, mon){
+  var box = $('[data-gcal-links]'); box.textContent = '';
+  var tz = ''; try{ tz = Intl.DateTimeFormat().resolvedOptions().timeZone || ''; }catch(e){}
+  gcalGroups().forEach(function(g){
+    var first = dayDate(mon, g.days[0]);
+    var title = g.a.cat.name + ': ' + sentenceCase(g.a.cat.focus);
+    var q = new URLSearchParams({
+      action:'TEMPLATE',
+      text:title,
+      dates:stamp(first, g.a.start) + '/' + stamp(first, g.a.start + g.len),
+      details:'From your Pretty Focussed Plan. ' + planLink(),
+      recur:'RRULE:FREQ=WEEKLY;BYDAY=' + g.days.map(function(d){ return BYDAY[d]; }).join(',')
+    });
+    if(tz) q.set('ctz', tz);
+    var a = el('a', 'gcal-link');
+    a.href = 'https://calendar.google.com/calendar/render?' + q.toString();
+    a.target = '_blank'; a.rel = 'noopener';
+    a.dataset.plate = String(g.a.cat.order + 1);
+    a.appendChild(el('span', 'gl-area', g.a.cat.name));
+    a.appendChild(el('span', 'gl-when', g.days.map(function(d){ return DAY_SHORT[d]; }).join(', ') + ' · ' + hhmm(g.a.start) + ' · ' + lenLabel(g.len)));
+    a.addEventListener('click', function(){ track('gcal_clicked', { category:g.a.cat.id }); });
+    box.appendChild(a);
+  });
+}
+$('[data-gcal-toggle]').addEventListener('click', function(){
+  var box = $('[data-gcal]'), open = box.hidden;
+  box.hidden = !open;
+  this.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if(open) track('gcal_opened');
+});
+$('[data-ics]').addEventListener('click', function(){
+  if(!WEEK) return;
+  var mon = nextMonday();
+  var lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Pretty Focussed//Plan//EN', 'CALSCALE:GREGORIAN'];
+  var esc = function(t){ return String(t).replace(/\\/g, '\\\\').replace(/;/g, '\;').replace(/,/g, '\\,').replace(/\n/g, '\\n'); };
+  gcalGroups().forEach(function(g, i){
+    var first = dayDate(mon, g.days[0]);
+    lines.push('BEGIN:VEVENT',
+      'UID:pf-' + Date.now() + '-' + i + '@prettyfocussed.com',
+      'DTSTAMP:' + new Date().toISOString().replace(/[-:]/g, '').slice(0, 15) + 'Z',
+      'DTSTART:' + stamp(first, g.a.start),
+      'DTEND:' + stamp(first, g.a.start + g.len),
+      'RRULE:FREQ=WEEKLY;BYDAY=' + g.days.map(function(d){ return BYDAY[d]; }).join(','),
+      'SUMMARY:' + esc(g.a.cat.name + ': ' + sentenceCase(g.a.cat.focus)),
+      'DESCRIPTION:' + esc('From your Pretty Focussed Plan. ' + planLink()),
+      'END:VEVENT');
+  });
+  lines.push('END:VCALENDAR');
+  var blob = new Blob([lines.join('\r\n')], { type:'text/calendar' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob); a.download = 'pretty-focussed-week.ics';
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(a.href); }, 2000);
+  track('ics_downloaded');
+});
 
 /* the closing call: founding offer while it is live, the waitlist otherwise,
    and her own plan if this one was shared with her */

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/pf.css?v=20260919p">
+<link rel="stylesheet" href="/assets/pf.css?v=20260919s">
 </head>
 <body data-view="landing">
 
@@ -215,6 +215,34 @@
       <p class="note" data-sent-note aria-live="polite"></p>
     </div>
 
+    <!-- ============================================================ SCHEDULE
+         The plan becomes a week: her hours as sessions on real days. -->
+    <section class="sched after" data-after data-on="false" data-sched aria-labelledby="sched-title">
+      <div class="sched-head">
+        <p class="overline">Your week</p>
+        <h2 class="h2" id="sched-title">Plan this in your schedule.</h2>
+        <p class="lede" data-sched-lede></p>
+      </div>
+      <div class="week">
+        <div class="week-top">
+          <p class="overline" data-week-label>Next week</p>
+          <p class="caption" data-week-range></p>
+        </div>
+        <div class="days" data-days role="tablist" aria-label="Days of the week"></div>
+        <div class="dayplan" data-dayplan role="tabpanel" aria-live="polite"></div>
+      </div>
+      <div class="sched-act">
+        <a class="btn" href="/founding/" data-signup="schedule">Create my account</a>
+        <button class="btn-glass" type="button" data-gcal-toggle aria-expanded="false" aria-controls="gcal-list">Add to Google Calendar</button>
+      </div>
+      <div class="gcal" id="gcal-list" data-gcal hidden>
+        <p class="caption">Each one opens Google Calendar as a weekly repeating event. Tap save, and it is in your week.</p>
+        <div class="gcal-links" data-gcal-links></div>
+        <button class="ghost" type="button" data-ics>Using Apple Calendar or Outlook? Download all of it in one file</button>
+      </div>
+      <p class="caption sched-note">Your account opens with this week already in it, and you can move every session.</p>
+    </section>
+
     <!-- ============================================================ LESS -->
     <section class="less after" data-after data-on="false" aria-labelledby="less-title">
       <p class="overline">Less is more</p>
@@ -267,6 +295,6 @@
 
 </main>
 
-<script src="/assets/pf.js?v=20260919p"></script>
+<script src="/assets/pf.js?v=20260919s"></script>
 </body>
 </html>

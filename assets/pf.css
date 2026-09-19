@@ -534,6 +534,64 @@ input[type=range]:focus-visible{outline-offset:0}
 .next .lede{max-width:44ch}
 .next .act{display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center}
 
+/* ============================================================ THE WEEK */
+.sched{padding:var(--space-separated) 0 0; display:grid; gap:var(--space-grouped)}
+.sched-head{display:grid; gap:14px; max-width:680px}
+.sched-head .lede{max-width:44ch}
+.week{position:relative; overflow:hidden; border-radius:var(--radius-sheet); padding:clamp(18px,3vw,32px);
+  background:linear-gradient(170deg, #D5E0EA 0%, #E8ECEE 50%, #F1E7DE 100%);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .6), var(--shadow-lg); display:grid; gap:18px; max-width:880px}
+.week::after{content:''; position:absolute; inset:0; background-image:var(--noise); opacity:.04; mix-blend-mode:multiply; pointer-events:none}
+.week > *{position:relative; z-index:1}
+.week-top{display:flex; justify-content:space-between; align-items:baseline; gap:12px}
+.days{display:grid; grid-template-columns:repeat(7, minmax(0, 1fr)); gap:clamp(4px,1vw,10px)}
+.day{display:grid; justify-items:center; gap:6px; padding:12px 0 12px; border-radius:18px;
+  background:rgb(255 255 255 / .75); box-shadow:inset 0 0 0 1px rgb(255 255 255 / .9), 0 2px 8px rgb(62 73 54 / .05); color:var(--pf-ink);
+  transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out)}
+.day:active{transform:scale(.97)}
+.day .dn{font-family:var(--font-mono); font-size:10px; letter-spacing:.02em; color:var(--color-text-secondary)}
+.day .dd{font-family:var(--font-display); font-size:clamp(1.125rem, .9rem + 1vw, 1.5rem); font-weight:500; letter-spacing:-.02em; line-height:1}
+.day .dots{display:flex; gap:3px; min-height:6px}
+.day .dots i{display:block; width:6px; height:6px; border-radius:50%; background:var(--plate); background-size:400% 400%}
+.day.is-free{background:rgb(255 255 255 / .32)}
+.day.is-free .dd{color:var(--color-text-secondary)}
+/* the chosen day: the full stop, like a dark date on a calendar */
+.day[aria-selected="true"]{background:var(--pf-ink); color:var(--pf-bone); box-shadow:0 8px 24px rgb(62 73 54 / .14)}
+.day[aria-selected="true"] .dn,.day[aria-selected="true"] .dd{color:var(--pf-bone)}
+.day[aria-selected="true"] .dots i{box-shadow:0 0 0 1px rgb(244 242 238 / .5)}
+[data-plate="1"]{--plate:linear-gradient(155deg, #A6C1D8, #CBD9E4)}
+[data-plate="2"]{--plate:linear-gradient(155deg, #CBD9E4, #F4F2EE)}
+[data-plate="3"]{--plate:linear-gradient(155deg, #EFE3D8, #D8CDBD)}
+.dayplan{display:grid; gap:8px; min-height:120px; padding:18px; border-radius:24px; background:rgb(255 255 255 / .78);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .95), 0 8px 28px rgb(62 73 54 / .06)}
+.dayplan .overline{margin-bottom:4px}
+.dayplan .free{margin:0; font-size:1.0625rem; color:var(--color-text-secondary)}
+.slot-row{position:relative; display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center; padding:14px 16px 14px 20px;
+  border-radius:18px; background:var(--plate); background-size:180% 180%}
+.slot-time{margin:0; font-size:clamp(1.5rem, 1.1rem + 1.4vw, 2.25rem); line-height:1; color:var(--pf-ink)}
+.slot-body{min-width:0}
+.slot-area{margin:0 0 3px; font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500; color:var(--pf-ink)}
+.slot-focus{margin:0; font-size:1rem; line-height:1.3; color:var(--pf-ink); overflow-wrap:anywhere}
+.slot-len{margin:0; font-family:var(--font-mono); font-size:11px; color:var(--color-text-secondary); white-space:nowrap}
+.sched-act{display:flex; flex-wrap:wrap; gap:12px; align-items:center}
+.gcal{display:grid; gap:12px; max-width:880px}
+.gcal-links{display:grid; grid-template-columns:repeat(auto-fill, minmax(240px, 1fr)); gap:8px}
+.gcal-link{display:grid; gap:4px; padding:14px 18px; border-radius:18px; text-decoration:none; color:var(--pf-ink);
+  background:var(--plate); background-size:180% 180%; box-shadow:inset 0 0 0 1px rgb(255 255 255 / .6);
+  transition:transform var(--duration-press) var(--ease-out)}
+.gcal-link:active{transform:scale(.97)}
+.gl-area{font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500}
+.gl-when{font-family:var(--font-mono); font-size:11px; color:var(--color-text-secondary)}
+.gcal .ghost{justify-self:start}
+.sched-note{max-width:52ch}
+@media (max-width:480px){
+  .day{padding:10px 0; border-radius:14px}
+  .day .dots i{width:5px; height:5px}
+  .slot-row{grid-template-columns:auto 1fr; padding:12px 14px}
+  .slot-len{grid-column:2}
+  .sched-act .btn,.sched-act .btn-glass{flex:1 1 100%}
+}
+
 /* ============================================================ small screens */
 @media (max-width:640px){
   .hero{padding-top:96px; align-items:start}
