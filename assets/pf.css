@@ -278,36 +278,35 @@ main{position:relative; z-index:10}
   background:rgb(244 242 238 / .66); -webkit-backdrop-filter:blur(18px) saturate(1.1); backdrop-filter:blur(18px) saturate(1.1)}
 .dock .caption{flex:1 1 140px}
 
-/* ============================================================ Q2 — the one thing */
-.fields{display:grid; gap:12px}
-.field{display:grid; gap:10px; padding:20px 22px 22px; border-radius:var(--radius-card); background:var(--color-surface-default);
-  transition:opacity var(--duration-base) var(--ease-out), background-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out)}
-.field .head{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
-.field .head .caption{font-family:var(--font-mono); letter-spacing:.02em}
-.field input{width:100%; border:0; background:none; padding:4px 0 2px; font-family:var(--font-display);
-  font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); color:var(--color-text-primary); outline:none;
-  border-bottom:1px dotted var(--color-border-default); border-radius:0}
-.field input::placeholder{color:var(--color-text-disabled)}
-.field:focus-within{background:rgb(255 255 255 / .82); box-shadow:var(--shadow-glass)}
-.field:focus-within input{border-bottom-style:solid; border-bottom-color:var(--color-text-muted)}
-/* the one being written is the sharp one; its neighbours soften (opacity only: they are controls) */
-.fields:focus-within .field:not(:focus-within){opacity:.6}
-.field[data-invalid="true"]{background:var(--color-feedback-error-bg)}
-.q.q-focus{max-width:940px}
-/* one row of suggestions: it fits on a wide screen, and scrolls sideways on a phone */
-.picks{display:flex; flex-wrap:nowrap; gap:8px; margin:6px -22px 0; padding:2px 22px; overflow-x:auto; scrollbar-width:none;
-  -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity;
-  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 28px), transparent);
-          mask-image:linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 28px), transparent)}
-.picks::-webkit-scrollbar{display:none}
-.pick{flex:none; white-space:nowrap; scroll-snap-align:start}
-.pick{min-height:36px; padding:8px 14px; border-radius:var(--radius-pill); border:1px dotted var(--pf-ash);
-  font-size:.875rem; line-height:1.2; letter-spacing:-.005em; color:var(--color-text-secondary); text-align:left;
-  transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out)}
-.pick:active{transform:scale(.97)}
-/* chosen: a solid line (an actual value) where the dotted one was a suggestion */
-.pick[aria-pressed="true"]{border-style:solid; border-color:var(--pf-ink); color:var(--pf-ink); background:rgb(255 255 255 / .7)}
-@media (hover:hover) and (pointer:fine){ .pick:hover{color:var(--pf-ink); border-color:var(--color-text-muted)} }
+/* ============================================================ Q2 — the one thing
+   One area per screen: numbered tiles, two across, the last one is her own words. */
+.q-one .ask .h2{max-width:16ch}
+.q[data-state="out"]{opacity:0; filter:blur(6px); transform:translate3d(-10px,0,0);
+  transition:opacity 150ms var(--ease-out), filter 150ms var(--ease-out), transform 150ms var(--ease-out)}
+.q[data-state="pre"]{opacity:0; filter:blur(6px); transform:translate3d(14px,0,0)}
+.q[data-state="in"]{transition:opacity 220ms var(--ease-out), filter 220ms var(--ease-out), transform 220ms var(--ease-out)}
+.tiles{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.tile{position:relative; display:flex; flex-direction:column; justify-content:space-between; gap:18px; min-height:104px;
+  padding:16px 18px 18px; border-radius:var(--radius-panel); text-align:left;
+  background:var(--color-surface-default); color:var(--color-text-secondary);
+  transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out),
+             box-shadow var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out),
+             opacity var(--duration-base) var(--ease-out)}
+.tile:active{transform:scale(.97)}
+.tile .n{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.02em; color:var(--color-text-muted)}
+.tile .t{font-size:1.0625rem; line-height:1.25; letter-spacing:-.01em}
+.tile-own .t{color:var(--color-text-muted)}
+/* chosen: frosted glass with a fine ink ring and the full stop in the corner */
+.tile[aria-checked="true"]{background:rgb(255 255 255 / .86); color:var(--pf-ink); box-shadow:var(--shadow-glass), 0 0 0 1px var(--pf-ink)}
+.tile[aria-checked="true"] .t{color:var(--pf-ink); font-weight:500}
+.tile[aria-checked="true"]::after{content:''; position:absolute; top:18px; right:18px; width:8px; height:8px; border-radius:50%; background:var(--pf-ink)}
+/* one chosen: the others soften, still there, still reachable */
+.tiles:has([aria-checked="true"]) .tile[aria-checked="false"]{opacity:.62}
+@media (hover:hover) and (pointer:fine){
+  .tile[aria-checked="false"]:hover{color:var(--pf-ink); opacity:1}
+}
+.own-in{font-family:var(--font-display); font-size:var(--type-h3); letter-spacing:var(--track-h3); min-height:64px}
+.q-one .dock{margin-top:4px}
 
 /* ============================================================ Q3 — the time */
 .time-grid{display:grid; gap:var(--space-grouped)}
@@ -474,8 +473,6 @@ input[type=range]:focus-visible{outline-offset:0}
   .hero{padding-top:96px; align-items:start}
   .hero-copy{padding-top:24px}
   .chip{font-size:.9375rem; padding-right:16px}
-  .field{padding:18px 18px 20px}
-  .picks{margin:6px -18px 0; padding:2px 18px}
   .row{padding:16px 18px 10px}
   .less .display{padding-top:var(--space-grouped)}
   .founder{padding-bottom:var(--space-separated)}
@@ -487,7 +484,7 @@ input[type=range]:focus-visible{outline-offset:0}
   html{scroll-behavior:auto}
   *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; animation-delay:0ms !important}
   .spin circle{animation:none; stroke-dasharray:.7 1}
-  .view[data-state],.headswap > *,.after,.unlock-out,.map .veil,.blk,.chip,.field,.atmos{transform:none !important}
+  .view[data-state],.headswap > *,.after,.unlock-out,.map .veil,.blk,.chip,.tile,.q,.atmos{transform:none !important}
   .view[data-state="out"],.view[data-state="pre"],.headswap [data-on="false"],.unlock-out[data-gone="true"]{filter:none}
   .map .veil{transition-duration:200ms; transition-delay:0ms !important}
   .after{transition-duration:200ms; transition-delay:0ms}

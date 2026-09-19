@@ -303,7 +303,9 @@ function stepper(name){
   var i = ['areas', 'focus', 'time'].indexOf(name);
   if(i < 0) return;
   $('[data-count]').textContent = (i + 1) + ' of 3';
-  $('[data-ring]').style.strokeDasharray = ((i + 1) / 3).toFixed(3) + ' 1';
+  /* five screens behind three questions: the ring moves on every one */
+  var screen = name === 'areas' ? 1 : name === 'focus' ? 2 + fIdx : 5;
+  $('[data-ring]').style.strokeDasharray = (screen / 5).toFixed(3) + ' 1';
 }
 /* the furthest step her answers allow, so a back or a refresh never lands on a broken screen */
 function allowed(name){
@@ -317,17 +319,26 @@ function allowed(name){
 window.addEventListener('popstate', function(e){
   var v = (e.state && e.state.v) || (location.pathname.indexOf('/plan') === 0 ? 'areas' : 'landing');
   if(v === 'plan' && !openPlan) v = 'time';
-  show(allowed(v));
+  v = allowed(v);
+  if(v === 'focus'){
+    var want = (e.state && e.state.i) || 0;
+    /* never past the first area still waiting for an answer */
+    for(var k = 0; k < want; k++) if(!(S.focus[S.areas[k]] || '').trim()){ want = k; break; }
+    if(current === 'focus'){ toFocus(want, false); return; }
+    fIdx = want;
+  }
+  show(v);
 });
 $('[data-back]').addEventListener('click', function(){
   var i = ORDER.indexOf(current);
   if(history.state && history.state.depth > 0) history.back();
+  else if(current === 'focus' && fIdx > 0){ history.replaceState({ v:'focus', i:fIdx - 1, depth:0 }, '', CONFIG.planPath); toFocus(fIdx - 1, false); }
   else { var prev = ORDER[Math.max(0, i - 1)]; history.replaceState({ v:prev, depth:0 }, '', prev === 'landing' ? '/' : CONFIG.planPath); show(prev); }
 });
 
 var ENTER = {
   areas: function(){ trackOnce('plan_started'); drawChips(); },
-  focus: function(){ drawFields(); },
+  focus: function(){ drawFocus(); },
   time:  function(){ drawRows(); },
   plan:  function(){}
 };
@@ -380,82 +391,84 @@ areasForm.addEventListener('submit', function(e){
   e.preventDefault();
   if(S.areas.length !== 3){ say(areasForm, 'Choose 3 areas to continue.'); return; }
   track('categories_selected', { categories:S.areas.join(','), count:3 });
+  fIdx = 0;
   go('focus');
 });
 
-/* ---- Q2: one thing in each, in her words ---- */
-var fieldsEl = $('[data-fields]');
+/* ---- Q2: one area per screen. Tap a suggestion, or write your own. ---- */
 var focusForm = $('[data-form="focus"]');
-function drawFields(){
-  fieldsEl.textContent = '';
-  S.areas.forEach(function(id, i){
-    var a = AREA[id];
-    var wrap = el('div', 'field');
-    var head = el('div', 'head');
-    var lab = el('label', 'overline', a.name);
-    lab.htmlFor = 'f-' + id;
-    head.appendChild(lab);
-    head.appendChild(el('span', 'caption', '0' + (i + 1)));
-    var input = el('input');
-    input.id = 'f-' + id; input.type = 'text'; input.maxLength = 80;
-    input.autocomplete = 'off'; input.setAttribute('autocapitalize', 'sentences');
-    input.placeholder = 'My focus is…';
-    input.value = S.focus[id] || '';
-    input.setAttribute('aria-describedby', 'q2-title');
-    /* suggestions: one tap fills the field, and she can still edit it */
-    var picks = el('div', 'picks');
-    picks.setAttribute('role', 'group');
-    picks.setAttribute('aria-label', 'Suggestions for ' + a.name);
-    var syncPicks = function(){
-      var v = input.value.trim();
-      $$('.pick', picks).forEach(function(p){ p.setAttribute('aria-pressed', p.textContent === v ? 'true' : 'false'); });
-    };
-    a.ex.forEach(function(text){
-      var p = el('button', 'pick', text);
-      p.type = 'button';
-      p.addEventListener('click', function(){
-        input.value = text;
-        S.focus[id] = text; wrap.dataset.invalid = 'false'; say(focusForm, ''); save(); syncFocus(); syncPicks();
+var tilesEl = $('[data-tiles]');
+var ownWrap = $('[data-own]');
+var ownIn = $('#f-own');
+var fIdx = 0;
+function focusArea(){ return S.areas[fIdx]; }
+function drawFocus(){
+  var id = focusArea(), a = AREA[id];
+  if(!a) return;
+  $('[data-focus-area]').textContent = a.name;
+  $('[data-focus-count]').textContent = (fIdx + 1) + ' of 3';
+  var cur = (S.focus[id] || '').trim();
+  var own = !!cur && a.ex.indexOf(cur) < 0;
+  tilesEl.textContent = '';
+  a.ex.concat(['']).forEach(function(text, i){
+    var b = el('button', 'tile' + (text ? '' : ' tile-own'));
+    b.type = 'button';
+    b.setAttribute('role', 'radio');
+    b.appendChild(el('span', 'n', '0' + (i + 1)));
+    b.appendChild(el('span', 't', text || 'In my own words'));
+    b.setAttribute('aria-checked', (text ? cur === text : own) ? 'true' : 'false');
+    b.addEventListener('click', function(){
+      if(text){
+        S.focus[id] = text; ownWrap.hidden = true;
         track('focus_suggestion_picked', { category:id });
-        input.focus({ preventScroll:true });
-        try{ input.setSelectionRange(text.length, text.length); }catch(e){}
-      });
-      picks.appendChild(p);
+      }else{
+        if(a.ex.indexOf((S.focus[id] || '').trim()) >= 0) S.focus[id] = '';
+        ownIn.value = S.focus[id] || '';
+        ownWrap.hidden = false;
+        ownIn.focus();
+      }
+      say(focusForm, ''); save(); syncFocus();
     });
-    input.addEventListener('input', function(){
-      S.focus[id] = input.value; wrap.dataset.invalid = 'false'; say(focusForm, ''); save(); syncFocus(); syncPicks();
-    });
-    input.addEventListener('keydown', function(e){
-      if(e.key !== 'Enter') return;
-      e.preventDefault();
-      var next = $$('input', fieldsEl).filter(function(n){ return !n.value.trim(); })[0];
-      if(next && next !== input) next.focus(); else focusForm.requestSubmit();
-    });
-    wrap.appendChild(head); wrap.appendChild(input); wrap.appendChild(picks);
-    fieldsEl.appendChild(wrap);
-    syncPicks();
+    tilesEl.appendChild(b);
   });
+  ownWrap.hidden = !own;
+  ownIn.value = own ? cur : '';
   syncFocus();
 }
 function syncFocus(){
-  var ok = S.areas.every(function(id){ return (S.focus[id] || '').trim(); });
-  $('button[type="submit"]', focusForm).setAttribute('aria-disabled', ok ? 'false' : 'true');
-  return ok;
+  var id = focusArea(), cur = (S.focus[id] || '').trim(), a = AREA[id];
+  var own = !ownWrap.hidden;
+  $$('.tile', tilesEl).forEach(function(t, i){
+    var text = a.ex[i];
+    t.setAttribute('aria-checked', (text ? cur === text && !own : own) ? 'true' : 'false');
+  });
+  $('button[type="submit"]', focusForm).setAttribute('aria-disabled', cur ? 'false' : 'true');
+  return !!cur;
+}
+ownIn.addEventListener('input', function(){ S.focus[focusArea()] = ownIn.value; say(focusForm, ''); save(); syncFocus(); });
+/* the next area slides in within the same screen: out fast, in a touch slower */
+function toFocus(i, push){
+  var q = focusForm;
+  if(push){
+    var depth = (history.state && history.state.depth) || 0;
+    history.pushState({ v:'focus', i:i, depth:depth + 1 }, '', CONFIG.planPath);
+  }
+  var swap = function(){
+    fIdx = i; drawFocus(); stepper('focus');
+    q.dataset.state = 'pre'; void q.offsetWidth; q.dataset.state = 'in';
+    $('#q2-title').focus({ preventScroll:true });
+    window.scrollTo({ top:0, left:0, behavior:'instant' });
+  };
+  if(reduce){ swap(); return; }
+  q.dataset.state = 'out';
+  setTimeout(swap, 150);
 }
 focusForm.addEventListener('submit', function(e){
   e.preventDefault();
-  if(!syncFocus()){
-    var first = null;
-    $$('.field', fieldsEl).forEach(function(f){
-      var inp = $('input', f);
-      if(!inp.value.trim()){ f.dataset.invalid = 'true'; first = first || inp; }
-    });
-    say(focusForm, 'Write one thing for each area to continue.');
-    if(first) first.focus();
-    return;
-  }
-  S.areas.forEach(function(id){ S.focus[id] = S.focus[id].trim(); });
-  save();
+  var id = focusArea();
+  if(!syncFocus()){ say(focusForm, ownWrap.hidden ? 'Pick one, or write your own.' : 'Write your focus to continue.'); return; }
+  S.focus[id] = S.focus[id].trim(); save();
+  if(fIdx < 2){ toFocus(fIdx + 1, true); return; }
   track('focuses_completed', { categories:S.areas.join(',') });
   go('time');
 });
