@@ -41,7 +41,7 @@ var CONFIG = {
   preview: /[?&]preview=1/.test(location.search),
   /* The founding offer, mirrored from OFFER in founding.html. live:false turns
      the closing section into a waitlist call instead. */
-  offer: { live:true, price:149, places:100, opensBy:'15\u00a0November\u00a02026', url:'/founding/' },
+  offer: { live:true, price:'178,85', places:100, opensBy:'15\u00a0November\u00a02026', url:'/founding/' },
   waitlistUrl: '/waitlist/',
   planPath:   '/plan/',
   resultPath: '/your-plan/',
