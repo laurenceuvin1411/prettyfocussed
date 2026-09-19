@@ -443,7 +443,8 @@ function paintFocusMap(){
   renderMap(focusMap, planFrom(S.areas.map(function(id){
     return { id:id, focus:(S.focus[id] || '').trim(), minutes:60 };
   })), { min:60, sharp:focusArea() });
-  $('[data-focus-done]').textContent = String(S.areas.filter(function(id){ return (S.focus[id] || '').trim(); }).length);
+  /* where she is in the sequence, the same number as the label above the question */
+  $('[data-focus-done]').textContent = String(fIdx + 1);
 }
 ownIn.addEventListener('input', function(){ S.focus[focusArea()] = ownIn.value; say(focusForm, ''); save(); syncFocus(); });
 ownIn.addEventListener('keydown', function(e){ if(e.key === 'Enter'){ e.preventDefault(); focusForm.requestSubmit(); } });
