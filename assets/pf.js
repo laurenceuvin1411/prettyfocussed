@@ -399,7 +399,7 @@ function drawFields(){
     var input = el('input');
     input.id = 'f-' + id; input.type = 'text'; input.maxLength = 80;
     input.autocomplete = 'off'; input.setAttribute('autocapitalize', 'sentences');
-    input.placeholder = 'Write your own, or pick one below';
+    input.placeholder = 'My focus is…';
     input.value = S.focus[id] || '';
     input.setAttribute('aria-describedby', 'q2-title');
     /* suggestions: one tap fills the field, and she can still edit it */
