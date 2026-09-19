@@ -526,7 +526,9 @@ body.is-quiet [data-plane]{opacity:.28; filter:blur(4px)}
   font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500; color:var(--pf-ink)}
 .deal-pill[hidden]{display:none}
 .deal-pill .pip{width:6px; height:6px; border-radius:50%; background:var(--pf-ink)}
-.deal-price{font-size:clamp(4rem,2rem + 5vw,6rem) !important; margin:4px 0 0 !important; flex-wrap:nowrap; white-space:nowrap}
+.deal-card{container-type:inline-size}
+/* sized to the card, so the unit never runs past its edge */
+.deal-price{font-size:clamp(2.75rem, 24cqi, 6rem) !important; margin:4px 0 0 !important; flex-wrap:nowrap; white-space:nowrap}
 .deal-anchor{margin:0; font-size:15px; line-height:1.55; color:var(--color-text-secondary); max-width:34ch}
 .deal-card .form{max-width:none; margin-top:var(--space-related)}
 .deal-card .form-row{display:block}
