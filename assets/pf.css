@@ -246,12 +246,21 @@ main{position:relative; z-index:10}
   background:linear-gradient(170deg, #B7CDE0 0%, #CBD9E4 30%, #E6ECEF 62%, #EFE3D8 100%);
   transition:opacity 500ms var(--ease-out)}
 .sky::after{content:''; position:absolute; inset:0; background-image:var(--noise); opacity:.05; mix-blend-mode:multiply}
-body[data-view="areas"] .sky,body[data-view="focus"] .sky{opacity:1}
-body[data-view="areas"] .top::before,body[data-view="focus"] .top::before{opacity:0}
-body[data-view="focus"] .overline{color:var(--color-text-secondary)}
+body[data-view="areas"] .sky,body[data-view="focus"] .sky,body[data-view="time"] .sky{opacity:1}
+body[data-view="areas"] .top::before,body[data-view="focus"] .top::before,body[data-view="time"] .top::before{opacity:0}
+body[data-view="focus"] .overline,body[data-view="time"] .overline{color:var(--color-text-secondary)}
 /* on the sky, the backings go clear so nothing sits as a beige patch */
 body[data-view="focus"] .preview{background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none}
 body[data-view="focus"] .dock{background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none}
+body[data-view="time"] .dock{background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none}
+/* on a phone the pinned map keeps a frosted backing, so the sliders read clearly as they scroll under it */
+body[data-view="time"] .preview{background:rgb(255 255 255 / .3); box-shadow:inset 0 0 0 1px rgb(255 255 255 / .5)}
+@media (min-width:760px){ body[data-view="time"] .preview{background:transparent; box-shadow:none} }
+/* the slider rows become glass, the same family as the tiles */
+body[data-view="time"] .row{background:rgb(255 255 255 / .3); -webkit-backdrop-filter:blur(20px) saturate(1.15); backdrop-filter:blur(20px) saturate(1.15);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .6), inset 0 1px 0 rgb(255 255 255 / .75)}
+body[data-view="time"] .row .meta .who p{color:var(--pf-ink)}
+body[data-view="time"] .scale{color:var(--color-text-secondary)}
 .q-areas{max-width:920px}
 .q-areas .overline{color:var(--color-text-secondary)}
 .q-areas .h2{max-width:17ch}
