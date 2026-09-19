@@ -1,0 +1,467 @@
+/* ============================================================
+   PRETTY FOCUSSED — the Plan
+   Tokens verbatim from design-system/design-tokens.md.
+   Components read semantic vars, never --pf-* primitives directly,
+   except the atmosphere plates on the Plan map (brand surface).
+   Plaster (Bone) only: this page commits to one world.
+   ============================================================ */
+:root{
+  color-scheme:light;
+  --pf-bone:#F4F2EE; --pf-paper:#EAE7E1; --pf-stone:#D6D1C7; --pf-ash:#9A968E;
+  --pf-slate-400:#6B675F; --pf-slate-600:#55534E; --pf-ink:#14150F;
+  --pf-sage-100:#E2E7DA; --pf-sage-200:#C6D0B8; --pf-sage-400:#98A886;
+  --pf-sage-600:#6E7F5E; --pf-sage-800:#3E4936;
+  --pf-sky:#A6C1D8; --pf-mist:#CBD9E4; --pf-sand:#D8CDBD;
+  --pf-shell:#EFE3D8; --pf-flush:#E0B8A4;
+
+  --ground-s0:#F4F2EE; --ground-s1:#E4EBF3;
+  --color-surface-default:color-mix(in srgb, var(--ground-s0) 86%, var(--pf-stone) 14%);
+  --color-surface-glass:rgb(255 255 255 / .72);
+  --color-text-primary:var(--pf-ink);
+  --color-text-secondary:var(--pf-slate-600);
+  --color-text-muted:var(--pf-slate-400);
+  --color-text-disabled:var(--pf-ash);
+  --color-action-primary:var(--pf-ink);
+  --color-action-primary-text:var(--pf-bone);
+  --color-border-default:var(--pf-stone);
+  --color-border-focus:rgb(20 21 15 / .40);
+  --color-feedback-error-bg:var(--pf-shell);
+
+  --font-display:'Aeonik','Instrument Sans',system-ui,sans-serif;
+  --font-body:'Aeonik','Instrument Sans',system-ui,sans-serif;
+  --font-mono:'Aeonik Mono','JetBrains Mono',ui-monospace,monospace;
+
+  --type-display:clamp(2.75rem,1.2rem + 6.4vw,6rem);
+  --type-h1:clamp(2.125rem,1.1rem + 4.3vw,4rem);
+  --type-h2:clamp(1.6875rem,1.1rem + 2.5vw,2.75rem);
+  --type-h3:clamp(1.375rem,1.05rem + 1vw,1.875rem);
+  --type-body-lg:clamp(1.0625rem,1rem + .3vw,1.1875rem);
+  --type-caption:.6875rem; --type-overline:.625rem;
+  --type-numeric-xl:clamp(3rem,1.6rem + 4vw,4.5rem);
+  --track-display:-.035em; --track-h1:-.03em; --track-h2:-.025em; --track-h3:-.02em;
+  --track-caption:.06em; --track-overline:.14em;
+
+  --space-bound:8px; --space-related:16px; --space-grouped:28px;
+  --space-separated:72px; --space-chaptered:160px;
+
+  --radius-pill:999px; --radius-input:14px; --radius-card:20px; --radius-panel:24px; --radius-sheet:32px;
+
+  --shadow-sm:0 1px 2px rgb(62 73 54 / .04);
+  --shadow-md:0 4px 16px rgb(62 73 54 / .06);
+  --shadow-lg:0 8px 32px rgb(62 73 54 / .08);
+  --shadow-xl:0 16px 56px rgb(62 73 54 / .10);
+  --shadow-glass:inset 0 1px 0 rgb(255 255 255 / .45), 0 8px 32px rgb(62 73 54 / .08);
+
+  --ease-out:cubic-bezier(.23,1,.32,1);
+  --ease-in-out:cubic-bezier(.77,0,.175,1);
+  --ease-sheet:cubic-bezier(.32,.72,0,1);
+  --duration-press:120ms; --duration-fast:160ms; --duration-base:200ms; --duration-slow:260ms;
+  --blur-peripheral:3px; --opacity-peripheral:.55;
+
+  /* the room: 0 while she works, 1 once the plan is hers */
+  --room:0;
+  --noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.9'/%3E%3C/svg%3E");
+
+  /* the three atmosphere plates on the map, all validated in brand/air-system.md.
+     Three different lights of equal weight, so no block reads as the important one. */
+  --plate-1:linear-gradient(155deg, #A6C1D8 0%, #A6C1D8 18%, #CBD9E4 52%, #F4F2EE 100%);   /* High Air */
+  --plate-2:linear-gradient(155deg, #CBD9E4 0%, #F4F2EE 55%, #EFE3D8 100%);                /* Overcast */
+  --plate-3:linear-gradient(155deg, #CBD9E4 0%, #EFE3D8 48%, #D8CDBD 88%, #EFE3D8 100%);   /* Last Light */
+}
+
+/* ============================================================ base */
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; min-height:100svh;
+  font:400 16px/1.625 var(--font-body);
+  color:var(--color-text-primary);
+  background-color:var(--ground-s0);
+  background-color:color-mix(in oklab, var(--ground-s0) calc((1 - var(--room)) * 100%), var(--ground-s1));
+  -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+  overflow-x:hidden;
+}
+/* the one moment the room is allowed to be felt: the plan becomes hers */
+body.is-settling{transition:background-color 900ms var(--ease-out)}
+body::after{content:''; position:fixed; inset:0; z-index:60; pointer-events:none;
+  background-image:var(--noise); opacity:.03; mix-blend-mode:multiply}
+img,svg{display:block; max-width:100%}
+button{font:inherit; color:inherit; border:0; background:none; cursor:pointer; padding:0}
+input{font:inherit; color:inherit}
+a{color:inherit}
+::selection{background:var(--pf-sage-200); color:var(--pf-ink)}
+:focus-visible{outline:2px solid var(--color-border-focus); outline-offset:3px; border-radius:var(--radius-input)}
+.sr{position:absolute; width:1px; height:1px; margin:-1px; padding:0; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+[hidden]{display:none !important}
+
+/* whitespace is occupied atmosphere, never a flat void */
+.atmos{position:fixed; inset:-20%; z-index:0; pointer-events:none; opacity:.62;
+  transition:transform 1200ms var(--ease-out), opacity 1200ms var(--ease-out)}
+.atmos i{position:absolute; display:block; border-radius:50%; filter:blur(90px)}
+.atmos i:nth-child(1){width:62vmax; height:62vmax; left:-18vmax; top:-16vmax;
+  background:radial-gradient(circle at 40% 40%, rgb(226 231 218 / .95), rgb(226 231 218 / 0) 68%)}
+.atmos i:nth-child(2){width:54vmax; height:54vmax; right:-20vmax; bottom:-22vmax;
+  background:radial-gradient(circle, rgb(239 227 216 / .9), rgb(239 227 216 / 0) 66%)}
+.atmos i:nth-child(3){width:40vmax; height:40vmax; right:6vmax; top:-14vmax;
+  background:radial-gradient(circle, rgb(203 217 228 / .7), rgb(203 217 228 / 0) 64%)}
+body[data-view="areas"] .atmos,body[data-view="focus"] .atmos,body[data-view="time"] .atmos{transform:translate3d(0,-4vmax,0) scale(1.06); opacity:.52}
+body[data-view="plan"] .atmos{transform:translate3d(0,-8vmax,0) scale(1.12); opacity:.46}
+
+/* ============================================================ type */
+.overline{font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; color:var(--color-text-muted); font-weight:500; line-height:1.4; margin:0}
+.caption{font-size:var(--type-caption); letter-spacing:var(--track-caption); color:var(--color-text-muted); line-height:1.6; margin:0}
+.display{font-family:var(--font-display); font-size:var(--type-display); line-height:.94; letter-spacing:var(--track-display); font-weight:400; margin:0; text-wrap:balance}
+.h1{font-family:var(--font-display); font-size:var(--type-h1); line-height:1.02; letter-spacing:var(--track-h1); font-weight:400; margin:0; text-wrap:balance}
+.h2{font-family:var(--font-display); font-size:var(--type-h2); line-height:1.09; letter-spacing:var(--track-h2); font-weight:400; margin:0; text-wrap:balance}
+.h3{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); font-weight:400; margin:0; text-wrap:balance}
+.lede{font-size:var(--type-body-lg); line-height:1.55; color:var(--color-text-secondary); margin:0; text-wrap:pretty}
+.num{font-family:var(--font-display); font-variant-numeric:tabular-nums; letter-spacing:-.04em; font-weight:500}
+.unit{font-family:var(--font-mono); font-size:.35em; color:var(--color-text-muted); margin-left:.35em; letter-spacing:.02em; font-weight:400}
+
+/* ============================================================ controls */
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:10px; border-radius:var(--radius-pill);
+  padding:17px 32px; min-height:52px; background:var(--color-action-primary); color:var(--color-action-primary-text);
+  font-weight:500; font-size:.9375rem; letter-spacing:.005em; line-height:1; text-decoration:none;
+  box-shadow:var(--shadow-md);
+  transition:transform var(--duration-press) var(--ease-out), opacity var(--duration-fast) var(--ease-out)}
+.btn:active{transform:scale(.97)}
+.btn[aria-disabled="true"]{opacity:.28; cursor:default; box-shadow:none}
+.btn[aria-disabled="true"]:active{transform:none}
+@media (hover:hover) and (pointer:fine){.btn:not([aria-disabled="true"]):hover{opacity:.88}}
+.btn .spin{display:none; width:18px; height:18px}
+.btn[data-busy="true"] .btn-label{opacity:0}
+.btn[data-busy="true"] .spin{display:block; position:absolute}
+.btn{position:relative}
+.spin circle{fill:none; stroke:currentColor; stroke-width:2; stroke-linecap:round; stroke-dasharray:.28 1; transform-origin:center;
+  animation:turn 900ms linear infinite}
+@keyframes turn{to{transform:rotate(360deg)}}
+
+.ghost{display:inline-flex; align-items:center; min-height:44px; font-size:.875rem; color:var(--color-text-secondary);
+  text-decoration:underline; text-underline-offset:5px; text-decoration-thickness:1px;
+  text-decoration-color:var(--color-border-default);
+  transition:transform var(--duration-press) var(--ease-out), color var(--duration-fast) var(--ease-out), text-decoration-color var(--duration-fast) var(--ease-out)}
+.ghost:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.ghost:hover{color:var(--color-text-primary); text-decoration-color:currentColor}}
+
+/* ============================================================ header */
+.top{position:fixed; z-index:40; top:0; left:0; right:0; display:flex; align-items:center; gap:14px;
+  padding:max(16px, env(safe-area-inset-top)) clamp(16px,4vw,40px) 16px; pointer-events:none}
+.top::before{content:''; position:absolute; inset:-1px 0 -26px; z-index:-1; pointer-events:none;
+  background:linear-gradient(to bottom, color-mix(in oklab, var(--ground-s0) calc((1 - var(--room)) * 100%), var(--ground-s1)) 40%, transparent);
+  -webkit-backdrop-filter:blur(9px); backdrop-filter:blur(9px);
+  -webkit-mask-image:linear-gradient(to bottom,#000 60%,transparent); mask-image:linear-gradient(to bottom,#000 60%,transparent)}
+.top > *{pointer-events:auto}
+.mark{display:inline-flex; align-items:center; gap:10px; text-decoration:none; font-weight:500; font-size:.9375rem; letter-spacing:-.01em;
+  min-height:44px; transition:transform var(--duration-press) var(--ease-out)}
+.mark:active{transform:scale(.97)}
+.mark svg{width:22px; height:22px}
+.logo-arc{stroke-dasharray:1; stroke-dashoffset:0}
+/* the signature, once per visit: the arc sweeps, and at 720ms the dot arrives. It does not ease. */
+.is-first .logo-arc{animation:sweep 900ms var(--ease-out) both}
+.is-first .logo-dot{animation:arrive 80ms linear 720ms both}
+@keyframes sweep{from{stroke-dashoffset:1}}
+@keyframes arrive{from{opacity:0}to{opacity:1}}
+
+.steps{display:none; align-items:center; gap:12px; margin-left:auto}
+body[data-view="areas"] .steps,body[data-view="focus"] .steps,body[data-view="time"] .steps{display:flex}
+.steps .count{font-family:var(--font-mono); font-size:11px; letter-spacing:.02em; color:var(--color-text-muted); font-variant-numeric:tabular-nums}
+.ring{width:30px; height:30px; transform:rotate(-90deg)}
+.ring .track{fill:none; stroke:var(--color-border-default); stroke-width:1.6; stroke-linecap:round; stroke-dasharray:.006 .024}
+.ring .value{fill:none; stroke:var(--pf-sage-600); stroke-width:2.2; stroke-linecap:round;
+  transition:stroke-dasharray var(--duration-slow) var(--ease-out)}
+.ring .dot{fill:var(--pf-ink)}
+.back{display:inline-flex; align-items:center; min-height:44px; padding:0 4px; font-size:.875rem; color:var(--color-text-muted);
+  transition:transform var(--duration-press) var(--ease-out), color var(--duration-fast) var(--ease-out)}
+.back:active{transform:scale(.97)}
+@media (hover:hover) and (pointer:fine){.back:hover{color:var(--color-text-primary)}}
+
+/* ============================================================ views
+   The focal plane between screens. Exits are faster than enters. */
+main{position:relative; z-index:10}
+.view{min-height:100svh}
+.view[data-state="out"]{opacity:0; filter:blur(6px); transform:translate3d(0,-8px,0);
+  transition:opacity 150ms var(--ease-out), filter 150ms var(--ease-out), transform 150ms var(--ease-out); pointer-events:none}
+.view[data-state="pre"]{opacity:0; filter:blur(8px); transform:translate3d(0,12px,0) scale(.985)}
+.view[data-state="in"]{opacity:1; filter:none; transform:none;
+  transition:opacity 260ms var(--ease-out), filter 260ms var(--ease-out), transform 260ms var(--ease-out)}
+
+.wrap{width:100%; max-width:1180px; margin:0 auto; padding:0 clamp(16px,4vw,40px)}
+.q{max-width:640px; margin:0 auto; padding:clamp(120px,18vh,180px) 16px max(48px, calc(env(safe-area-inset-bottom) + 32px));
+  display:grid; gap:var(--space-grouped)}
+.ask{display:grid; gap:14px}
+.ask .lede{max-width:44ch; font-size:1rem}
+.ask .h2{max-width:18ch}
+
+/* ============================================================ LANDING */
+.hero{min-height:100svh; display:grid; align-items:center; padding:112px 0 64px}
+.hero-grid{display:grid; gap:56px; align-items:center}
+@media (min-width:920px){ .hero-grid{grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr); gap:clamp(48px,6vw,96px)} }
+.hero-copy{display:grid; gap:var(--space-grouped); padding-top:clamp(24px,8vh,96px)}
+.hero-copy .display{max-width:11ch}
+.hero-copy .lede{max-width:34ch}
+.hero-act{display:flex; flex-wrap:wrap; align-items:center; gap:10px 28px; margin-top:6px}
+.hero-copy .caption{margin-top:-8px}
+.specimen{position:relative; width:min(100%,480px); justify-self:center}
+.specimen .tag{position:absolute; z-index:3; top:-14px; left:22px}
+
+/* the field resolves on arrival: brand clock */
+.resolve{animation:resolve 700ms var(--ease-out) both}
+.resolve.d1{animation-delay:80ms}.resolve.d2{animation-delay:160ms}.resolve.d3{animation-delay:260ms}.resolve.d4{animation-delay:380ms}
+@keyframes resolve{from{opacity:0; filter:blur(8px); transform:translate3d(0,10px,0)}}
+
+.how{padding:var(--space-separated) 0 var(--space-chaptered)}
+.how ol{list-style:none; margin:0; padding:0; display:grid; gap:0; max-width:760px}
+.how li{display:grid; grid-template-columns:56px 1fr; gap:16px; align-items:baseline; padding:22px 0; border-top:1px dotted var(--color-border-default)}
+.how li .n{font-family:var(--font-mono); font-size:11px; color:var(--color-text-muted)}
+.how .h3{max-width:26ch}
+.how-head{display:grid; gap:14px; margin-bottom:var(--space-grouped)}
+
+.foot{padding:40px 0 max(40px, env(safe-area-inset-bottom)); display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center}
+.foot .caption a{text-decoration:none}
+@media (hover:hover) and (pointer:fine){.foot .caption a:hover{color:var(--color-text-primary)}}
+
+/* ============================================================ glass pill */
+.glass{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:var(--radius-pill);
+  background:var(--color-surface-glass); -webkit-backdrop-filter:blur(32px) saturate(1.2); backdrop-filter:blur(32px) saturate(1.2);
+  box-shadow:var(--shadow-glass); font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500; color:var(--color-text-secondary)}
+.glass .pip{width:6px; height:6px; border-radius:50%; background:var(--pf-ink)}
+
+/* ============================================================ Q1 — the areas */
+.chips{display:flex; flex-wrap:wrap; gap:10px}
+.chip{position:relative; display:inline-flex; align-items:center; gap:10px; min-height:48px; padding:12px 20px 12px 12px;
+  border-radius:var(--radius-pill); background:var(--color-surface-default); color:var(--color-text-secondary);
+  font-size:1rem; line-height:1.2; letter-spacing:-.01em;
+  transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out),
+             box-shadow var(--duration-fast) var(--ease-out), opacity var(--duration-base) var(--ease-out),
+             filter var(--duration-base) var(--ease-out), color var(--duration-fast) var(--ease-out)}
+.chip:active{transform:scale(.97)}
+/* the slot: dotted when empty (scaffold), a solid dot with her order when chosen (a value) */
+.chip .slot{position:relative; width:24px; height:24px; flex:none; border-radius:50%; border:1px dotted var(--color-border-default); display:grid; place-items:center}
+.chip .slot b{position:absolute; inset:-1px; border-radius:50%; background:var(--pf-ink); color:var(--pf-bone);
+  font:400 10px/24px var(--font-mono); text-align:center; opacity:0; transform:scale(.6);
+  transition:opacity var(--duration-fast) var(--ease-out), transform var(--duration-base) var(--ease-out)}
+.chip[aria-pressed="true"]{background:rgb(255 255 255 / .82); color:var(--color-text-primary); font-weight:500; box-shadow:var(--shadow-glass)}
+.chip[aria-pressed="true"] .slot{border-color:transparent}
+.chip[aria-pressed="true"] .slot b{opacity:1; transform:none}
+/* three chosen: the rest of the list recedes. Still there, still reachable. */
+.chips[data-full="true"] .chip[aria-pressed="false"]{opacity:var(--opacity-peripheral); filter:blur(1.5px)}
+.chips[data-full="true"] .chip[aria-pressed="false"]:focus-visible{opacity:1; filter:none}
+@media (hover:hover) and (pointer:fine){
+  .chip[aria-pressed="false"]:hover{color:var(--color-text-primary)}
+  .chips[data-full="true"] .chip[aria-pressed="false"]:hover{opacity:.8; filter:none}
+}
+.tally{display:flex; align-items:center; gap:12px; min-height:30px}
+.tally .ring{width:26px; height:26px; flex:none}
+.tally p{margin:0; font-size:.9375rem; color:var(--color-text-secondary); transition:opacity var(--duration-fast) var(--ease-out)}
+.tally[data-full="true"] p{color:var(--color-text-primary)}
+.note{margin:0; font-size:var(--type-caption); letter-spacing:var(--track-caption); color:var(--color-text-primary);
+  background:var(--color-feedback-error-bg); padding:9px 14px; border-radius:var(--radius-input); justify-self:start;
+  opacity:0; transform:translateY(-3px); transition:opacity var(--duration-fast) var(--ease-out), transform var(--duration-fast) var(--ease-out)}
+.note[data-show="true"]{opacity:1; transform:none}
+.note:empty{display:none}
+
+/* the action rides the bottom of the viewport when a screen is taller than it */
+.dock{position:sticky; bottom:max(12px, env(safe-area-inset-bottom)); z-index:5; display:flex; align-items:center; gap:16px; flex-wrap:wrap;
+  justify-self:start; padding:10px; margin:0 -10px; border-radius:var(--radius-pill);
+  background:rgb(244 242 238 / .66); -webkit-backdrop-filter:blur(18px) saturate(1.1); backdrop-filter:blur(18px) saturate(1.1)}
+.dock .caption{flex:1 1 140px}
+
+/* ============================================================ Q2 — the one thing */
+.fields{display:grid; gap:12px}
+.field{display:grid; gap:10px; padding:20px 22px 22px; border-radius:var(--radius-card); background:var(--color-surface-default);
+  transition:opacity var(--duration-base) var(--ease-out), background-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out)}
+.field .head{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+.field .head .caption{font-family:var(--font-mono); letter-spacing:.02em}
+.field input{width:100%; border:0; background:none; padding:4px 0 2px; font-family:var(--font-display);
+  font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); color:var(--color-text-primary); outline:none;
+  border-bottom:1px dotted var(--color-border-default); border-radius:0}
+.field input::placeholder{color:var(--color-text-disabled)}
+.field:focus-within{background:rgb(255 255 255 / .82); box-shadow:var(--shadow-glass)}
+.field:focus-within input{border-bottom-style:solid; border-bottom-color:var(--color-text-muted)}
+/* the one being written is the sharp one; its neighbours soften (opacity only: they are controls) */
+.fields:focus-within .field:not(:focus-within){opacity:.6}
+.field[data-invalid="true"]{background:var(--color-feedback-error-bg)}
+
+/* ============================================================ Q3 — the time */
+.time-grid{display:grid; gap:var(--space-grouped)}
+@media (min-width:980px){
+  .q.q-time{max-width:1080px}
+  .time-grid{grid-template-columns:minmax(0,1fr) minmax(0,.86fr); gap:clamp(40px,5vw,72px); align-items:start}
+  .time-grid .preview{position:sticky; top:120px}
+}
+.rows{display:grid; gap:10px}
+.row{display:grid; gap:6px; padding:18px 22px 12px; border-radius:var(--radius-card); background:var(--color-surface-default)}
+.row .meta{display:flex; justify-content:space-between; align-items:flex-start; gap:16px}
+.row .meta .who{display:grid; gap:4px; min-width:0}
+.row .meta .who p{margin:0; color:var(--color-text-secondary); font-size:.9375rem; line-height:1.4; overflow-wrap:anywhere}
+.row .val{margin:0; font-size:clamp(2.25rem,1.6rem + 2vw,3rem); line-height:.9; white-space:nowrap}
+.row .val .unit{font-size:.3em}
+
+input[type=range]{--p:.2; -webkit-appearance:none; appearance:none; width:100%; height:44px; margin:0; cursor:grab; border-radius:0;
+  /* solid hairline = her actual value, dotted = the scaffold still open */
+  background:
+    linear-gradient(90deg, var(--pf-ink) 0 calc(14px + var(--p) * (100% - 28px)), transparent 0) center / 100% 2px no-repeat,
+    radial-gradient(circle, var(--pf-ash) .9px, transparent 1.3px) 0 50% / 7px 7px repeat-x}
+input[type=range]:active{cursor:grabbing}
+input[type=range]::-webkit-slider-runnable-track{height:44px; background:transparent}
+input[type=range]::-moz-range-track{height:44px; background:transparent}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:28px; height:28px; margin-top:8px; border-radius:50%;
+  background:radial-gradient(circle, var(--pf-ink) 0 3px, transparent 3.5px), rgb(255 255 255 / .94);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .6), 0 0 0 1px rgb(62 73 54 / .08), var(--shadow-md);
+  transition:transform var(--duration-press) var(--ease-out)}
+input[type=range]::-moz-range-thumb{width:28px; height:28px; border:0; border-radius:50%;
+  background:radial-gradient(circle, var(--pf-ink) 0 3px, transparent 3.5px), rgb(255 255 255 / .94);
+  box-shadow:0 0 0 1px rgb(62 73 54 / .08), var(--shadow-md); transition:transform var(--duration-press) var(--ease-out)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(.94)}
+input[type=range]:active::-moz-range-thumb{transform:scale(.94)}
+input[type=range]:focus-visible{outline-offset:0}
+.scale{display:flex; justify-content:space-between; font-family:var(--font-mono); font-size:10px; color:var(--color-text-disabled); letter-spacing:.02em; margin-top:-4px}
+.preview{display:grid; gap:14px}
+.preview .map{aspect-ratio:1 / 1}
+/* small screens: the map rides above the sliders, so she sees it answer every drag */
+@media (max-width:979px){
+  .preview{order:-1; position:sticky; top:calc(max(16px, env(safe-area-inset-top)) + 52px); z-index:3; gap:8px;
+    margin:0 -10px; padding:8px 10px 10px; border-radius:var(--radius-panel);
+    background:rgb(244 242 238 / .8); -webkit-backdrop-filter:blur(18px); backdrop-filter:blur(18px)}
+  .preview .map{aspect-ratio:auto; height:clamp(150px, 24svh, 220px)}
+  .preview .total .overline{display:none}
+  .preview .total{justify-content:flex-end; margin-top:-4px}
+  .preview .total .num{font-size:1.125rem}
+}
+.total{display:flex; align-items:baseline; justify-content:space-between; gap:12px}
+.total .num{font-size:1.75rem; line-height:1}
+
+/* ============================================================ THE MAP
+   A proportional composition, not a chart. Area is exactly proportional
+   to time: the first block takes its share of one axis across the whole
+   of the other, the remaining two split what is left. Wide containers
+   split left/right, narrow ones top/bottom. */
+.map{position:relative; container-type:inline-size; display:grid; gap:6px; width:100%;
+  grid-template-columns:var(--tall-cols); grid-template-rows:var(--tall-rows); aspect-ratio:4 / 5}
+.map .blk{grid-column:auto; grid-row:auto}
+.map .blk:nth-of-type(1){grid-column:1 / -1}
+.map.is-wide{grid-template-columns:var(--wide-cols); grid-template-rows:var(--wide-rows); aspect-ratio:16 / 9}
+.map.is-wide .blk:nth-of-type(1){grid-column:1; grid-row:1 / -1}
+.map.is-wide .blk:nth-of-type(2){grid-column:2; grid-row:1}
+.map.is-wide .blk:nth-of-type(3){grid-column:2; grid-row:2}
+
+.blk{position:relative; overflow:hidden; border-radius:var(--radius-card); container-type:size;
+  display:flex; flex-direction:column; justify-content:space-between; gap:8px; padding:clamp(14px,5cqmin,26px);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .55), var(--shadow-sm); isolation:isolate;
+  transition:opacity var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out)}
+.blk::before{content:''; position:absolute; inset:0; z-index:-2; background:var(--plate); background-size:180% 180%; background-position:var(--pos, 0 0)}
+.blk::after{content:''; position:absolute; inset:0; z-index:-1; background-image:var(--noise); opacity:.05; mix-blend-mode:multiply}
+.blk[data-plate="1"]{--plate:var(--plate-1); --pos:30% 20%}
+.blk[data-plate="2"]{--plate:var(--plate-2); --pos:10% 40%}
+.blk[data-plate="3"]{--plate:var(--plate-3); --pos:60% 30%}
+.blk .b-top{display:flex; justify-content:space-between; align-items:flex-start; gap:8px}
+.blk .b-name{font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500; color:var(--pf-ink); margin:0}
+.blk .b-hrs{font-family:var(--font-mono); font-size:10.5px; letter-spacing:.02em; color:var(--color-text-secondary); white-space:nowrap; margin:0}
+.blk .b-bot{display:grid; gap:6px; min-width:0}
+.blk .b-pct{margin:0; font-size:clamp(2rem, 24cqmin, 5.5rem); line-height:.86; color:var(--pf-ink)}
+.blk .b-pct .unit{font-size:.35em; color:var(--color-text-secondary)}
+.blk .b-focus{margin:0; font-size:clamp(.875rem, 5.2cqmin, 1.5rem); line-height:1.22; letter-spacing:-.015em; color:var(--pf-ink);
+  max-width:22ch; overflow-wrap:anywhere; display:-webkit-box; -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden}
+/* a block too small for everything keeps the number and the name */
+@container (max-height:150px){ .blk .b-focus{-webkit-line-clamp:1} }
+@container (max-height:110px){ .blk .b-focus{display:none} .blk .b-pct{font-size:clamp(1.75rem,34cqmin,3rem)} }
+@container (max-width:150px){ .blk .b-hrs{display:none} }
+
+/* hero specimen: one plane sharp, the others held soft. Hover moves the focus. */
+.map[data-dof] .blk{opacity:var(--opacity-peripheral); filter:blur(var(--blur-peripheral))}
+.map[data-dof] .blk[data-sharp]{opacity:1; filter:none}
+@media (hover:hover) and (pointer:fine){
+  .map[data-dof]:hover .blk{opacity:var(--opacity-peripheral); filter:blur(var(--blur-peripheral))}
+  .map[data-dof]:hover .blk:hover{opacity:1; filter:none}
+}
+
+/* locked: the proportions and percentages exist; the words wait for her */
+.map .veil{transition:filter 700ms var(--ease-out), opacity 700ms var(--ease-out)}
+.map[data-locked="true"] .veil{filter:blur(7px); opacity:.62; user-select:none}
+.map[data-locked="false"] .blk:nth-of-type(1) .veil{transition-delay:0ms}
+.map[data-locked="false"] .blk:nth-of-type(2) .veil{transition-delay:120ms}
+.map[data-locked="false"] .blk:nth-of-type(3) .veil{transition-delay:240ms}
+.map[data-map="plan"][data-locked="true"]{aspect-ratio:1 / 1}
+.map .lockpill{position:absolute; z-index:4; left:50%; top:50%; transform:translate(-50%,-50%); white-space:nowrap;
+  transition:opacity var(--duration-base) var(--ease-out), transform var(--duration-base) var(--ease-out)}
+.map[data-locked="false"] .lockpill{opacity:0; transform:translate(-50%,-50%) scale(.96); pointer-events:none}
+
+/* ============================================================ THE PLAN */
+.plan{padding-top:clamp(112px,16vh,168px)}
+.plan-head{display:grid; gap:14px; max-width:760px; margin-bottom:var(--space-grouped)}
+.plan-head .lede{max-width:40ch}
+.headswap{display:grid}
+.headswap > *{grid-area:1 / 1; transition:opacity 400ms var(--ease-out), filter 400ms var(--ease-out), transform 400ms var(--ease-out)}
+.headswap [data-on="false"]{opacity:0; filter:blur(6px); transform:translate3d(0,6px,0); pointer-events:none}
+.plan-body{display:grid; gap:var(--space-grouped)}
+@media (min-width:980px){
+  .plan-body[data-locked="true"]{grid-template-columns:minmax(0,1.25fr) minmax(0,.75fr); align-items:center; gap:clamp(40px,5vw,72px)}
+}
+.plan-foot{display:flex; flex-wrap:wrap; gap:8px 28px; align-items:center; justify-content:space-between}
+.plan-foot .caption{max-width:56ch}
+.plan-note{font-size:.9375rem; color:var(--color-text-secondary); margin:0; max-width:52ch}
+.share{display:flex; gap:20px; flex-wrap:wrap}
+
+.unlock{display:grid; gap:14px; align-content:start}
+.unlock .row2{display:grid; gap:10px}
+.input{width:100%; min-height:54px; padding:15px 20px; border-radius:var(--radius-input); border:0;
+  background:var(--color-surface-default); color:var(--color-text-primary); font-size:1.0625rem; letter-spacing:-.01em;
+  transition:background-color var(--duration-fast) var(--ease-out), box-shadow var(--duration-fast) var(--ease-out)}
+.input::placeholder{color:var(--color-text-disabled)}
+.input:focus{outline:none; background:rgb(255 255 255 / .86); box-shadow:var(--shadow-glass)}
+.input:focus-visible{outline:2px solid var(--color-border-focus); outline-offset:2px}
+.input[aria-invalid="true"]{background:var(--color-feedback-error-bg)}
+.lbl{font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; color:var(--color-text-muted); font-weight:500}
+.unlock .btn{width:100%}
+.unlock-out{transition:opacity 150ms var(--ease-out), filter 150ms var(--ease-out), transform 150ms var(--ease-out)}
+.unlock-out[data-gone="true"]{opacity:0; filter:blur(6px); transform:translate3d(0,-6px,0); pointer-events:none}
+.shared{justify-self:start}
+
+/* after the plan: the chapters arrive in their own time */
+.after{transition:opacity 700ms var(--ease-out) 500ms, transform 700ms var(--ease-out) 500ms}
+.after[data-on="false"]{opacity:0; transform:translate3d(0,16px,0); pointer-events:none; visibility:hidden}
+
+.less{padding:var(--space-chaptered) 0 calc(var(--space-chaptered) * .75); display:grid; gap:var(--space-grouped); max-width:860px}
+.less .lede{max-width:46ch}
+.less .display{max-width:13ch; padding-top:var(--space-separated)}
+
+.founder{position:relative; padding:var(--space-separated) 0 var(--space-chaptered)}
+.founder::before{content:''; position:absolute; inset:0 calc(50% - 50vw); z-index:-1;
+  background:linear-gradient(180deg, transparent, rgb(234 231 225 / .7) 18%, rgb(234 231 225 / .7) 82%, transparent)}
+.founder-grid{display:grid; gap:var(--space-grouped)}
+@media (min-width:980px){ .founder-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(48px,7vw,120px)} .founder-side{position:sticky; top:120px; align-self:start} }
+.founder-side{display:grid; gap:14px}
+.story{display:grid; gap:22px; max-width:36em}
+.story p{margin:0; font-size:var(--type-body-lg); line-height:1.6; color:var(--color-text-secondary); text-wrap:pretty}
+.story p.lead{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.25; letter-spacing:var(--track-h3); color:var(--color-text-primary)}
+.story p.close{color:var(--color-text-primary)}
+.sign{display:flex; align-items:center; gap:12px; padding-top:12px; border-top:1px dotted var(--color-border-default)}
+.sign svg{width:18px; height:18px}
+
+.next{padding:var(--space-separated) 0 var(--space-chaptered); display:grid; gap:var(--space-grouped); max-width:720px}
+.next .lede{max-width:44ch}
+.next .act{display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center}
+
+/* ============================================================ small screens */
+@media (max-width:640px){
+  .hero{padding-top:96px; align-items:start}
+  .hero-copy{padding-top:24px}
+  .chip{font-size:.9375rem; padding-right:16px}
+  .field{padding:18px 18px 20px}
+  .row{padding:16px 18px 10px}
+  .less .display{padding-top:var(--space-grouped)}
+  .founder{padding-bottom:var(--space-separated)}
+}
+
+/* ============================================================ reduced motion
+   Movement goes. Opacity stays, because it still explains what changed. */
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.01ms !important; animation-iteration-count:1 !important; animation-delay:0ms !important}
+  .spin circle{animation:none; stroke-dasharray:.7 1}
+  .view[data-state],.headswap > *,.after,.unlock-out,.map .veil,.blk,.chip,.field,.atmos{transform:none !important}
+  .view[data-state="out"],.view[data-state="pre"],.headswap [data-on="false"],.unlock-out[data-gone="true"]{filter:none}
+  .map .veil{transition-duration:200ms; transition-delay:0ms !important}
+  .after{transition-duration:200ms; transition-delay:0ms}
+  body.is-settling{transition:none}
+}
