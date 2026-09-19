@@ -51,18 +51,18 @@ var CONFIG = {
 
 /* ============================================================ 2. DATA */
 var AREAS = [
-  {id:'business',      name:'Business',      eg:'Build my digital product'},
-  {id:'health',        name:'Health',        eg:'Get stronger'},
-  {id:'relationships', name:'Relationships', eg:'More quality time together'},
-  {id:'family',        name:'Family',        eg:'Sunday dinners with my parents'},
-  {id:'career',        name:'Career',        eg:'Get ready for the next role'},
-  {id:'money',         name:'Money',         eg:'Pay off the credit card'},
-  {id:'friends',       name:'Friendships',   eg:'See my friends every week'},
-  {id:'rest',          name:'Rest',          eg:'Keep my weekends free'},
-  {id:'creativity',    name:'Creativity',    eg:'Finish the first draft'},
-  {id:'learning',      name:'Learning',      eg:'Get conversational in Spanish'},
-  {id:'home',          name:'Home',          eg:'Make the flat feel finished'},
-  {id:'travel',        name:'Travel',        eg:'Plan the trip to Japan'}
+  {id:'business',      name:'Business',      ex:['Build my digital product', 'Get more clients', 'Launch my offer', 'Grow my audience']},
+  {id:'health',        name:'Health',        ex:['Get stronger', 'Move 3 times a week', 'Sleep 8 hours', 'Eat better']},
+  {id:'relationships', name:'Relationships', ex:['More quality time together', 'A weekly date night', 'Be more present', 'Plan a trip together']},
+  {id:'family',        name:'Family',        ex:['Sunday dinners with my parents', 'More time with the kids', 'Call home every week', 'Plan a family weekend']},
+  {id:'career',        name:'Career',        ex:['Get ready for the next role', 'Ask for the promotion', 'Learn a new skill', 'Grow my network']},
+  {id:'money',         name:'Money',         ex:['Pay off the credit card', 'Build a savings buffer', 'Invest every month', 'Track my spending']},
+  {id:'friends',       name:'Friendships',   ex:['See my friends every week', 'Plan a weekend away with friends', 'Reconnect with old friends', 'Say yes to more dinners']},
+  {id:'rest',          name:'Rest',          ex:['Keep my weekends free', 'One evening off a week', 'Switch off after 7 pm', 'Take a real holiday']},
+  {id:'creativity',    name:'Creativity',    ex:['Finish the first draft', 'Paint every week', 'Start the side project', 'Take a class']},
+  {id:'learning',      name:'Learning',      ex:['Get conversational in Spanish', 'Read a book a month', 'Finish my course', 'Learn to code']},
+  {id:'home',          name:'Home',          ex:['Make the flat feel finished', 'Declutter one room', 'Cook at home more', 'Create a calm corner']},
+  {id:'travel',        name:'Travel',        ex:['Plan the trip to Japan', 'One city trip a quarter', 'Book the summer holiday', 'See somewhere new every month']}
 ];
 var AREA = {}; AREAS.forEach(function(a){ AREA[a.id] = a; });
 
@@ -357,7 +357,7 @@ function toggleArea(id){
   var i = S.areas.indexOf(id);
   if(i >= 0){ S.areas.splice(i, 1); say(areasForm, ''); }
   else if(S.areas.length < 3){ S.areas.push(id); say(areasForm, ''); }
-  else { say(areasForm, 'You have three already. Tap one of them first to swap it out.'); return; }
+  else { say(areasForm, 'You have 3 already. Tap one of them first to swap it out.'); return; }
   save(); syncChips();
 }
 function syncChips(){
@@ -372,13 +372,13 @@ function syncChips(){
   tally.dataset.full = full ? 'true' : 'false';
   $('[data-tally-ring]').style.strokeDasharray = (n / 3).toFixed(3) + ' 1';
   $('[data-tally-text]').textContent = full
-    ? 'These three are your focus for now. Everything else can wait.'
+    ? 'These 3 are your focus for now. Everything else can wait.'
     : n + ' of 3 chosen';
   $('button[type="submit"]', areasForm).setAttribute('aria-disabled', full ? 'false' : 'true');
 }
 areasForm.addEventListener('submit', function(e){
   e.preventDefault();
-  if(S.areas.length !== 3){ say(areasForm, 'Choose three areas to continue.'); return; }
+  if(S.areas.length !== 3){ say(areasForm, 'Choose 3 areas to continue.'); return; }
   track('categories_selected', { categories:S.areas.join(','), count:3 });
   go('focus');
 });
@@ -399,11 +399,31 @@ function drawFields(){
     var input = el('input');
     input.id = 'f-' + id; input.type = 'text'; input.maxLength = 80;
     input.autocomplete = 'off'; input.setAttribute('autocapitalize', 'sentences');
-    input.placeholder = a.eg;
+    input.placeholder = 'Write your own, or pick one below';
     input.value = S.focus[id] || '';
     input.setAttribute('aria-describedby', 'q2-title');
+    /* suggestions: one tap fills the field, and she can still edit it */
+    var picks = el('div', 'picks');
+    picks.setAttribute('role', 'group');
+    picks.setAttribute('aria-label', 'Suggestions for ' + a.name);
+    var syncPicks = function(){
+      var v = input.value.trim();
+      $$('.pick', picks).forEach(function(p){ p.setAttribute('aria-pressed', p.textContent === v ? 'true' : 'false'); });
+    };
+    a.ex.forEach(function(text){
+      var p = el('button', 'pick', text);
+      p.type = 'button';
+      p.addEventListener('click', function(){
+        input.value = text;
+        S.focus[id] = text; wrap.dataset.invalid = 'false'; say(focusForm, ''); save(); syncFocus(); syncPicks();
+        track('focus_suggestion_picked', { category:id });
+        input.focus({ preventScroll:true });
+        try{ input.setSelectionRange(text.length, text.length); }catch(e){}
+      });
+      picks.appendChild(p);
+    });
     input.addEventListener('input', function(){
-      S.focus[id] = input.value; wrap.dataset.invalid = 'false'; say(focusForm, ''); save(); syncFocus();
+      S.focus[id] = input.value; wrap.dataset.invalid = 'false'; say(focusForm, ''); save(); syncFocus(); syncPicks();
     });
     input.addEventListener('keydown', function(e){
       if(e.key !== 'Enter') return;
@@ -411,8 +431,9 @@ function drawFields(){
       var next = $$('input', fieldsEl).filter(function(n){ return !n.value.trim(); })[0];
       if(next && next !== input) next.focus(); else focusForm.requestSubmit();
     });
-    wrap.appendChild(head); wrap.appendChild(input);
+    wrap.appendChild(head); wrap.appendChild(input); wrap.appendChild(picks);
     fieldsEl.appendChild(wrap);
+    syncPicks();
   });
   syncFocus();
 }
@@ -611,7 +632,7 @@ function reveal(isAuthor){
   });
   if(!isAuthor) $('h1[data-open-only]').textContent = 'A Pretty Focussed Plan';
   $('[data-for]').textContent = (isAuthor && S.name ? 'Prepared for ' + S.name + ', ' : '') + longDate(plan.date);
-  $('[data-plan-total]').textContent = 'In total you are giving these three ' + spoken(plan.totalWeeklyMinutes).replace(' a week', '') + ' a week.';
+  $('[data-plan-total]').textContent = 'In total you are giving these 3 ' + spoken(plan.totalWeeklyMinutes).replace(' a week', '') + ' a week.';
 
   document.body.classList.add('is-settling');
   document.documentElement.style.setProperty('--room', '.55');
@@ -645,7 +666,7 @@ function closing(isAuthor){
   var btn = $('[data-next-btn]'), alt = $('[data-next-alt]'), cap = $('[data-next-caption]');
   if(!isAuthor){
     over.textContent = 'Your own plan';
-    title.textContent = 'You can make your own plan in three questions.';
+    title.textContent = 'You can make your own plan in 3 questions.';
     body.textContent = 'Someone shared their Pretty Focussed Plan with you. Yours takes about two minutes, and it uses your own words.';
     btn.textContent = 'Create my plan'; btn.href = CONFIG.planPath; btn.dataset.kind = 'plan';
     alt.hidden = false; alt.textContent = 'See the founding offer'; alt.href = O.url; alt.dataset.kind = 'founding';

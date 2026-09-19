@@ -281,6 +281,14 @@ main{position:relative; z-index:10}
 /* the one being written is the sharp one; its neighbours soften (opacity only: they are controls) */
 .fields:focus-within .field:not(:focus-within){opacity:.6}
 .field[data-invalid="true"]{background:var(--color-feedback-error-bg)}
+.picks{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+.pick{min-height:36px; padding:8px 14px; border-radius:var(--radius-pill); border:1px dotted var(--pf-ash);
+  font-size:.875rem; line-height:1.2; letter-spacing:-.005em; color:var(--color-text-secondary); text-align:left;
+  transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out)}
+.pick:active{transform:scale(.97)}
+/* chosen: a solid line (an actual value) where the dotted one was a suggestion */
+.pick[aria-pressed="true"]{border-style:solid; border-color:var(--pf-ink); color:var(--pf-ink); background:rgb(255 255 255 / .7)}
+@media (hover:hover) and (pointer:fine){ .pick:hover{color:var(--pf-ink); border-color:var(--color-text-muted)} }
 
 /* ============================================================ Q3 — the time */
 .time-grid{display:grid; gap:var(--space-grouped)}
