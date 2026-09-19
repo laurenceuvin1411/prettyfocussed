@@ -283,7 +283,6 @@ main{position:relative; z-index:10}
 /* ============================================================ Q2 — the one thing
    One area per screen, as a sentence with a blank. Tiles fill the blank. */
 .q-one .ask{gap:10px}
-.fill-head label{cursor:text}
 .q[data-state="out"]{opacity:0; filter:blur(6px); transform:translate3d(-10px,0,0);
   transition:opacity 150ms var(--ease-out), filter 150ms var(--ease-out), transform 150ms var(--ease-out)}
 .q[data-state="pre"]{opacity:0; filter:blur(6px); transform:translate3d(14px,0,0)}
@@ -292,6 +291,7 @@ main{position:relative; z-index:10}
 .blank{width:100%; border:0; border-radius:0; background:none; outline:none; padding:2px 0 10px;
   font-family:var(--font-display); font-size:var(--type-h2); line-height:1.15; letter-spacing:var(--track-h2); color:var(--pf-ink);
   border-bottom:2px dotted var(--pf-ash)}
+.blank::placeholder{color:var(--color-text-disabled)}
 .blank.is-filled{border-bottom:1px solid var(--pf-ink); padding-bottom:11px}
 .blank:focus-visible{border-bottom-color:var(--pf-ink)}
 .tiles{display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:10px}

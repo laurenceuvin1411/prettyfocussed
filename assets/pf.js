@@ -406,6 +406,7 @@ function drawFocus(){
   var id = focusArea(), a = AREA[id];
   if(!a) return;
   $('[data-focus-area]').textContent = a.name;
+  $('[data-focus-area-sr]').textContent = a.name;
   $('[data-focus-count]').textContent = (fIdx + 1) + ' of 3';
   ownIn.value = S.focus[id] || '';
   tilesEl.textContent = '';
