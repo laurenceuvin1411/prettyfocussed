@@ -2,7 +2,7 @@
    PRETTY FOCUSSED — the Plan
    Three questions, an address, and a plan she can read in seconds.
 
-     1. CONFIG      keys, flags, the founding offer
+     1. CONFIG      keys, flags, the offer
      2. DATA        the twelve areas
      3. STATE       answers, storage, the URL hash
      4. MATHS       minutes to percentages that always sum to 100
@@ -41,7 +41,14 @@ var CONFIG = {
   preview: /[?&]preview=1/.test(location.search),
   /* The founding offer, mirrored from OFFER in founding.html. live:false turns
      the closing section into a waitlist call instead. */
-  offer: { live:true, price:'178,85', places:100, opensBy:'15\u00a0November\u00a02026', url:'/founding/' },
+  /* mirrors OFFER in founding.html: keep the two in step */
+  /* €14,90 a month or €178,85 a year (€0,49 a day). paymentLink still points at the
+     old €149 link until the new Stripe links exist. */
+  offer: { live:true, perDay:'0,49', monthly:'14,90', yearly:'178,85', url:'/founding/',
+           /* the two new Stripe Payment Links (7-day trial on both). Until they are
+              pasted in, both fall back to paymentLink, the old €149 link. */
+           monthlyLink:'', yearlyLink:'',
+           paymentLink:'https://buy.stripe.com/7sY14mfV3gWy7Vg4QMffy00', trialLink:'' },
   waitlistUrl: '/waitlist/',
   planPath:   '/plan/',
   resultPath: '/your-plan/',
@@ -250,7 +257,7 @@ function renderMap(map, plan, opts){
     $('.b-hrs', blk).textContent = tm.n + ' ' + tm.u;
     $('.b-pct', blk).firstChild.nodeValue = String(cat.percentage);
     var f = $('.b-focus', blk);
-    f.textContent = cat.focus || '';
+    f.textContent = sentenceCase(cat.focus || '');
     f.hidden = !cat.focus;
     if(opts.sharp) blk.toggleAttribute('data-sharp', cat.id === opts.sharp);
     map.appendChild(blk);
@@ -647,8 +654,10 @@ function reveal(isAuthor){
   });
   if(!isAuthor) $('h1[data-open-only]').textContent = 'A Pretty Focussed Plan';
   $('[data-for]').textContent = (isAuthor && S.name ? 'Prepared for ' + S.name + ', ' : '') + longDate(plan.date);
-  $('[data-plan-total]').textContent = 'In total you are giving these 3 ' + spoken(plan.totalWeeklyMinutes).replace(' a week', '') + ' a week.';
+  $('[data-plan-total]').textContent = 'In total you give these 3 areas ' + spoken(plan.totalWeeklyMinutes) + '.';
 
+  /* once it is hers, the week leads and the percentages follow underneath */
+  $('.plan').classList.add('is-open');
   document.body.classList.add('is-settling');
   document.documentElement.style.setProperty('--room', '.55');
   document.body.style.setProperty('--room', '.55');
@@ -861,31 +870,61 @@ $('[data-ics]').addEventListener('click', function(){
 
 /* the closing call: founding offer while it is live, the waitlist otherwise,
    and her own plan if this one was shared with her */
-function closing(isAuthor){
+/* every "Create account" goes straight to checkout, with her address filled in
+   when we have it. No page in between. */
+var period = 'yearly';
+try{ if(localStorage.getItem('pf.period') === 'monthly') period = 'monthly'; }catch(e){}
+function checkoutUrl(){
+  var O = CONFIG.offer, link = (period === 'monthly' ? O.monthlyLink : O.yearlyLink) || O.trialLink || O.paymentLink;
+  if(!link) return O.url;
+  var url = new URL(link);
+  var mail = (($('#f-email') || {}).value || '').trim().toLowerCase();
+  if(EMAIL.test(mail)) url.searchParams.set('prefilled_email', mail);
+  return url.toString();
+}
+function wireCheckout(){
+  $$('[data-signup], [data-deal-btn]').forEach(function(a){ a.href = checkoutUrl(); });
+}
+document.addEventListener('click', function(e){
+  var a = e.target.closest && e.target.closest('[data-signup], [data-deal-btn]');
+  if(!a) return;
+  a.href = checkoutUrl();
+  var mail = (($('#f-email') || {}).value || '').trim().toLowerCase();
+  try{ if(EMAIL.test(mail)) localStorage.setItem('pf_founding_email', mail); }catch(err){}
+  track('checkout_clicked', { from:a.dataset.signup || 'plan_offer', trial:!!CONFIG.offer.trialLink });
+}, true);
+function drawDeal(){
   var O = CONFIG.offer;
-  var over = $('[data-next-over]'), title = $('[data-next-title]'), body = $('[data-next-body]');
-  var btn = $('[data-next-btn]'), alt = $('[data-next-alt]'), cap = $('[data-next-caption]');
+  $('[data-deal-day]').textContent = O.perDay;
+  $('[data-deal-trial]').hidden = !(O.trialLink || O.monthlyLink || O.yearlyLink);
+  setPeriod(period, true);
+}
+/* monthly or yearly: the thumb slides, the price swaps through a short blur */
+function setPeriod(p, quiet){
+  period = p;
+  try{ localStorage.setItem('pf.period', p); }catch(e){}
+  var box = $('[data-period]'), price = $('[data-deal-price]');
+  box.dataset.value = p;
+  $$('button', box).forEach(function(b){ b.setAttribute('aria-checked', b.dataset.p === p ? 'true' : 'false'); });
+  var swap = function(){
+    $('[data-deal-amount]').textContent = p === 'monthly' ? CONFIG.offer.monthly : CONFIG.offer.yearly;
+    $('[data-deal-unit]').textContent = p === 'monthly' ? '/ month' : '/ year';
+  };
+  if(quiet || reduce){ swap(); }
+  else{ price.classList.add('is-swapping'); setTimeout(function(){ swap(); price.classList.remove('is-swapping'); }, 120); }
+  wireCheckout();
+  if(!quiet) track('period_selected', { period:p });
+}
+$$('[data-period] button').forEach(function(b){ b.addEventListener('click', function(){ if(b.dataset.p !== period) setPeriod(b.dataset.p); }); });
+function closing(isAuthor){
+  drawDeal();
+  /* the page ends on the week: one action for her own plan, and for a shared
+     plan the same button invites the viewer to make their own */
+  var btn = $('[data-signup="schedule"]');
   if(!isAuthor){
-    over.textContent = 'Your own plan';
-    title.textContent = 'You can make your own plan in 3 questions.';
-    body.textContent = 'Someone shared their Pretty Focussed Plan with you. Yours takes about two minutes, and it uses your own words.';
-    btn.textContent = 'Create my plan'; btn.href = CONFIG.planPath; btn.dataset.kind = 'plan';
-    alt.hidden = false; alt.textContent = 'See the founding offer'; alt.href = O.url; alt.dataset.kind = 'founding';
-    cap.textContent = '';
-    return;
-  }
-  if(O.live){
-    over.textContent = 'Founding places';
-    title.textContent = 'Ready to get Pretty Focussed?';
-    body.textContent = 'Pretty Focussed opens to ' + O.places + ' founding members first, by ' + O.opensBy + '. A founding place costs €' + O.price + ' a year, and that price stays the same for as long as you stay.';
-    btn.textContent = 'Become a founding member'; btn.href = O.url; btn.dataset.kind = 'founding';
-    cap.textContent = 'You’re already on the waiting list, so Laurence will write to you when it opens.';
-  }else{
-    over.textContent = 'The waiting list';
-    title.textContent = 'Want to be the first to know?';
-    body.textContent = 'Pretty Focussed opens soon. The people on the waiting list hear first.';
-    btn.textContent = 'Create account'; btn.href = CONFIG.waitlistUrl; btn.dataset.kind = 'waitlist';
-    cap.textContent = '';
+    btn.textContent = 'Create my own plan'; btn.href = CONFIG.planPath;
+    btn.dataset.kind = 'plan'; btn.removeAttribute('data-signup');
+    $('[data-sched] .sched-note').hidden = true;
   }
 }
 document.addEventListener('click', function(e){
@@ -1063,9 +1102,7 @@ renderMap($('[data-map="hero"]'), planFrom(EXAMPLE), { min:84, sharp:'health' })
 $$('[data-start]').forEach(function(b){
   b.addEventListener('click', function(){ track('plan_cta_clicked', { from:'hero' }); go('areas'); });
 });
-$$('[data-signup]').forEach(function(a){
-  a.addEventListener('click', function(){ track('create_account_clicked', { from:a.dataset.signup }); });
-});
+wireCheckout();
 
 var founder = $('[data-founder]');
 if('IntersectionObserver' in window){

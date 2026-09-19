@@ -223,7 +223,7 @@ main{position:relative; z-index:10}
 .resolve.d1{animation-delay:80ms}.resolve.d2{animation-delay:160ms}.resolve.d3{animation-delay:260ms}.resolve.d4{animation-delay:380ms}
 @keyframes resolve{from{opacity:0; filter:blur(8px); transform:translate3d(0,10px,0)}}
 
-.how{padding:var(--space-separated) 0 var(--space-chaptered)}
+.how{padding-top:var(--space-separated); padding-bottom:var(--space-chaptered)}
 .how ol{list-style:none; margin:0; padding:0; display:grid; gap:0; max-width:760px}
 .how li{display:grid; grid-template-columns:56px 1fr; gap:16px; align-items:baseline; padding:22px 0; border-top:1px dotted var(--color-border-default)}
 .how li .n{font-family:var(--font-mono); font-size:11px; color:var(--color-text-muted)}
@@ -233,6 +233,25 @@ main{position:relative; z-index:10}
 .foot{padding:40px 0 max(40px, env(safe-area-inset-bottom)); display:flex; flex-wrap:wrap; gap:8px 24px; align-items:center}
 .foot .caption a{text-decoration:none}
 @media (hover:hover) and (pointer:fine){.foot .caption a:hover{color:var(--color-text-primary)}}
+
+/* ============================================================ LANDING on the sky
+   The same world as the questions: Air plate, glass, numbered tiles. */
+body[data-view="landing"] .overline{color:var(--color-text-secondary)}
+/* the example plan sits in a glass frame, like a screen from the app */
+.specimen .map{padding:10px; border-radius:32px; gap:6px;
+  background:rgb(255 255 255 / .28); -webkit-backdrop-filter:blur(24px) saturate(1.15); backdrop-filter:blur(24px) saturate(1.15);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .65), inset 0 1px 0 rgb(255 255 255 / .8), 0 24px 64px rgb(62 73 54 / .10)}
+.specimen .blk{border-radius:24px}
+/* how it works: 3 numbered glass tiles, the same family as question 1 */
+.how ol{max-width:none; display:grid; gap:12px; grid-template-columns:1fr}
+@media (min-width:760px){ .how ol{grid-template-columns:repeat(3, minmax(0, 1fr))} }
+.how li{display:flex; flex-direction:column; justify-content:space-between; gap:40px; min-height:200px; padding:20px 22px 24px; border:0;
+  border-radius:28px; background:rgb(255 255 255 / .26); -webkit-backdrop-filter:blur(20px) saturate(1.15); backdrop-filter:blur(20px) saturate(1.15);
+  box-shadow:inset 0 0 0 1px rgb(255 255 255 / .6), inset 0 1px 0 rgb(255 255 255 / .75)}
+.how li .n{color:var(--color-text-secondary)}
+.how li .h3{font-size:clamp(1.25rem, 1rem + .8vw, 1.625rem); max-width:18ch}
+@media (max-width:759px){ .how li{min-height:0; gap:24px} }
+.how .h2{max-width:20ch}
 
 /* ============================================================ glass pill */
 .glass{display:inline-flex; align-items:center; gap:8px; padding:8px 14px; border-radius:var(--radius-pill);
@@ -246,8 +265,10 @@ main{position:relative; z-index:10}
   background:linear-gradient(170deg, #B7CDE0 0%, #CBD9E4 30%, #E6ECEF 62%, #EFE3D8 100%);
   transition:opacity 500ms var(--ease-out)}
 .sky::after{content:''; position:absolute; inset:0; background-image:var(--noise); opacity:.05; mix-blend-mode:multiply}
-body[data-view="areas"] .sky,body[data-view="focus"] .sky,body[data-view="time"] .sky{opacity:1}
-body[data-view="areas"] .top::before,body[data-view="focus"] .top::before,body[data-view="time"] .top::before{opacity:0}
+body[data-view="landing"] .sky,body[data-view="areas"] .sky,body[data-view="focus"] .sky,body[data-view="time"] .sky{opacity:1}
+/* on the sky the header keeps a frosted band, so content scrolls softly under it */
+body[data-view="landing"] .top::before,body[data-view="areas"] .top::before,body[data-view="focus"] .top::before,body[data-view="time"] .top::before{
+  background:linear-gradient(to bottom, rgb(214 225 234 / .72) 45%, rgb(214 225 234 / 0))}
 body[data-view="focus"] .overline,body[data-view="time"] .overline{color:var(--color-text-secondary)}
 /* on the sky, the backings go clear so nothing sits as a beige patch */
 body[data-view="focus"] .preview{background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none}
@@ -523,6 +544,18 @@ input[type=range]:focus-visible{outline-offset:0}
 .founder-grid{display:grid; gap:var(--space-grouped)}
 @media (min-width:980px){ .founder-grid{grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr); gap:clamp(48px,7vw,120px)} .founder-side{position:sticky; top:120px; align-self:start} }
 .founder-side{display:grid; gap:14px}
+/* the open plan: title, then the week, then the percentages, then the rest */
+.plan.is-open{display:flex; flex-direction:column}
+.plan.is-open > .plan-head{order:0}
+.plan.is-open > .sched{order:1; padding-top:clamp(28px,5vw,56px)}
+.plan.is-open > .plan-body{order:2; margin-top:var(--space-separated)}
+.plan.is-open > .less{order:3}
+.plan.is-open > .founder{order:4; padding-bottom:var(--space-separated)}
+.plan.is-open > .deal{order:5}
+.plan.is-open > .foot{order:6}
+.plan.is-open .less .display{padding-top:0; max-width:13ch}
+.founder-media{margin:8px 0 0; border-radius:var(--radius-card); overflow:hidden; max-width:420px; box-shadow:var(--shadow-xl)}
+.founder-media img,.founder-media video{display:block; width:100%; height:auto; aspect-ratio:4 / 5; object-fit:cover; object-position:50% 30%}
 .story{display:grid; gap:22px; max-width:36em}
 .story p{margin:0; font-size:var(--type-body-lg); line-height:1.6; color:var(--color-text-secondary); text-wrap:pretty}
 .story p.lead{font-family:var(--font-display); font-size:var(--type-h3); line-height:1.25; letter-spacing:var(--track-h3); color:var(--color-text-primary)}
@@ -592,6 +625,48 @@ input[type=range]:focus-visible{outline-offset:0}
   .sched-act .btn,.sched-act .btn-glass{flex:1 1 100%}
 }
 
+/* ============================================================ THE OFFER (as on the founding page) */
+.deal{padding:var(--space-separated) 0}
+.deal-stage{position:relative; overflow:hidden; border-radius:var(--radius-sheet); padding:clamp(24px,5vw,88px);
+  background:linear-gradient(155deg,#A6C1D8 0%,#CBD9E4 45%,#EFE3D8 100%); background-size:140% 160%; background-position:30% 0;
+  box-shadow:var(--shadow-xl)}
+.deal-stage::after{content:''; position:absolute; inset:0; background-image:var(--noise); opacity:.04; mix-blend-mode:multiply; pointer-events:none}
+.deal-grid{position:relative; z-index:1; display:grid; gap:clamp(40px,5vw,80px); align-items:start}
+@media (min-width:960px){ .deal-grid{grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr)} .deal-card{position:sticky; top:110px} }
+.deal-what .overline{margin:0 0 var(--space-grouped); color:var(--color-text-secondary)}
+.deal-title{max-width:18ch}
+.deal-list{list-style:none; margin:var(--space-separated) 0 0; padding:0}
+.deal-list li{display:grid; grid-template-columns:44px 1fr; gap:14px; align-items:baseline; padding:20px 0;
+  border-top:1px dotted rgb(20 21 15 / .22); transition:opacity var(--duration-base) var(--ease-out), filter var(--duration-base) var(--ease-out)}
+.deal-list li:last-child{border-bottom:1px dotted rgb(20 21 15 / .22)}
+.deal-list .n{font-family:var(--font-mono); font-size:11px; letter-spacing:.02em; color:var(--color-text-secondary)}
+.deal-list .h3{display:block; font-family:var(--font-display); font-size:var(--type-h3); line-height:1.2; letter-spacing:var(--track-h3); color:var(--pf-ink)}
+@media (hover:hover) and (pointer:fine){ .deal-list:hover li{opacity:.5; filter:blur(1.5px)} .deal-list:hover li:hover{opacity:1; filter:none} }
+.deal-we{margin:var(--space-grouped) 0 0; max-width:40ch; font-size:var(--type-body-lg); line-height:1.55; color:var(--pf-ink)}
+.deal-card{display:flex; flex-direction:column; gap:var(--space-related); container-type:inline-size; border-radius:var(--radius-panel); padding:clamp(22px,3.4vw,44px);
+  background:rgb(255 255 255 / .72); -webkit-backdrop-filter:blur(32px) saturate(1.2); backdrop-filter:blur(32px) saturate(1.2);
+  box-shadow:inset 0 1px 0 rgb(255 255 255 / .45), 0 8px 32px rgb(62 73 54 / .08)}
+.deal-pill{display:inline-flex; align-self:flex-start; align-items:center; gap:8px; padding:8px 14px; border-radius:var(--radius-pill);
+  background:var(--pf-bone); box-shadow:inset 0 1px 0 rgb(255 255 255 / .6), 0 4px 16px rgb(62 73 54 / .06);
+  font-size:var(--type-overline); letter-spacing:var(--track-overline); text-transform:uppercase; font-weight:500; color:var(--pf-ink)}
+.deal-pill .pip{width:6px; height:6px; border-radius:50%; background:var(--pf-ink)}
+.deal-price{display:flex; align-items:baseline; margin:4px 0 0; font-size:clamp(2.5rem, 18cqi, 5rem); line-height:.9; white-space:nowrap;
+  transition:opacity 120ms var(--ease-out), filter 120ms var(--ease-out)}
+.deal-price.is-swapping{opacity:0; filter:blur(3px)}
+/* monthly / yearly: a pill with a sliding glass thumb */
+.period{position:relative; display:grid; grid-template-columns:1fr 1fr; align-self:stretch; padding:4px; border-radius:var(--radius-pill);
+  background:rgb(20 21 15 / .06); box-shadow:inset 0 1px 2px rgb(62 73 54 / .06)}
+.period::before{content:''; position:absolute; top:4px; bottom:4px; left:4px; width:calc(50% - 4px); border-radius:var(--radius-pill);
+  background:#fff; box-shadow:0 2px 10px rgb(62 73 54 / .10), inset 0 1px 0 #fff; transition:transform 220ms var(--ease-out)}
+.period[data-value="yearly"]::before{transform:translateX(100%)}
+.period button{position:relative; z-index:1; min-height:40px; border-radius:var(--radius-pill); font-size:.875rem; color:var(--color-text-secondary);
+  transition:color var(--duration-fast) var(--ease-out), transform var(--duration-press) var(--ease-out)}
+.period button:active{transform:scale(.97)}
+.period button[aria-checked="true"]{color:var(--pf-ink); font-weight:500}
+.deal-anchor{margin:0; font-size:15px; line-height:1.55; color:var(--color-text-secondary); max-width:34ch}
+.deal-btn{width:100%; min-height:58px; font-size:1rem; margin-top:var(--space-related)}
+.deal-fine{max-width:38ch}
+
 /* ============================================================ small screens */
 @media (max-width:640px){
   .hero{padding-top:96px; align-items:start}
@@ -613,4 +688,5 @@ input[type=range]:focus-visible{outline-offset:0}
   .map .veil{transition-duration:200ms; transition-delay:0ms !important}
   .after{transition-duration:200ms; transition-delay:0ms}
   body.is-settling{transition:none}
+  .period::before{transition:none}
 }

@@ -15,7 +15,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/pf.css?v=20260919s">
+<link rel="stylesheet" href="/assets/pf.css?v=20260920b">
 </head>
 <body data-view="landing">
 
@@ -80,7 +80,7 @@
 
   <footer class="wrap foot">
     <p class="caption">© 2026 Pretty Focussed</p>
-    <p class="caption"><a href="/founding/">Founding places</a></p>
+    <p class="caption"><a href="/founding/" data-signup="footer">Create account</a></p>
     <p class="caption"><a href="/podcast.html">The podcast</a></p>
     <p class="caption"><a href="/read/">The Read</a></p>
   </footer>
@@ -244,10 +244,7 @@
     </section>
 
     <!-- ============================================================ LESS -->
-    <section class="less after" data-after data-on="false" aria-labelledby="less-title">
-      <p class="overline">Less is more</p>
-      <h2 class="h2" id="less-title" style="max-width:16ch">You don’t need more on your list.</h2>
-      <p class="lede">Sometimes the thing that creates the most freedom isn’t adding something new. It’s getting clear on what already matters and giving it enough space.</p>
+    <section class="less after" data-after data-on="false" aria-label="Less is more">
       <p class="display">Less is more when you know what matters.</p>
     </section>
 
@@ -257,6 +254,11 @@
         <div class="founder-side">
           <p class="overline">Why Laurence Uvin built Pretty Focussed</p>
           <h2 class="h2" id="founder-title">Why I built Pretty Focussed</h2>
+          <!-- founder media: a photo for now. A <video> can replace the <img> later, same frame. -->
+          <figure class="founder-media">
+            <img src="/assets/laurence-uvin.jpg" width="1200" height="1800" loading="lazy" decoding="async"
+                 alt="Laurence Uvin at her desk, with papers flying around her.">
+          </figure>
         </div>
         <div class="story">
           <p class="lead">I wanted a free life.</p>
@@ -273,21 +275,41 @@
       </div>
     </section>
 
-    <!-- ============================================================ NEXT -->
-    <section class="next after" data-after data-on="false" aria-labelledby="next-title">
-      <p class="overline" data-next-over>Founding places</p>
-      <h2 class="h2" id="next-title" data-next-title>Ready to get Pretty Focussed?</h2>
-      <p class="lede" data-next-body></p>
-      <div class="act">
-        <a class="btn" href="/founding/" data-next-btn>Become a founding member</a>
-        <a class="ghost" href="/" data-next-alt hidden>Create my own plan</a>
+    <!-- ============================================================ THE OFFER
+         Same block as on the account page; the button goes straight to checkout. -->
+    <section class="deal after" data-after data-on="false" aria-labelledby="deal-title">
+      <div class="deal-stage">
+        <div class="deal-grid">
+          <div class="deal-what">
+            <p class="overline">What you get</p>
+            <h2 class="h2 deal-title" id="deal-title">One app for everything you care about, so you stop carrying it all in your head.</h2>
+            <ol class="deal-list">
+              <li><span class="n">01</span><span class="h3">Fix your movement plan</span></li>
+              <li><span class="n">02</span><span class="h3">Create headspace</span></li>
+              <li><span class="n">03</span><span class="h3">Track your routines</span></li>
+              <li><span class="n">04</span><span class="h3">Build your brand and business, if you want to</span></li>
+              <li><span class="n">05</span><span class="h3">Plan your life, your business or your next steps</span></li>
+            </ol>
+            <p class="deal-we">We’re building this app together, because we can’t be the only ones with this problem.</p>
+          </div>
+          <div class="deal-card">
+            <span class="deal-pill" data-deal-trial hidden><span class="pip" aria-hidden="true"></span>7 days on us</span>
+            <div class="period" role="radiogroup" aria-label="How you pay" data-period>
+              <button type="button" role="radio" aria-checked="false" data-p="monthly">Monthly</button>
+              <button type="button" role="radio" aria-checked="true" data-p="yearly">Yearly</button>
+            </div>
+            <p class="deal-price num" data-deal-price>€<span data-deal-amount>178,85</span><span class="unit" data-deal-unit>/ year</span></p>
+            <p class="deal-anchor">That’s €<span data-deal-day>0,49</span> a day.</p>
+            <a class="btn deal-btn" href="/founding/" data-deal-btn>Create my account</a>
+            <p class="caption deal-fine">You can stop in one click, and no one asks why. Stripe handles your card, and you get an invoice with VAT by email.</p>
+          </div>
+        </div>
       </div>
-      <p class="caption" data-next-caption></p>
     </section>
 
     <footer class="foot" style="padding-left:0; padding-right:0">
       <p class="caption">© 2026 Pretty Focussed</p>
-      <p class="caption"><a href="/founding/">Founding places</a></p>
+      <p class="caption"><a href="/founding/" data-signup="footer">Create account</a></p>
       <p class="caption"><a href="/podcast.html">The podcast</a></p>
     </footer>
   </div>
@@ -295,6 +317,6 @@
 
 </main>
 
-<script src="/assets/pf.js?v=20260919p"></script>
+<script src="/assets/pf.js?v=20260920b"></script>
 </body>
 </html>
