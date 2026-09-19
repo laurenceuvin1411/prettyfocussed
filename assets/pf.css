@@ -281,7 +281,14 @@ main{position:relative; z-index:10}
 /* the one being written is the sharp one; its neighbours soften (opacity only: they are controls) */
 .fields:focus-within .field:not(:focus-within){opacity:.6}
 .field[data-invalid="true"]{background:var(--color-feedback-error-bg)}
-.picks{display:flex; flex-wrap:wrap; gap:8px; margin-top:6px}
+.q.q-focus{max-width:940px}
+/* one row of suggestions: it fits on a wide screen, and scrolls sideways on a phone */
+.picks{display:flex; flex-wrap:nowrap; gap:8px; margin:6px -22px 0; padding:2px 22px; overflow-x:auto; scrollbar-width:none;
+  -webkit-overflow-scrolling:touch; scroll-snap-type:x proximity;
+  -webkit-mask-image:linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 28px), transparent);
+          mask-image:linear-gradient(90deg, transparent 0, #000 22px, #000 calc(100% - 28px), transparent)}
+.picks::-webkit-scrollbar{display:none}
+.pick{flex:none; white-space:nowrap; scroll-snap-align:start}
 .pick{min-height:36px; padding:8px 14px; border-radius:var(--radius-pill); border:1px dotted var(--pf-ash);
   font-size:.875rem; line-height:1.2; letter-spacing:-.005em; color:var(--color-text-secondary); text-align:left;
   transition:transform var(--duration-press) var(--ease-out), background-color var(--duration-fast) var(--ease-out), color var(--duration-fast) var(--ease-out)}
@@ -456,6 +463,7 @@ input[type=range]:focus-visible{outline-offset:0}
   .hero-copy{padding-top:24px}
   .chip{font-size:.9375rem; padding-right:16px}
   .field{padding:18px 18px 20px}
+  .picks{margin:6px -18px 0; padding:2px 18px}
   .row{padding:16px 18px 10px}
   .less .display{padding-top:var(--space-grouped)}
   .founder{padding-bottom:var(--space-separated)}
