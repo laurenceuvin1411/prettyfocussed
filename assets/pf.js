@@ -862,8 +862,8 @@ renderMap($('[data-map="hero"]'), planFrom(EXAMPLE), { min:84, sharp:'health' })
 $$('[data-start]').forEach(function(b){
   b.addEventListener('click', function(){ track('plan_cta_clicked', { from:'hero' }); go('areas'); });
 });
-$$('[data-waitlist-link]').forEach(function(a){
-  a.addEventListener('click', function(){ track('waitlist_cta_clicked', { from:'hero' }); });
+$$('[data-signup]').forEach(function(a){
+  a.addEventListener('click', function(){ track('create_account_clicked', { from:a.dataset.signup }); });
 });
 
 var founder = $('[data-founder]');
