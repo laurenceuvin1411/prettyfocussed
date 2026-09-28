@@ -883,15 +883,22 @@ function checkoutUrl(){
   return url.toString();
 }
 function wireCheckout(){
-  $$('[data-signup], [data-deal-btn]').forEach(function(a){ a.href = checkoutUrl(); });
+  /* "Create account" opens the app's login page; only the deal buttons go to checkout */
+  $$('[data-signup]').forEach(function(a){ a.href = '/login'; });
+  $$('[data-deal-btn]').forEach(function(a){ a.href = checkoutUrl(); });
 }
 document.addEventListener('click', function(e){
   var a = e.target.closest && e.target.closest('[data-signup], [data-deal-btn]');
   if(!a) return;
+  if(a.matches('[data-signup]')){
+    a.href = '/login';
+    track('signup_clicked', { from:a.dataset.signup });
+    return;
+  }
   a.href = checkoutUrl();
   var mail = (($('#f-email') || {}).value || '').trim().toLowerCase();
   try{ if(EMAIL.test(mail)) localStorage.setItem('pf_founding_email', mail); }catch(err){}
-  track('checkout_clicked', { from:a.dataset.signup || 'plan_offer', trial:!!CONFIG.offer.trialLink });
+  track('checkout_clicked', { from:'plan_offer', trial:!!CONFIG.offer.trialLink });
 }, true);
 function drawDeal(){
   var O = CONFIG.offer;
