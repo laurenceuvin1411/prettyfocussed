@@ -174,9 +174,11 @@ body[data-view="plan"] .atmos{transform:translate3d(0,-8vmax,0) scale(1.12); opa
 @keyframes arrive{from{opacity:0}to{opacity:1}}
 
 .steps{display:none; align-items:center; gap:12px; margin-left:auto}
-.top-cta{margin-left:auto; min-height:44px; padding:12px 20px; font-size:.875rem}
+.top-login{margin-left:auto; display:inline-flex; align-items:center; min-height:44px; padding:12px 14px; font-size:.875rem; font-weight:500; color:var(--pf-slate-400); text-decoration:none; border-radius:999px; transition:color .2s ease}
+.top-login:hover{color:var(--pf-ink)}
+.top-cta{min-height:44px; padding:12px 20px; font-size:.875rem}
 /* during the 3 questions the corner belongs to her progress */
-body[data-view="areas"] .top-cta,body[data-view="focus"] .top-cta,body[data-view="time"] .top-cta{display:none}
+body[data-view="areas"] .top-cta,body[data-view="focus"] .top-cta,body[data-view="time"] .top-cta,body[data-view="areas"] .top-login,body[data-view="focus"] .top-login,body[data-view="time"] .top-login{display:none}
 body[data-view="areas"] .steps,body[data-view="focus"] .steps,body[data-view="time"] .steps{display:flex}
 .steps .count{font-family:var(--font-mono); font-size:11px; letter-spacing:.02em; color:var(--color-text-muted); font-variant-numeric:tabular-nums}
 .ring{width:30px; height:30px; transform:rotate(-90deg)}
