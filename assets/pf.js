@@ -883,15 +883,15 @@ function checkoutUrl(){
   return url.toString();
 }
 function wireCheckout(){
-  /* "Create account" opens the app's login page; only the deal buttons go to checkout */
-  $$('[data-signup]').forEach(function(a){ a.href = '/login'; });
+  /* "Get started" opens the app's create-account screen; only the deal buttons go to checkout */
+  $$('[data-signup]').forEach(function(a){ a.href = '/login?mode=signup'; });
   $$('[data-deal-btn]').forEach(function(a){ a.href = checkoutUrl(); });
 }
 document.addEventListener('click', function(e){
   var a = e.target.closest && e.target.closest('[data-signup], [data-deal-btn]');
   if(!a) return;
   if(a.matches('[data-signup]')){
-    a.href = '/login';
+    a.href = '/login?mode=signup';
     track('signup_clicked', { from:a.dataset.signup });
     return;
   }
