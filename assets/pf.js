@@ -42,13 +42,13 @@ var CONFIG = {
   /* The founding offer, mirrored from OFFER in founding.html. live:false turns
      the closing section into a waitlist call instead. */
   /* mirrors OFFER in founding.html: keep the two in step */
-  /* €14,90 a month or €178,85 a year (€0,49 a day). paymentLink still points at the
-     old €149 link until the new Stripe links exist. */
+  /* €14,90 a month or €178,85 a year (€0,49 a day). */
   offer: { live:true, perDay:'0,49', monthly:'14,90', yearly:'178,85', url:'/founding/',
-           /* the two new Stripe Payment Links (7-day trial on both). Until they are
-              pasted in, both fall back to paymentLink, the old €149 link. */
-           monthlyLink:'', yearlyLink:'',
-           paymentLink:'https://buy.stripe.com/7sY14mfV3gWy7Vg4QMffy00', trialLink:'' },
+           /* the two Stripe Payment Links (15 Oct 2026). No trial; a card is only asked
+              when something is due, so a 100% code needs no card. */
+           monthlyLink:'https://buy.stripe.com/14A14m6kt6hU0sO5UQffy02',
+           yearlyLink:'https://buy.stripe.com/00w9AS8sB49M0sOdniffy03',
+           paymentLink:'https://buy.stripe.com/00w9AS8sB49M0sOdniffy03', trialLink:'' },
   waitlistUrl: '/waitlist/',
   planPath:   '/plan/',
   resultPath: '/your-plan/',
@@ -903,7 +903,7 @@ document.addEventListener('click', function(e){
 function drawDeal(){
   var O = CONFIG.offer;
   $('[data-deal-day]').textContent = O.perDay;
-  $('[data-deal-trial]').hidden = !(O.trialLink || O.monthlyLink || O.yearlyLink);
+  $('[data-deal-trial]').hidden = !O.trialLink;
   setPeriod(period, true);
 }
 /* monthly or yearly: the thumb slides, the price swaps through a short blur */
